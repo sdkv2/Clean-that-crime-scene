@@ -5,7 +5,7 @@ local NPC = class('NPC')
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, animations)
     self.x = x
     self.y = y
-    self.scale = 3
+    self.scale = 2
     self.width = spriteWidth
     self.height = spriteHeight
     self.spriteSheet = love.graphics.newImage('sprites/' .. spriteSheet)

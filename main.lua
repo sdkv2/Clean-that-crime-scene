@@ -22,6 +22,10 @@ function love.load()
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
 
+    animations = { 
+        start = {'1-3',1},
+    }
+    numbers = NPC:new(100, 100, 'Sprite-0001.png', 32, 48, 0, animations)
     player = players:new()
 
 
@@ -35,7 +39,7 @@ function love.load()
     panning = false
     target = player
 
-    NPCS = {guy, guy2, explosion}
+    NPCS = {guy, guy2, explosion, numbers}
     
 
     walls = {}
