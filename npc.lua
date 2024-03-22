@@ -2,20 +2,26 @@
 local class = require 'libraries/middleclass'
 
 local NPC = class('NPC')
-function NPC:initialize(x, y, img)
+function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, animations)
     self.x = x
     self.y = y
     self.scale = 3
-    self.image = love.graphics.newImage('sprites/' .. img)
-    self.width = self.image:getWidth() * 3
-    self.height = self.image:getHeight() * 3
-    self.collider = world:newRectangleCollider(self.x, self.y, self.width, self.height)
+    self.width = spriteWidth
+    self.height = spriteHeight
+    self.spriteSheet = love.graphics.newImage('sprites/' .. spriteSheet)
+    self.grid = anim8.newGrid(spriteWidth, spriteHeight, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
+    self.animations = {}
+    for animName, animFrames in pairs(animations) do
+        local frames, row = unpack(animFrames)
+        self.animations[animName] = anim8.newAnimation(self.grid(frames, row), 0.1)
+    end
+    self.collider = world:newRectangleCollider(self.x - self.width / 2, self.y - self.height / 2, self.width * self.scale, self.height * self.scale)
+    
+    self.currentAnimation = self.animations['start']
 end
 
 function NPC:draw()
-    --return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, self.scale, nil, self.image.getWidth(),self.image.getHeight())
-    return love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
-
+    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, self.r, self.scale, nil, self.width / 2, self.height / 2)
 end
 
 return NPC

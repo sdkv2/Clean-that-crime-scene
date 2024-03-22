@@ -13,9 +13,11 @@ function love.load()
     world = wf.newWorld(0, 0, true)
     gameMap = sti('maps/map2.lua')
     love.graphics.setDefaultFilter('nearest', 'nearest')
-
-    guy = NPC:new(500, 100, 'guy.png')
-    guy2 = NPC:new(500, 300, 'guy.png')
+    
+    animations = { 
+        start = {'1-4', 1},
+    }
+    explosion = NPC:new(500, 500, 'explosion.png', 72, 100, 2, animations)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
 
@@ -32,7 +34,7 @@ function love.load()
     panning = false
     target = player
 
-    NPCS = {guy, guy2}
+    NPCS = {guy, guy2, explosion}
     
 
     walls = {}
@@ -104,8 +106,10 @@ function love.update(dt)
     player.y = player.collider:getY() - 20
 
     for _, npc in pairs(NPCS) do
-        npc.x = npc.collider:getX() - npc.width / 2
-        npc.y = npc.collider:getY() - npc.height / 2
+        npc.x = npc.collider:getX() 
+        npc.y = npc.collider:getY()
+        npc.r = npc.collider:getAngle()
+        npc.currentAnimation:update(dt)
     end
 
     player.isMoving = false
@@ -117,7 +121,7 @@ end
 function love.draw()
     cam:zoomTo(1)
     cam:attach()
-        gameMap:drawLayer(gameMap.layers['Floor'])
+        gameMap:drawLayer(gameMap.layers['Tile Layer 1'])
         gameMap:drawLayer(gameMap.layers['Furniture'])    
         for _, npc in pairs(NPCS) do
             npc:draw()
