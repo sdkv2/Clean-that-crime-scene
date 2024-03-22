@@ -8,28 +8,28 @@ function love.load()
 
     players = require 'player'
     NPC = require 'npc'
-
+    npcs = {}
     cam = camera()
     world = wf.newWorld(0, 0, true)
     gameMap = sti('maps/map2.lua')
     love.graphics.setDefaultFilter('nearest', 'nearest')
     
-    animations = { 
-        start = {'1-6',1,'1-6',2,'1-3',3},
+    animation = {
+        explosion ={ 
+            start = {'1-6',1,'1-6',2,'1-3',3}
+        },
+        numbers = {
+            start = {'1-3',1}
+        }
     }
     
-    explosion = NPC:new(500, 500, 'explosion.png', 72, 100, 2, animations)
+    explosion = NPC:new(500, 500, 'explosion.png', 72, 100, 2, animation['explosion'])
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
 
-    animations = { 
-        start = {'1-3',1},
-    }
-    numbers = NPC:new(100, 100, 'Sprite-0001.png', 32, 48, 0, animations)
+    numbers = NPC:new(100, 100, 'Sprite-0001.png', 32, 48, 0, animation['numbers'])
     player = players:new()
 
-
-    trueLocation = {}
     width = love.graphics.getWidth()
     height = love.graphics.getHeight()
 
@@ -38,8 +38,6 @@ function love.load()
 
     panning = false
     target = player
-
-    NPCS = {guy, guy2, explosion, numbers}
     
 
     walls = {}
@@ -110,7 +108,7 @@ function love.update(dt)
     player.x = player.collider:getX()
     player.y = player.collider:getY() - 20
 
-    for _, npc in pairs(NPCS) do
+    for _, npc in pairs(npcs) do
         npc.x = npc.collider:getX() 
         npc.y = npc.collider:getY()
         npc.r = npc.collider:getAngle()
@@ -128,7 +126,7 @@ function love.draw()
     cam:attach()
         gameMap:drawLayer(gameMap.layers['Tile Layer 1'])
         gameMap:drawLayer(gameMap.layers['Furniture'])    
-        for _, npc in pairs(NPCS) do
+        for _, npc in pairs(npcs) do
             npc:draw()
         end
         player:draw()

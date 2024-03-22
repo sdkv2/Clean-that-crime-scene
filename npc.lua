@@ -1,6 +1,5 @@
 -- npc.lua
 local class = require 'libraries/middleclass'
-
 local NPC = class('NPC')
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, animations)
     self.x = x
@@ -17,6 +16,8 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, an
     self.collider = world:newRectangleCollider(self.x - self.width / 2, self.y - self.height / 2, self.width * self.scale, self.height * self.scale)
     
     self.currentAnimation = self.animations['start']
+
+    table.insert(npcs, self)
 end
 
 function NPC:draw()
