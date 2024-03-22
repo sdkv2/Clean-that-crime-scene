@@ -11,7 +11,7 @@ function love.load()
 
     cam = camera()
     world = wf.newWorld(0, 0, true)
-    gameMap = sti('maps/map.lua')
+    gameMap = sti('maps/map2.lua')
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     guy = NPC:new(500, 100, 'guy.png')
@@ -36,7 +36,7 @@ function love.load()
     
 
     walls = {}
-    for _, obj in pairs(gameMap.layers['Overlay'].objects) do
+    for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
         wall:setType('static')
         table.insert(walls, wall)
@@ -117,8 +117,8 @@ end
 function love.draw()
     cam:zoomTo(1)
     cam:attach()
-        gameMap:drawLayer(gameMap.layers['Tile Layer 1'])
-        gameMap:drawLayer(gameMap.layers['Chairs'])    
+        gameMap:drawLayer(gameMap.layers['Floor'])
+        gameMap:drawLayer(gameMap.layers['Furniture'])    
         for _, npc in pairs(NPCS) do
             npc:draw()
         end
