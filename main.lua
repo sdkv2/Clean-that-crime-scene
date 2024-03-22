@@ -52,7 +52,7 @@ end
 
 
 function pan(cam, object, dt)
-    cam:lockPosition(object.x, object.y, cam.smooth.linear(750), mapW - w/2)
+    cam:lockPosition(object.x, object.y, cam.smooth.linear(1000), mapW - w/2)
 end
 
 function camCheck(x, y)
