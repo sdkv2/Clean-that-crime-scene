@@ -101,7 +101,7 @@ function love.update(dt)
 
 
     player.x = player.collider:getX()
-    player.y = player.collider:getY()
+    player.y = player.collider:getY() - 20
 
     for _, npc in pairs(NPCS) do
         npc.x = npc.collider:getX() - npc.width / 2
@@ -114,7 +114,6 @@ function love.update(dt)
     
 
 end
-
 function love.draw()
     cam:zoomTo(1)
     cam:attach()

@@ -21,7 +21,7 @@ function player:initialize()
     }
     self.currentAnimation = self.animations.down
 
-    self.collider = world:newBSGRectangleCollider(400, 250, 18*3, 24*3, 3)
+    self.collider = world:newBSGRectangleCollider(400, 250, 18*3, 15*3, 3)
     self.collider:setFixedRotation(true)
 end
 
