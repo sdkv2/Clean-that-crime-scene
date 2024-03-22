@@ -15,8 +15,9 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     
     animations = { 
-        start = {'1-4', 1},
+        start = {'1-6',1,'1-6',2,'1-3',3},
     }
+    
     explosion = NPC:new(500, 500, 'explosion.png', 72, 100, 2, animations)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
