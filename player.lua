@@ -23,7 +23,7 @@ function player:initialize()
     self.currentAnimation = self.animations.down
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
-    self.collider = world:newBSGRectangleCollider(400, 250, 18*3, 15*3, 3)
+    self.collider = world:newBSGRectangleCollider(400, 250, 15*3, 7*3, 3)
     self.collider:setFixedRotation(true)
     self.renderAboveFurniture = false
 end

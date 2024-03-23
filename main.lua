@@ -27,7 +27,7 @@ function love.load()
     world = wf.newWorld(0, 0, true)
 
     zoom = 2
-    gameMap = sti('maps/map2.lua')
+    gameMap = sti('maps/mansionroomtrial.lua')
     interact = love.graphics.newImage('sprites/interact.png')
 
     world:addCollisionClass('Interactive')
@@ -133,7 +133,7 @@ function love.update(dt)
     end
 
     player.isMoving = false
-    local swapLayer = gameMap.layers['swap']
+    local swapLayer = gameMap.layers['Swap']
     for _, object in ipairs(swapLayer.objects) do
         -- Check if player's position is within the bounds of the object
         if player.x < object.x + object.width and player.x + player.spriteWidth > object.x and player.y < object.y + object.height and player.y + player.spriteHeight > object.y then
@@ -181,11 +181,11 @@ function love.draw()
             npc:draw()
         end
         if player.renderAboveFurniture then
-            gameMap:drawLayer(gameMap.layers['Furniture'])
             player:draw()
+            gameMap:drawLayer(gameMap.layers['Furniture'])
         else
-            player:draw()
             gameMap:drawLayer(gameMap.layers['Furniture'])
+            player:draw()
         end
         gameMap:drawLayer(gameMap.layers['BotWall'])  
         gameMap:drawLayer(gameMap.layers['Borders'])  
