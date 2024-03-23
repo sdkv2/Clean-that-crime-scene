@@ -27,7 +27,7 @@ function love.load()
     world = wf.newWorld(0, 0, true)
 
     zoom = 2
-    gameMap = sti('maps/mansionroomtrial.lua')
+    gameMap = sti('maps/map2.lua')
     interact = love.graphics.newImage('sprites/interact.png')
 
     world:addCollisionClass('Interactive')
@@ -48,10 +48,12 @@ function love.load()
     mapW = gameMap.width * gameMap.tilewidth
     mapH = gameMap.height * gameMap.tileheight
 
-    print(mapW, mapH)
-
     panning = false
+    local furnitureLayer = gameMap:addCustomLayer("FurnitureLayer", 4)
+    tile = gameMap:getTileProperties('Furniture',18,19)
+    print(tile)
     
+
 
     walls = {}
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
@@ -131,8 +133,17 @@ function love.update(dt)
     end
 
     player.isMoving = false
-
-
+    local swapLayer = gameMap.layers['swap']
+    for _, object in ipairs(swapLayer.objects) do
+        -- Check if player's position is within the bounds of the object
+        if player.x < object.x + object.width and player.x + player.spriteWidth > object.x and player.y < object.y + object.height and player.y + player.spriteHeight > object.y then
+            -- Player is on 'swap' object, so swap render order
+            player.renderAboveFurniture = true
+            break
+        else
+            player.renderAboveFurniture = false
+        end
+    end
 end
 function love.keypressed(key)
     if key == "z" then
@@ -168,10 +179,15 @@ function love.draw()
         for _, npc in pairs(npcs) do
             npc:draw()
         end
-        player:draw()
+        if player.renderAboveFurniture then
+            gameMap:drawLayer(gameMap.layers['Furniture'])
+            player:draw()
+        else
+            player:draw()
+            gameMap:drawLayer(gameMap.layers['Furniture'])
+        end
         gameMap:drawLayer(gameMap.layers['BotWall'])  
         gameMap:drawLayer(gameMap.layers['Borders'])  
-        gameMap:drawLayer(gameMap.layers['Furniture'])
         world:draw()
         if interactable == true then
             love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)

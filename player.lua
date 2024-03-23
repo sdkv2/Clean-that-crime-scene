@@ -25,6 +25,7 @@ function player:initialize()
 
     self.collider = world:newBSGRectangleCollider(400, 250, 18*3, 15*3, 3)
     self.collider:setFixedRotation(true)
+    self.renderAboveFurniture = false
 end
 
 function player:draw()
