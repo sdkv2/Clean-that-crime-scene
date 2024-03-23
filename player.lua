@@ -11,6 +11,7 @@ function player:initialize()
     self.x = width / 2
     self.y = height / 2
     self.isPlayer = true
+    self.scale = 3
     self.spriteSheet = love.graphics.newImage('sprites/player-sprite.png')
     self.grid = anim8.newGrid(17, 25, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {

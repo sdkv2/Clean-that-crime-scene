@@ -11,8 +11,8 @@ function border(dt, rectangles, target, inverted, chat)
     local topComplete = false
     local bottomComplete = false
     
-    local lowerY = math.min(screenY - player.spriteHeight - 80 * zoom, targetY - target.height * zoom * target.scale * 0.5)
-    local higherY = math.max(screenY + player.spriteHeight * zoom, targetY + target.height * zoom * target.scale * 0.5)
+    local lowerY = math.min(targetY - target.height * zoom * target.scale * 0.5)
+    local higherY = math.max(targetY + target.height * zoom * target.scale * 0.5)
     
 
     if chat then
