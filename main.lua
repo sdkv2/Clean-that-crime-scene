@@ -112,9 +112,9 @@ function love.update(dt)
 
     movePlayer(player, dt)
 
-    x = player:update(dt)
     world:update(dt)
     player:moveCheck()
+    x = player:update(dt)
 
     if x[1] ~= nil then
         interactable = true
@@ -193,6 +193,19 @@ function love.draw()
         if interactable == true then
             love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
         end
+        if player.currentAnimation == player.animations.right then
+            love.graphics.line(player.x, player.y, player.x + 50, player.y)
+    
+        elseif player.currentAnimation == player.animations.left then
+            love.graphics.line(player.x, player.y, player.x - 50, player.y)
+    
+        elseif player.currentAnimation == player.animations.up then
+            love.graphics.line(player.x, player.y + 30, player.x, player.y - 30)
+    
+        elseif player.currentAnimation == player.animations.down then
+            love.graphics.line(player.x, player.y - 15, player.x, player.y + 50)
+        end
+    
     cam:detach()
     love.graphics.setColor(0,0,0)
     for _, rect in ipairs(rectangles) do
@@ -206,7 +219,7 @@ function love.draw()
         love.graphics.print(myTimer.getCurrentTime(), 300, 300)
     end
     love.graphics.setColor(1,1,1)
-
-
+    -- Query the based on direction
+    -- Query the based on direction
 
 end

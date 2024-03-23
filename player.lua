@@ -40,16 +40,16 @@ end
 function player:update(dt)
     -- Query the based on direction
     if self.currentAnimation == self.animations.right then
-        items = world:queryLine(self.x, self.y, self.x + 50, self.y - 15, {'Interactive'})
+        items = world:queryLine(self.x, self.y, self.x + 50, self.y, {'Interactive'})
 
     elseif self.currentAnimation == self.animations.left then
         items = world:queryLine(self.x, self.y, self.x - 50, self.y, {'Interactive'})
 
     elseif self.currentAnimation == self.animations.up then
-        items = world:queryLine(self.x, self.y, self.x, self.y - 75, {'Interactive'})
+        items = world:queryLine(self.x, self.y + 30, self.x, self.y - 30, {'Interactive'})
 
     elseif self.currentAnimation == self.animations.down then
-        items = world:queryLine(self.x, self.y, self.x, self.y + 100, {'Interactive'})
+        items = world:queryLine(self.x, self.y - 30, self.x, self.y + 50, {'Interactive'})
     end
 
     return items
