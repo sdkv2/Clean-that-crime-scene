@@ -59,8 +59,7 @@ function love.load()
     end
     cam.x = player.x
     cam.y = player.y
-
-    gameMap:resize(love.graphics.getWidth() * 2, love.graphics.getHeight() * 2)
+    -- Initialization code goes here
 end
 
 function pan(cam, object, dt)
@@ -68,16 +67,19 @@ function pan(cam, object, dt)
 end
 
 function camCheck(zoom)
+    -- Check if the camera object is valid
     if cam then
+        -- Get the current camera position
         local camX, camY = cam:position()
 
+        -- Adjust the map dimensions based on the zoom level
         local adjustedMapW = mapW
         local adjustedMapH = mapH
 
         -- Calculate the minimum and maximum bounds for the camera
         local minX = w / 2 / zoom
-        local minY = h / 2 / zoom -
-        local maxX = adjustedMapW - w/(2 *zoom)-
+        local minY = h / 2 / zoom 
+        local maxX = adjustedMapW - w/(2 *zoom)
         local maxY = adjustedMapH - h/(2 *zoom ) 
         -- Clamp the camera position within the bounds
         cam.x = math.max(minX, math.min(maxX, camX))
@@ -88,7 +90,7 @@ end
 function love.update(dt)
     require('libraries/lovebird').update()
     if chatting == true then
-        rectangles, complete = border(dt, rectangles, targeted, inverted, false)
+        rectangles, complete = border(dt, rectangles, targeted, inverted, true)
         if complete == true then
             chatting = false
         end
