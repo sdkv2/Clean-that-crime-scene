@@ -18,13 +18,15 @@ function love.load()
 
     players = require 'player'
     NPC = require 'npc'
-    border = require("border")
-    
+    border = require "border"
+    timer = require 'timer'
+
+    timerExpired = false
     npcs = {}
     cam = camera()
     world = wf.newWorld(0, 0, true)
 
-    zoom = 1.5
+    zoom = 2
     gameMap = sti('maps/map2.lua')
     interact = love.graphics.newImage('sprites/interact.png')
 
@@ -60,6 +62,9 @@ function love.load()
     cam.x = player.x
     cam.y = player.y
     -- Initialization code goes here
+    myTimer = timer(5,  function() timerExpired = true end)
+
+
 end
 
 function pan(cam, object, dt)
@@ -88,6 +93,7 @@ function camCheck(zoom)
 end
 
 function love.update(dt)
+    if not myTimer.isExpired() then myTimer.update(dt) end
     require('libraries/lovebird').update()
     if chatting == true then
         rectangles, complete = border(dt, rectangles, targeted, inverted, true)
@@ -172,7 +178,15 @@ function love.draw()
     for _, rect in ipairs(rectangles) do
         love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
     end
+    if timerExpired == true then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.print('Timer Expired', 100, 100)
+    else
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.print(myTimer.getCurrentTime(), 300, 300)
+    end
     love.graphics.setColor(1,1,1)
+
 
 
 end
