@@ -22,7 +22,7 @@ function love.load()
     cam = camera()
     world = wf.newWorld(0, 0, true)
 
-    zoom = 2
+    zoom = 1.5
     gameMap = sti('maps/map2.lua')
     interact = love.graphics.newImage('sprites/interact.png')
 
@@ -72,14 +72,14 @@ function camCheck(zoom)
         local camX, camY = cam:position()
 
         -- Adjust the map dimensions based on the zoom level
-        local adjustedMapW = mapW * zoom / 2
-        local adjustedMapH = mapH * zoom / 2
+        local adjustedMapW = mapW
+        local adjustedMapH = mapH
 
         -- Calculate the minimum and maximum bounds for the camera
         local minX = w / 2 / zoom -- Adjust the minimum x bound
         local minY = h / 2 / zoom -- Adjust the minimum y bound
-        local maxX = adjustedMapW - w/4-- Adjust the maximum x bound
-        local maxY = adjustedMapH - h/4  -- Adjust the maximum y bound
+        local maxX = adjustedMapW - w/(2 *zoom)-- Adjust the maximum x bound
+        local maxY = adjustedMapH - h/(2 *zoom ) -- Adjust the maximum y bound
         -- Clamp the camera position within the bounds
         cam.x = math.max(minX, math.min(maxX, camX))
         cam.y = math.max(minY, math.min(maxY, camY))
@@ -99,7 +99,7 @@ function love.update(dt)
     if panning == false then
         pan(cam, player, dt, 350)
     end
-    camCheck(2)
+    camCheck(zoom)
 
     movePlayer(player, dt)
 
@@ -164,11 +164,13 @@ function border(dt, rectangles, target, inverted)
     if (screenHeight - higherY) < 300 then
         higherY = screenHeight - 300
     end
-
-    
-    local newTopRectHeight = topRectHeight + math.abs(lowerY - topRectHeight) * (invert and -dt + -0.005 or dt) * 1.6
-    local newBottomRectHeight = bottomRectHeight + math.max(math.abs(higherY - (h - bottomRectHeight)) * (invert and -dt + -0.005 or dt) * 1.6)
-    
+    if invert then
+        newTopRectHeight = topRectHeight - math.abs(lowerY - topRectHeight) * dt * 3
+        newBottomRectHeight = bottomRectHeight - math.abs(higherY - (h - bottomRectHeight)) * dt * 3
+    else
+        newTopRectHeight = topRectHeight + math.abs(lowerY - topRectHeight) * dt * 3
+        newBottomRectHeight = bottomRectHeight + math.abs(higherY - (h - bottomRectHeight)) * dt * 3
+    end
     local topComplete = false
     local bottomComplete = false
     local clear = false
@@ -212,7 +214,7 @@ end
 
 function love.draw()
     cam:attach()
-        cam:zoomTo(2)
+        cam:zoomTo(zoom)
         gameMap:drawLayer(gameMap.layers['Floor'])
         gameMap:drawLayer(gameMap.layers['Furniture'])    
         for _, npc in pairs(npcs) do

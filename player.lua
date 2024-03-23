@@ -7,7 +7,7 @@ function player:initialize()
     local width = love.graphics.getWidth()
     local height = love.graphics.getHeight()
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    self.speed = 250
+    self.speed = 500
     self.x = width / 2
     self.y = height / 2
     self.isPlayer = true
