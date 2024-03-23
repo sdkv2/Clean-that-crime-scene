@@ -8,7 +8,7 @@ function love.load()
     h = love.graphics.getHeight()
     
     rectangles = {}
-
+    love.graphics.setBackgroundColor(58/255,58/255,80/255)
     anim8 = require 'libraries/anim8'
     sti = require 'libraries/sti'
     camera = require 'libraries/camera'
@@ -25,7 +25,7 @@ function love.load()
     world = wf.newWorld(0, 0, true)
 
     zoom = 1.5
-    gameMap = sti('maps/map2.lua')
+    gameMap = sti('maps/mansionroomtrial.lua')
     interact = love.graphics.newImage('sprites/interact.png')
 
     world:addCollisionClass('Interactive')
@@ -158,11 +158,14 @@ function love.draw()
     cam:attach()
         cam:zoomTo(zoom)
         gameMap:drawLayer(gameMap.layers['Floor'])
-        gameMap:drawLayer(gameMap.layers['Furniture'])    
+        gameMap:drawLayer(gameMap.layers['TopWall'])
         for _, npc in pairs(npcs) do
             npc:draw()
         end
         player:draw()
+        gameMap:drawLayer(gameMap.layers['BotWall'])  
+        gameMap:drawLayer(gameMap.layers['Borders'])  
+        gameMap:drawLayer(gameMap.layers['Furniture'])
         world:draw()
         if interactable == true then
             love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
