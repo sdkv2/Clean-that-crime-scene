@@ -159,6 +159,7 @@ function love.draw()
         cam:zoomTo(zoom)
         gameMap:drawLayer(gameMap.layers['Floor'])
         gameMap:drawLayer(gameMap.layers['TopWall'])
+        gameMap:drawLayer(gameMap.layers['Decor'])
         for _, npc in pairs(npcs) do
             npc:draw()
         end
