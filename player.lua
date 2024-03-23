@@ -20,19 +20,37 @@ function player:initialize()
         right = anim8.newAnimation(self.grid('3-4', 1), 0.1)
     }
     self.currentAnimation = self.animations.down
+    self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
     self.collider = world:newBSGRectangleCollider(400, 250, 18*3, 15*3, 3)
     self.collider:setFixedRotation(true)
 end
 
 function player:draw()
-    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 3, nil, 8.5, 12.5)
+    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 2.5, nil, 8.5, 12.5)
 end
 
 function player:moveCheck()
     if self.isMoving == false then
         self.currentAnimation:gotoFrame(1)
     end
+end
+function player:update(dt)
+    -- Query the based on direction
+    if self.currentAnimation == self.animations.right then
+        items = world:queryLine(self.x, self.y, self.x + 50, self.y - 15, {'Interactive'})
+
+    elseif self.currentAnimation == self.animations.left then
+        items = world:queryLine(self.x, self.y, self.x - 50, self.y, {'Interactive'})
+
+    elseif self.currentAnimation == self.animations.up then
+        items = world:queryLine(self.x, self.y, self.x, self.y - 75, {'Interactive'})
+
+    elseif self.currentAnimation == self.animations.down then
+        items = world:queryLine(self.x, self.y, self.x, self.y + 100, {'Interactive'})
+    end
+
+    return items
 end
 
 return player
