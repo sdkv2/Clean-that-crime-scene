@@ -172,17 +172,7 @@ function border(dt, rectangles, target, inverted)
     local topComplete = false
     local bottomComplete = false
     local clear = false
-    if not invert then
-        if newTopRectHeight > lowerY - 40  then
-            newTopRectHeight = topRectHeight
-            topComplete = true
-        end
-    
-        if h - newBottomRectHeight < higherY + 40 then
-            newBottomRectHeight = bottomRectHeight
-            bottomComplete = true
-        end
-    else
+    if invert then
         local minSize = 5
         local maxSize = h
         if newTopRectHeight < minSize and newBottomRectHeight < minSize then
@@ -193,7 +183,19 @@ function border(dt, rectangles, target, inverted)
             
 
         end
+    else
+        if newTopRectHeight > lowerY - 40  then
+            newTopRectHeight = topRectHeight
+            topComplete = true
+        end
+    
+        if h - newBottomRectHeight < higherY + 40 then
+            newBottomRectHeight = bottomRectHeight
+            bottomComplete = true
+        end
+        
     end
+    
     local rectangles = {
         {x = 0, y = 0, width = w, height = newTopRectHeight},
         {x = 0, y = h - newBottomRectHeight, width = w, height = newBottomRectHeight}
