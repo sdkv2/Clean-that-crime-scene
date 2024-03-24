@@ -18,8 +18,10 @@ function love.load()
     wf = require 'libraries/windfield'
     local moonshine = require 'libraries/moonshine'
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
-    effect.scanlines.opacity = 0.5
-    effect.scanlines.thickness =0.5
+    effect.scanlines.opacity = 0.1
+    effect.scanlines.phase = 1
+    effect.scanlines.thickness = 1
+    effect.scanlines.width = 0.2
 
 
     players = require 'player'
