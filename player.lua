@@ -15,14 +15,14 @@ function player:initialize()
     self.spriteSheet = love.graphics.newImage('sprites/butlersprites.png')
     self.grid = anim8.newGrid(32, 48, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {
-        downidle = anim8.newAnimation(self.grid(1, 1), 0.1),
-        down = anim8.newAnimation(self.grid('2-3', 1), 0.1),
-        up = anim8.newAnimation(self.grid('5-6', 1), 0.1),
-        upidle = anim8.newAnimation(self.grid(4, 1), 0.1),
-        left = anim8.newAnimation(self.grid('10-11', 1), 0.1),
-        leftidle = anim8.newAnimation(self.grid(12, 1), 0.1),
-        right = anim8.newAnimation(self.grid('8-9', 1), 0.1),
-        rightidle = anim8.newAnimation(self.grid(7, 1), 0.1)
+        downidle = anim8.newAnimation(self.grid(1, 1), 0.2),
+        down = anim8.newAnimation(self.grid('2-3', 1), 0.2),
+        up = anim8.newAnimation(self.grid('5-6', 1), 0.2),
+        upidle = anim8.newAnimation(self.grid(4, 1), 0.2),
+        left = anim8.newAnimation(self.grid('10-11', 1), 0.2),
+        leftidle = anim8.newAnimation(self.grid(12, 1), 0.2),
+        right = anim8.newAnimation(self.grid('8-9', 1), 0.2),
+        rightidle = anim8.newAnimation(self.grid(7, 1), 0.2)
     }
     self.currentAnimation = self.animations.down
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
