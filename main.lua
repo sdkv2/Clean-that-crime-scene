@@ -150,9 +150,7 @@ function love.update(dt)
     player.isMoving = false
     local swapLayer = gameMap.layers['Swap']
     for _, object in ipairs(swapLayer.objects) do
-        -- Check if player's position is within the bounds of the object
         if player.x < object.x + object.width and player.x + player.spriteWidth > object.x and player.y < object.y + object.height and player.y + player.spriteHeight > object.y then
-            -- Player is on 'swap' object, so swap render order
             player.renderAboveFurniture = true
             break
         else
