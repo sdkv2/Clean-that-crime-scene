@@ -3,10 +3,10 @@ local function move(player, dt)
     local dx, dy = 0, 0  -- Initialize dx and dy
 
     if love.keyboard.isDown("lshift") then
-        player.speed = 500
+        player.speed = 350
         player.currentAnimation:update(dt)
     else
-        player.speed = 350
+        player.speed = 200
     end
 
     if love.keyboard.isDown("right") or love.keyboard.isDown("d") then

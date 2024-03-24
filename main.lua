@@ -9,13 +9,20 @@ function love.load()
 
     coolfont = love.graphics.newFont('MS_PAIN.ttf', 100)
     rectangles = {}
-    love.graphics.setBackgroundColor(58/255,58/255,80/255)
+    love.graphics.setBackgroundColor(0,0,0)
     anim8 = require 'libraries/anim8'
     sti = require 'libraries/sti'
     camera = require 'libraries/camera'
     movePlayer = require 'movePlayer'
     class = require 'libraries/middleclass'
     wf = require 'libraries/windfield'
+    local moonshine = require 'libraries/moonshine'
+    effect = moonshine(moonshine.effects.crt).chain(moonshine.effects.glow).chain(moonshine.effects.chromasep)
+    effect.crt.feather = 0
+    effect.glow.strength = 0.3
+    effect.glow.min_luma = 1
+    effect.chromasep.radius = 1.3
+
 
     players = require 'player'
     NPC = require 'npc'
@@ -180,6 +187,7 @@ function love.keypressed(key)
 end
 
 function love.draw()
+    effect(function()
     cam:attach()
         cam:zoomTo(zoom)
         gameMap:drawLayer(gameMap.layers['Floor'])
@@ -213,7 +221,6 @@ function love.draw()
         elseif player.currentAnimation == player.animations.down then
             love.graphics.line(player.x, player.y - 15, player.x, player.y + 50)
         end
-    
     cam:detach()
     love.graphics.setColor(0,0,0)
     for _, rect in ipairs(rectangles) do
@@ -224,13 +231,18 @@ function love.draw()
         love.graphics.print('Timer Expired', 100, 100)
     else
         local timeRemain = myTimer.getCurrentTime()
+        
         love.graphics.setColor(0, 0, 0, 0.6)
         love.graphics.rectangle('fill', 100, 100, 200, 100, 100, 100, 15)
+
         love.graphics.setColor(1, 1, 1)
         love.graphics.print(timeRemain, coolfont, 110, 80, 0, 1, 1)
 
     end
     love.graphics.setColor(1,1,1)
+    end)
+
+
 
 
 end
