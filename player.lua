@@ -12,13 +12,17 @@ function player:initialize()
     self.y = height / 2
     self.isPlayer = true
     self.scale = 3
-    self.spriteSheet = love.graphics.newImage('sprites/player-sprite.png')
-    self.grid = anim8.newGrid(17, 25, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
+    self.spriteSheet = love.graphics.newImage('sprites/butlersprites.png')
+    self.grid = anim8.newGrid(32, 48, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {
-        down = anim8.newAnimation(self.grid('1-2', 2), 0.1),
-        up = anim8.newAnimation(self.grid('1-2', 1), 0.1),
-        left = anim8.newAnimation(self.grid('3-4', 2), 0.1),
-        right = anim8.newAnimation(self.grid('3-4', 1), 0.1)
+        downidle = anim8.newAnimation(self.grid(1, 1), 0.1),
+        down = anim8.newAnimation(self.grid('2-3', 1), 0.1),
+        up = anim8.newAnimation(self.grid('5-6', 1), 0.1),
+        upidle = anim8.newAnimation(self.grid(4, 1), 0.1),
+        left = anim8.newAnimation(self.grid('10-11', 1), 0.1),
+        leftidle = anim8.newAnimation(self.grid(12, 1), 0.1),
+        right = anim8.newAnimation(self.grid('8-9', 1), 0.1),
+        rightidle = anim8.newAnimation(self.grid(7, 1), 0.1)
     }
     self.currentAnimation = self.animations.down
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
@@ -29,27 +33,47 @@ function player:initialize()
 end
 
 function player:draw()
-    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 2.5, nil, 8.5, 12.5)
+    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 1.5, nil, 8.5, 12.5)
 end
 
 function player:moveCheck()
-    if self.isMoving == false then
-        self.currentAnimation:gotoFrame(1)
+    if player.isMoving == false then
+        if self.currentAnimation == self.animations.right then
+            self.currentAnimation = self.animations.rightidle
+        elseif self.currentAnimation == self.animations.left then
+            self.currentAnimation = self.animations.leftidle
+        elseif self.currentAnimation == self.animations.up then
+            self.currentAnimation = self.animations.upidle
+        elseif self.currentAnimation == self.animations.down then
+            self.currentAnimation = self.animations.downidle
+        end
     end
 end
 function player:update(dt)
     -- Query the based on direction
-    if self.currentAnimation == self.animations.right then
+    if self.currentAnimation == self.animations.right or self.currentAnimation == self.animations.rightidle then
         items = world:queryLine(self.x, self.y, self.x + 50, self.y, {'Interactive'})
+        if not self.isMoving and self.currentAnimation ~= self.animations.rightidle then
+            self.currentAnimation = self.animations.rightidle
+        end
 
-    elseif self.currentAnimation == self.animations.left then
+    elseif self.currentAnimation == self.animations.left or self.currentAnimation == self.animations.leftidle then
         items = world:queryLine(self.x, self.y, self.x - 50, self.y, {'Interactive'})
+        if not self.isMoving and self.currentAnimation ~= self.animations.leftidle then
+            self.currentAnimation = self.animations.leftidle
+        end
 
-    elseif self.currentAnimation == self.animations.up then
+    elseif self.currentAnimation == self.animations.up or self.currentAnimation == self.animations.upidle then
         items = world:queryLine(self.x, self.y + 30, self.x, self.y - 30, {'Interactive'})
+        if not self.isMoving and self.currentAnimation ~= self.animations.upidle then
+            self.currentAnimation = self.animations.upidle
+        end
 
-    elseif self.currentAnimation == self.animations.down then
+    elseif self.currentAnimation == self.animations.down or self.currentAnimation == self.animations.downidle then
         items = world:queryLine(self.x, self.y - 30, self.x, self.y + 50, {'Interactive'})
+        if not self.isMoving and self.currentAnimation ~= self.animations.downidle then
+            self.currentAnimation = self.animations.downidle
+        end
     end
 
     return items
