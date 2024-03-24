@@ -17,9 +17,9 @@ function love.load()
     class = require 'libraries/middleclass'
     wf = require 'libraries/windfield'
     local moonshine = require 'libraries/moonshine'
-    effect = moonshine(moonshine.effects.chromasep)
-
-    effect.chromasep.radius = 2.0
+    effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
+    effect.scanlines.opacity = 0.5
+    effect.scanlines.thickness =0.5
 
 
     players = require 'player'
@@ -183,7 +183,7 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    effect(function()
+    effect(function()    
     cam:attach()
         cam:zoomTo(zoom)
         gameMap:drawLayer(gameMap.layers['Floor'])
@@ -229,15 +229,16 @@ function love.draw()
         local timeRemain = myTimer.getCurrentTime()
         
         love.graphics.setColor(0, 0, 0, 0.6)
+        
         love.graphics.rectangle('fill', 100, 100, 200, 100, 100, 100, 15)
 
         love.graphics.setColor(1, 1, 1)
         love.graphics.print(timeRemain, coolfont, 110, 80, 0, 1, 1)
 
+
     end
     love.graphics.setColor(1,1,1)
     end)
-
 
 
 
