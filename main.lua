@@ -6,7 +6,8 @@ function love.load()
     love.window.setMode(screenWidth, screenHeight, fullscreenMode)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
-    
+
+    coolfont = love.graphics.newFont('MS_PAIN.ttf', 100)
     rectangles = {}
     love.graphics.setBackgroundColor(58/255,58/255,80/255)
     anim8 = require 'libraries/anim8'
@@ -20,6 +21,7 @@ function love.load()
     NPC = require 'npc'
     border = require "border"
     timer = require 'timer'
+    interactable = require 'interact'
 
     timerExpired = false
     npcs = {}
@@ -61,10 +63,16 @@ function love.load()
         wall:setType('static')
         table.insert(walls, wall)
     end
+    for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+        if obj.name == 'Door' then
+            Door = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
+
+        end
+    end
     cam.x = player.x
     cam.y = player.y
     -- Initialization code goes here
-    myTimer = timer(5,  function() timerExpired = true end)
+    myTimer = timer(300,  function() timerExpired = true end)
 
 
 end
@@ -215,11 +223,14 @@ function love.draw()
         love.graphics.setColor(1, 0, 0)
         love.graphics.print('Timer Expired', 100, 100)
     else
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.print(myTimer.getCurrentTime(), 300, 300)
+        local timeRemain = myTimer.getCurrentTime()
+        love.graphics.setColor(0, 0, 0, 0.6)
+        love.graphics.rectangle('fill', 100, 100, 200, 100, 100, 100, 15)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print(timeRemain, coolfont, 110, 80, 0, 1, 1)
+
     end
     love.graphics.setColor(1,1,1)
-    -- Query the based on direction
-    -- Query the based on direction
+
 
 end

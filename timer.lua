@@ -15,7 +15,9 @@ function newTimer(time,callback)
     end
 
     function timer.getCurrentTime()
-        return time
+        local minutes = math.floor(time / 60)
+        local seconds = math.floor(time % 60)
+        return string.format("%d:%02d", minutes, seconds)
     end
 
     return timer
