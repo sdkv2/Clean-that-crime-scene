@@ -17,11 +17,9 @@ function love.load()
     class = require 'libraries/middleclass'
     wf = require 'libraries/windfield'
     local moonshine = require 'libraries/moonshine'
-    effect = moonshine(moonshine.effects.crt).chain(moonshine.effects.glow).chain(moonshine.effects.chromasep)
-    effect.crt.feather = 0
-    effect.glow.strength = 0.3
-    effect.glow.min_luma = 1
-    effect.chromasep.radius = 1.3
+    effect = moonshine(moonshine.effects.chromasep)
+
+    effect.chromasep.radius = 2.0
 
 
     players = require 'player'
