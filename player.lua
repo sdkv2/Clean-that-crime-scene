@@ -8,26 +8,26 @@ function player:initialize()
     local height = love.graphics.getHeight()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     self.speed = 350
-    self.x = width / 2
-    self.y = height / 2
+    self.x = 800
+    self.y = 800
     self.isPlayer = true
     self.scale = 3
     self.spriteSheet = love.graphics.newImage('sprites/butlersprites.png')
     self.grid = anim8.newGrid(32, 48, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {
         downidle = anim8.newAnimation(self.grid(1, 1), 0.2),
-        down = anim8.newAnimation(self.grid('2-3', 1), 0.2),
-        up = anim8.newAnimation(self.grid('5-6', 1), 0.2),
+        down = anim8.newAnimation(self.grid(1, 1, 2, 1, 1, 1, 3, 1), 0.2),
+        up = anim8.newAnimation(self.grid(4, 1, 5, 1, 4, 1, 6, 1), 0.2),
         upidle = anim8.newAnimation(self.grid(4, 1), 0.2),
-        left = anim8.newAnimation(self.grid('10-11', 1), 0.2),
+        left = anim8.newAnimation(self.grid(12, 1, 10, 1, 12, 1, 11, 1), 0.2),
         leftidle = anim8.newAnimation(self.grid(12, 1), 0.2),
-        right = anim8.newAnimation(self.grid('8-9', 1), 0.2),
+        right = anim8.newAnimation(self.grid(7, 1, 8, 1, 7, 1, 9, 1), 0.2),
         rightidle = anim8.newAnimation(self.grid(7, 1), 0.2)
     }
     self.currentAnimation = self.animations.down
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
-    self.collider = world:newBSGRectangleCollider(400, 250, 15*3, 7*3, 3)
+    self.collider = world:newBSGRectangleCollider(self.x, self.y, 9*3, 7*3, 4)
     self.collider:setFixedRotation(true)
     self.renderAboveFurniture = false
 end

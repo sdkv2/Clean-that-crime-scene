@@ -137,8 +137,8 @@ function love.update(dt)
         interactable = false
     end
 
-    player.x = player.collider:getX()
-    player.y = player.collider:getY() - 20
+    player.x = player.collider:getX() - 13
+    player.y = player.collider:getY() - 40
 
     for _, npc in pairs(npcs) do
         npc.x = npc.collider:getX() 
