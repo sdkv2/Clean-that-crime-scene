@@ -226,7 +226,7 @@ function love.draw()
         if num == 1 then
             print("hi")
             love.graphics.setColor(1,1,1)
-            love.graphics.draw(love.graphics.newImage('sprites/guy.png'), rect.x, h - rect.height, 0, 10, 10)
+            love.graphics.draw(love.graphics.newImage('sprites/butler_neutral.png'), rect.x, h - rect.height, 0, 2, 2)
         end
     end    
     if timerExpired == true then
