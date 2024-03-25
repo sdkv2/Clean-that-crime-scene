@@ -28,6 +28,7 @@ function border(dt, rectangles, target, inverted, chat)
         if newTopRectHeight < 5 and newBottomRectHeight < 5 then
             bottomComplete = true
             topComplete = true
+            rectangles = {}
         end
     else
         newTopRectHeight = topRectHeight + math.abs(lowerY - topRectHeight) * dt * 3

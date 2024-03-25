@@ -2,7 +2,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     screenWidth, screenHeight = love.window.getDesktopDimensions()
-    local fullscreenMode = {fullscreen = true, fullscreentype = "exclusive"}
+    local fullscreenMode = {fullscreen = true, fullscreentype = "desktop"}
     love.window.setMode(screenWidth, screenHeight, fullscreenMode)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
@@ -221,9 +221,14 @@ function love.draw()
         end
     cam:detach()
     love.graphics.setColor(0,0,0)
-    for _, rect in ipairs(rectangles) do
+    for num, rect in ipairs(rectangles) do
         love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
-    end
+        if num == 1 then
+            print("hi")
+            love.graphics.setColor(1,1,1)
+            love.graphics.draw(love.graphics.newImage('sprites/guy.png'), rect.x, h - rect.height, 0, 10, 10)
+        end
+    end    
     if timerExpired == true then
         love.graphics.setColor(1, 0, 0)
         love.graphics.print('Timer Expired', 100, 100)

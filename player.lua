@@ -70,7 +70,7 @@ function player:update(dt)
         end
 
     elseif self.currentAnimation == self.animations.down or self.currentAnimation == self.animations.downidle then
-        items = world:queryLine(self.x, self.y - 30, self.x, self.y + 50, {'Interactive'})
+        items = world:queryLine(self.x, self.y - 30, self.x, self.y + 90, {'Interactive'})
         if not self.isMoving and self.currentAnimation ~= self.animations.downidle then
             self.currentAnimation = self.animations.downidle
         end
