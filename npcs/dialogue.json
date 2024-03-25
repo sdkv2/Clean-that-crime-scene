@@ -1,0 +1,16 @@
+{
+    "explosion": {
+        "1": {
+            "butler_neutral": "my name is rimants sakins",
+            "explosion_neutral": "value2"
+        },
+        "2": {
+            "property1": "value1",
+            "property2": "value2"
+        },
+        "3": {
+            "property1": "value1",
+            "property2": "value2"
+        }
+    }
+}

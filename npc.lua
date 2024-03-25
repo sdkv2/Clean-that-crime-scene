@@ -27,4 +27,9 @@ function NPC:draw()
     return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, self.r, self.scale, nil, self.width / 2, self.height / 2)
 end
 
+function NPC:interact()
+    local chatting = require('npcs/' .. self.name)
+    chatting.interact(self.name)
+end
+
 return NPC

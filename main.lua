@@ -1,3 +1,6 @@
+if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
+local chat   = require("npcs.chat")
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -23,7 +26,7 @@ function love.load()
     effect.scanlines.thickness = 1
     effect.scanlines.width = 0.2
 
-
+    chatting = false
     players = require 'player'
     NPC = require 'npc'
     border = require "border"
@@ -110,14 +113,10 @@ function camCheck(zoom)
 end
 
 function love.update(dt)
-    if not myTimer.isExpired() then myTimer.update(dt) end
-    require('libraries/lovebird').update()
-    if chatting == true then
-        rectangles, complete = border(dt, rectangles, targeted, inverted, true)
-        if complete == true then
-            chatting = false
-        end
+    if target ~= nil then
+        chat:update(dt)
     end
+    if not myTimer.isExpired() then myTimer.update(dt) end
     player.isMoving = false
     player.currentAnimation:update(dt)
     if panning == false then
@@ -162,11 +161,9 @@ function love.keypressed(key)
     if key == "z" then
         if interactable == true then
             rectangles = {}
-            inverted = false
             object = x[1]:getObject()
-            chatting = true
-            complete = false
-            targeted = object
+            target = object
+            object:interact()
         end
     end
     if key == "x" then
@@ -220,15 +217,6 @@ function love.draw()
             love.graphics.line(player.x, player.y - 15, player.x, player.y + 50)
         end
     cam:detach()
-    love.graphics.setColor(0,0,0)
-    for num, rect in ipairs(rectangles) do
-        love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
-        if num == 1 then
-            print("hi")
-            love.graphics.setColor(1,1,1)
-            love.graphics.draw(love.graphics.newImage('sprites/butler_neutral.png'), rect.x, h - rect.height, 0, 2, 2)
-        end
-    end    
     if timerExpired == true then
         love.graphics.setColor(1, 0, 0)
         love.graphics.print('Timer Expired', 100, 100)
@@ -244,8 +232,13 @@ function love.draw()
 
 
     end
-    love.graphics.setColor(1,1,1)
+    chat:draw()  
+
     end)
+    
+    love.graphics.setColor(0,0,0)
+    
+    love.graphics.setColor(1,1,1)
 
 
 
