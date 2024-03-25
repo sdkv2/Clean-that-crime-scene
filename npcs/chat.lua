@@ -1,10 +1,14 @@
 local json = require 'libraries/JSON'
 local chat = {}
 
-chat.CurrentLine = nil
+local invert = false
 chat.CurrentChar = 1
 chat.CurrentDialogue = nil
 chat.TimeElapsed = 0 -- New variable to keep track of time
+
+chat.line = 1
+
+chat.keys = {} -- Make keys a member of the chat table
 
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
@@ -14,19 +18,52 @@ function chat:loadJson(filePath)
 end
 
 function chat:chat(npc, subtable)
-    local dialogue = self:loadJson('npcs/dialogue.json')
+    invert = false
+    self.index = 1
+    dialogue = chat:loadJson('npcs/dialogue.json')
+    self.npc = npc
+    self.subtable = subtable
+    chatting = true
     if dialogue and dialogue[npc] and dialogue[npc][subtable] then
-        self.CurrentDialogue = dialogue[npc][subtable]
+        self.CurrentDialogue = dialogue[npc]['1']
         -- Get the keys
-        local keys = {}
+        self.keys = {} -- Reset keys for each new dialogue
         for k in pairs(self.CurrentDialogue) do
-            table.insert(keys, k)
+            table.insert(self.keys, k)
         end
-        -- Sort the keys
-        table.sort(keys)
-        -- Set the first line
-        self.CurrentLine = self.CurrentDialogue[keys[1]]
+
+        table.sort(self.keys)
+
+        self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
+        print(self.CurrentLine)
     end
+    print("NPC: ", npc)
+    print("Subtable: ", subtable)
+    print("CurrentDialogue: ", self.CurrentLine)
+end
+
+function chat:nextLine()
+    if self.CurrentDialogue then
+        if self.CurrentChar <= #self.CurrentLine then
+            self.CurrentChar = #self.CurrentLine
+        else
+            self.line = self.line + 1
+            if self.keys[self.line] then
+                self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
+                self.CurrentChar = 1
+            else
+                chat:endChat()
+            end
+        end
+    end
+end
+
+function chat:endChat()
+    chatting = false
+    invert = true
+    self.CurrentDialogue = nil
+    self.CurrentLine = nil
+    self.line = 1
 end
 
 function chat:playSound()
@@ -81,22 +118,27 @@ end
 
 function chat:progressChat(dt)
     self.TimeElapsed = self.TimeElapsed + dt
-    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.05 then
+    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.07 then
         self.CurrentChar = self.CurrentChar + 1
         self.TimeElapsed = 0 -- Reset the timer after updating the character
 
         -- Call the playSound function
         self:playSound()
     end
+    -- Check if the next character is available before updating self.CurrentLine
+    if self.CurrentDialogue and self.keys[self.line] then
+        self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
+    end
 end
 
 function chat:update(dt)
-    self:chat('explosion', '1')
     self:progressChat(dt)
-    rectangles, complete = border(dt, rectangles, target, false, true)
+    rectangles, complete = border(dt, rectangles, target, invert, true)
+
 end
 
 function chat:draw()
+
     love.graphics.setColor(0,0,0)
     for num, rect in ipairs(rectangles) do
         love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)

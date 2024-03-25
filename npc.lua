@@ -1,6 +1,8 @@
 -- npc.lua
 local class = require 'libraries/middleclass'
 local NPC = class('NPC')
+
+
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, animations, name)
     self.x = x
     self.y = y
@@ -29,7 +31,7 @@ end
 
 function NPC:interact()
     local chatting = require('npcs/' .. self.name)
-    chatting.interact(self.name)
+    chatting(self.name)
 end
 
 return NPC

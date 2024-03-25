@@ -23,12 +23,11 @@ function border(dt, rectangles, target, inverted, chat)
     end
 
     if invert then
-        newTopRectHeight = topRectHeight - math.abs(lowerY - topRectHeight) * dt * 3
-        newBottomRectHeight = bottomRectHeight - math.abs(higherY - (h - bottomRectHeight)) * dt * 3
+        newTopRectHeight = topRectHeight - math.abs(lowerY - topRectHeight) * dt * 6
+        newBottomRectHeight = bottomRectHeight - math.abs(higherY - (h - bottomRectHeight)) * dt * 6
         if newTopRectHeight < 5 and newBottomRectHeight < 5 then
             bottomComplete = true
             topComplete = true
-            rectangles = {}
         end
     else
         newTopRectHeight = topRectHeight + math.abs(lowerY - topRectHeight) * dt * 3
@@ -55,6 +54,10 @@ function border(dt, rectangles, target, inverted, chat)
     end
 
     local complete = topComplete and bottomComplete
+
+    if invert == true and complete == true then
+        rectangles = {}
+    end
     return rectangles, complete
 end
 

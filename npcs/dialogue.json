@@ -1,8 +1,8 @@
 {
     "explosion": {
         "1": {
-            "butler_neutral": "my name is rimants sakins",
-            "explosion_neutral": "value2"
+            "butler_neutral": "Ah... the house is burning down",
+            "explosion_neutral": "How awful."
         },
         "2": {
             "property1": "value1",

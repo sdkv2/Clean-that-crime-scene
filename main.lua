@@ -1,5 +1,6 @@
 if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
-local chat   = require("npcs.chat")
+chat = require("npcs.chat")
+local interact = love.graphics.newImage('sprites/interact.png')
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -40,7 +41,6 @@ function love.load()
 
     zoom = 2
     gameMap = sti('maps/mansionroomtrial.lua')
-    interact = love.graphics.newImage('sprites/interact.png')
 
     world:addCollisionClass('Interactive')
     world:addCollisionClass('Player')
@@ -63,7 +63,6 @@ function love.load()
     panning = false
     local furnitureLayer = gameMap:addCustomLayer("FurnitureLayer", 4)
     tile = gameMap:getTileProperties('Furniture',18,19)
-    print(tile)
     
 
 
@@ -159,7 +158,10 @@ function love.update(dt)
 end
 function love.keypressed(key)
     if key == "z" then
-        if interactable == true then
+        if chatting == true then
+            chatting = true
+            chat:nextLine()
+        elseif interactable == true then
             rectangles = {}
             object = x[1]:getObject()
             target = object
