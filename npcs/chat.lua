@@ -5,9 +5,10 @@ local invert = false
 chat.CurrentChar = 1
 chat.CurrentDialogue = nil
 chat.TimeElapsed = 0 -- New variable to keep track of time
-
+chat.complete = true
+chat.rectangles = {}
 chat.line = 1
-
+chat.invert = false
 chat.keys = {} -- Make keys a member of the chat table
 
 function chat:loadJson(filePath)
@@ -18,7 +19,9 @@ function chat:loadJson(filePath)
 end
 
 function chat:chat(npc, subtable)
-    invert = false
+    player.collider:setLinearVelocity(0, 0)
+    chat.complete = false
+    chat.invert = false
     self.index = 1
     dialogue = chat:loadJson('npcs/dialogue.json')
     self.npc = npc
@@ -32,16 +35,35 @@ function chat:chat(npc, subtable)
             table.insert(self.keys, k)
         end
 
+
         table.sort(self.keys)
+        updateAnim(self.keys[1])
 
         self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
-        print(self.CurrentLine)
-    end
-    print("NPC: ", npc)
-    print("Subtable: ", subtable)
-    print("CurrentDialogue: ", self.CurrentLine)
+        end
 end
 
+function updateAnim(s)
+    local portrait
+    local emotion
+    local i = 0
+    for word in string.gmatch(s, '([^/]+)') do
+        i = i + 1
+        if i == 1 then
+            portrait = word
+        elseif i == 2 then
+            emotion = word
+        end
+    end
+
+    if portrait == 'butler' then
+        print('hi')
+        player.portraitAnimation = player.portraitExpressions[emotion]
+        print(player.portraitAnimation)
+    end
+
+
+end
 function chat:nextLine()
     if self.CurrentDialogue then
         if self.CurrentChar <= #self.CurrentLine then
@@ -59,20 +81,24 @@ function chat:nextLine()
 end
 
 function chat:endChat()
-    chatting = false
-    invert = true
+    chat.invert = true
+    chat.complete = false
     self.CurrentDialogue = nil
     self.CurrentLine = nil
+    self.CurrentChar = 0
     self.line = 1
+    self.keys = {}
+    chatting = false
+    target = nil
 end
 
 function chat:playSound()
     local length = 0.1 -- The length of the sound in seconds
     local rate = 44100 -- The sample rate of the sound
-    local frequency = 100
+    local frequency = math.random(50, 100)
     local soundData = love.sound.newSoundData(math.floor(length*rate), rate, 16, 1)
-    local unisonCount = 6 -- The number of unison voices
-    local detuneAmount = 0.1 -- The amount of detuning for the unison voices
+    local unisonCount = 8 -- The number of unison voices
+    local detuneAmount = 1 -- The amount of detuning for the unison voices
     local phase = {} -- Initialize phase for each unison voice
     for j=1, unisonCount do
         phase[j] = 0
@@ -117,11 +143,15 @@ function chat:playSound()
 end
 
 function chat:progressChat(dt)
+    if self.CurrentLine and self.CurrentChar < #self.CurrentLine then
+        player.portraitAnimation:update(dt)
+    else
+        player.portraitAnimation:gotoFrame(1)
+    end
     self.TimeElapsed = self.TimeElapsed + dt
     if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.07 then
         self.CurrentChar = self.CurrentChar + 1
         self.TimeElapsed = 0 -- Reset the timer after updating the character
-
         -- Call the playSound function
         self:playSound()
     end
@@ -132,19 +162,24 @@ function chat:progressChat(dt)
 end
 
 function chat:update(dt)
-    self:progressChat(dt)
-    rectangles, complete = border(dt, rectangles, target, invert, true)
+    if invert == false then
+        self:progressChat(dt)
+    end
+    if chat.complete == false then
+        chat.rectangles, chat.complete = border(dt, chat.rectangles, chat.invert, true)
+    else
+    end
 
 end
 
 function chat:draw()
-
     love.graphics.setColor(0,0,0)
-    for num, rect in ipairs(rectangles) do
+    for num, rect in ipairs(chat.rectangles) do
         love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
         if num == 1 then
             love.graphics.setColor(1,1,1)
-            love.graphics.draw(love.graphics.newImage('sprites/butler_neutral.png'), rect.x, h - rect.height, 0, 2, 2)
+
+            player.portraitAnimation:draw(player.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
             if self.CurrentLine then
                 love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 4, 4)
             end

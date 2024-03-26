@@ -1,12 +1,13 @@
 if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
 chat = require("npcs.chat")
 local interact = love.graphics.newImage('sprites/interact.png')
-
 function love.load()
+    target = nil
+
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
     screenWidth, screenHeight = love.window.getDesktopDimensions()
-    local fullscreenMode = {fullscreen = true, fullscreentype = "desktop"}
+    local fullscreenMode = {fullscreen = false, fullscreentype = "desktop"}
     love.window.setMode(screenWidth, screenHeight, fullscreenMode)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
@@ -112,21 +113,22 @@ function camCheck(zoom)
 end
 
 function love.update(dt)
-    if target ~= nil then
-        chat:update(dt)
-    end
+
+
+    
     if not myTimer.isExpired() then myTimer.update(dt) end
     player.isMoving = false
     player.currentAnimation:update(dt)
     if panning == false then
         pan(cam, player, dt, 350)
     end
-    camCheck(zoom)
-
-    movePlayer(player, dt)
-
+    chat:update(dt)
     world:update(dt)
-    player:moveCheck()
+    if target == nil then
+        player:moveCheck()
+        camCheck(zoom)
+        movePlayer(player, dt)
+    end
     x = player:update(dt)
 
     if x[1] ~= nil then

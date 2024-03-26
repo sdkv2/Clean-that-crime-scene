@@ -13,6 +13,7 @@ function player:initialize()
     self.isPlayer = true
     self.scale = 3
     self.spriteSheet = love.graphics.newImage('sprites/butlersprites.png')
+    self.portraitSheet = love.graphics.newImage('sprites/butler-portrait.png')
     self.grid = anim8.newGrid(32, 48, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {
         downidle = anim8.newAnimation(self.grid(1, 1), 0.2),
@@ -24,7 +25,12 @@ function player:initialize()
         right = anim8.newAnimation(self.grid(7, 1, 8, 1, 7, 1, 9, 1), 0.2),
         rightidle = anim8.newAnimation(self.grid(7, 1), 0.2)
     }
+    self.portraitGrid = anim8.newGrid(128, 128, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())  
+    self.portraitExpressions = {
+        neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.1),
+    }
     self.currentAnimation = self.animations.down
+    self.portraitAnimation = self.portraitExpressions.neutral
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
     self.collider = world:newBSGRectangleCollider(self.x, self.y, 9*3, 7*3, 4)

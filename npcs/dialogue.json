@@ -1,7 +1,7 @@
 {
     "explosion": {
         "1": {
-            "butler_neutral": "Ah... the house is burning down",
+            "butler/neutral": "Ah... the house is burning down",
             "explosion_neutral": "How awful."
         },
         "2": {

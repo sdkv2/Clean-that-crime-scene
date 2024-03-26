@@ -1,18 +1,18 @@
-function border(dt, rectangles, target, inverted, chat)
+function border(dt, rectangles, inverted, chat)
     local invert = inverted or false
 
     local topRectHeight = rectangles and rectangles[1] and rectangles[1].height or 0
     local bottomRectHeight = rectangles and rectangles[2] and rectangles[2].height or 0
 
-    local screenX, screenY = cam:cameraCoords(player.x, player.y)
-    local targetX, targetY = cam:cameraCoords(target.x, target.y)
+    
+    local targetX, targetY = cam:cameraCoords(player.x, player.y)
 
     local worldX, worldY = cam:cameraCoords(0, h)
     local topComplete = false
     local bottomComplete = false
     
-    local lowerY = math.min(targetY - target.height * zoom * target.scale * 0.5)
-    local higherY = math.max(targetY + target.height * zoom * target.scale * 0.5)
+    local lowerY = math.min(targetY - player.spriteHeight * zoom * player.scale * 0.5)
+    local higherY = math.max(targetY + player.spriteHeight * zoom * player.scale * 0.5)
     
 
     if chat then
@@ -56,8 +56,10 @@ function border(dt, rectangles, target, inverted, chat)
     local complete = topComplete and bottomComplete
 
     if invert == true and complete == true then
+
         rectangles = {}
     end
+
     return rectangles, complete
 end
 
