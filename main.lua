@@ -1,7 +1,19 @@
 if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
 chat = require("npcs.chat")
+local loadzone = require("loadzone")
 local interact = love.graphics.newImage('sprites/interact.png')
+interactable = require 'interact'
+local isInteractable -- declare a new variable at the top of your script
+rectangleX = screenWidth
+rectangleY = 0
+rectangleState = 'waiting'
+local fade = require 'fade'
+local panning = false
+zoom = 2
+chatting = false
+
 function love.load()
+    local Explosion = require 'npcs/explosion'
     target = nil
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -12,7 +24,6 @@ function love.load()
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
 
-    coolfont = love.graphics.newFont('MS_PAIN.ttf', 100)
     rectangles = {}
     love.graphics.setBackgroundColor(0,0,0)
     anim8 = require 'libraries/anim8'
@@ -22,73 +33,113 @@ function love.load()
     class = require 'libraries/middleclass'
     wf = require 'libraries/windfield'
     local moonshine = require 'libraries/moonshine'
+
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
     effect.scanlines.opacity = 0.1
     effect.scanlines.phase = 1
     effect.scanlines.thickness = 1
     effect.scanlines.width = 0.2
 
-    chatting = false
     players = require 'player'
     NPC = require 'npc'
     border = require "border"
-    timer = require 'timer'
-    interactable = require 'interact'
-
-    timerExpired = false
+    Timer = require 'timer'
+    
     npcs = {}
+    walls = {}
+
     cam = camera()
     world = wf.newWorld(0, 0, true)
 
-    zoom = 2
     gameMap = sti('maps/mansionroomtrial.lua')
 
     world:addCollisionClass('Interactive')
     world:addCollisionClass('Player')
+    world:addCollisionClass('LoadZone', {ignores = {'Player'}})
     animation = {
-        explosion ={ 
-            start = {'1-6',1,'1-6',2,'1-6',3}
+        explosion = {
+            overworld = {
+                start = {'1-6',1,'1-6',2,'1-6',3}
+            },
+            portrait = {
+                neutral = {'1-6',1,'1-6',2,'1-6',3}
+            }
         },
-        numbers = {
-            start = {'1-3',1}
-        }
+
     }
-    inverted = false
-    explosion = NPC:new(500, 500, 'explosion.png', 72, 100, 2, animation['explosion'], 'explosion')
-    numbers = NPC:new(100, 100, 'Sprite-0001.png', 32, 48, 0, animation['numbers'], 'numbers')
+    
     player = players:new()
 
     mapW = gameMap.width * gameMap.tilewidth
     mapH = gameMap.height * gameMap.tileheight
 
-    panning = false
-    local furnitureLayer = gameMap:addCustomLayer("FurnitureLayer", 4)
-    tile = gameMap:getTileProperties('Furniture',18,19)
-    
+    explode = Explosion:new(500, 500, 'explosion.png', 72, 100, animation['explosion'], 'explosion', 'explosion.png')
 
+    Load1 = loadzone:initialize('Kitchen', player.x, player.y - 150, 100, 100, 'maps/2.lua', 100, 100)
+    loadNewMap('maps/mansionroomtrial.lua', 300, 300)
 
-    walls = {}
-    for _, obj in pairs(gameMap.layers['Colliders'].objects) do
-        local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
-        wall:setType('static')
-        table.insert(walls, wall)
-    end
-    for _, obj in pairs(gameMap.layers['Colliders'].objects) do
-        if obj.name == 'Door' then
-            Door = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
-
-        end
-    end
     cam.x = player.x
     cam.y = player.y
     -- Initialization code goes here
-    myTimer = timer(300,  function() timerExpired = true end)
+    myTimer = Timer.new(300, function() timerExpired = true end)
 
 
 end
 
+function map()
+    gameMap:drawLayer(gameMap.layers['Floor'])
+    gameMap:drawLayer(gameMap.layers['TopWall'])
+    gameMap:drawLayer(gameMap.layers['Decor'])
+    for _, npc in pairs(npcs) do
+        npc:draw()
+    end
+    if player.renderAboveFurniture then
+        player:draw()
+        gameMap:drawLayer(gameMap.layers['Furniture'])
+    else
+        gameMap:drawLayer(gameMap.layers['Furniture'])
+        player:draw()
+    end
+    gameMap:drawLayer(gameMap.layers['BotWall'])  
+    gameMap:drawLayer(gameMap.layers['Borders'])  
+    local swapLayer = gameMap.layers['Swap']
+    for _, object in ipairs(swapLayer.objects) do
+        if player.x < object.x + object.width and player.x + player.spriteWidth > object.x and player.y < object.y + object.height and player.y + player.spriteHeight > object.y then
+            player.renderAboveFurniture = true
+            break
+        else
+            player.renderAboveFurniture = false
+        end
+    end
+
+    
+end
 function pan(cam, object, dt)
     cam:lockPosition(object.x, object.y, cam.smooth.linear(1000))
+end
+
+function loadNewMap(mapPath,x,y)
+    fade.isActive = true
+    -- Delete old colliders
+    for _, wall in ipairs(walls) do
+        if wall:isDestroyed() == false then
+            wall:destroy()
+        end
+    end
+    walls = {}
+    -- Load new map
+    gameMap = sti(mapPath)
+    for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+        local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+        wall:setType('static')
+        table.insert(walls, wall)
+        if obj.name == 'Door' then
+            Door2 = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
+
+        end
+        
+    end
+    -- Add new colliders
 end
 
 function camCheck(zoom)
@@ -112,34 +163,36 @@ function camCheck(zoom)
     end
 end
 
+
 function love.update(dt)
-
-
-    
-    if not myTimer.isExpired() then myTimer.update(dt) end
+    if not myTimer:isExpired() then myTimer:update(dt) end
     player.isMoving = false
     player.currentAnimation:update(dt)
+    fade.handleFade(dt)
+
     if panning == false then
-        pan(cam, player, dt, 350)
+        pan(cam, player, dt)
     end
     chat:update(dt)
     world:update(dt)
+
+    -- If not interacting with an object, check for player movement
     if target == nil then
         player:moveCheck()
         camCheck(zoom)
         movePlayer(player, dt)
     end
-    x = player:update(dt)
 
+    --Checks if the player is in the loadzone or if they are able to interact with an object
+    x = player:update(dt)
     if x[1] ~= nil then
-        interactable = true
+        isInteractable = true
     else
-        interactable = false
+        isInteractable = false
     end
 
-    player.x = player.collider:getX() - 13
-    player.y = player.collider:getY() - 40
 
+    -- Update the NPCs
     for _, npc in pairs(npcs) do
         npc.x = npc.collider:getX() 
         npc.y = npc.collider:getY()
@@ -148,36 +201,21 @@ function love.update(dt)
     end
 
     player.isMoving = false
-    local swapLayer = gameMap.layers['Swap']
-    for _, object in ipairs(swapLayer.objects) do
-        if player.x < object.x + object.width and player.x + player.spriteWidth > object.x and player.y < object.y + object.height and player.y + player.spriteHeight > object.y then
-            player.renderAboveFurniture = true
-            break
-        else
-            player.renderAboveFurniture = false
-        end
-    end
+
 end
 function love.keypressed(key)
+    --If chatting is true, the player can press z to move to the next line of text
+    -- else if the player is able to interact with an object, they can press z to interact with the object
     if key == "z" then
         if chatting == true then
             chatting = true
             chat:nextLine()
-        elseif interactable == true then
+        elseif isInteractable == true then
             rectangles = {}
             object = x[1]:getObject()
             target = object
             object:interact()
         end
-    end
-    if key == "x" then
-            chatting = true
-            complete = false
-            inverted = true
-            
-    end
-    if key == "j" then
-        print (screenHeight)
     end
     
     if key == "escape" then
@@ -189,61 +227,20 @@ function love.draw()
     effect(function()    
     cam:attach()
         cam:zoomTo(zoom)
-        gameMap:drawLayer(gameMap.layers['Floor'])
-        gameMap:drawLayer(gameMap.layers['TopWall'])
-        gameMap:drawLayer(gameMap.layers['Decor'])
-        for _, npc in pairs(npcs) do
-            npc:draw()
-        end
-        if player.renderAboveFurniture then
-            player:draw()
-            gameMap:drawLayer(gameMap.layers['Furniture'])
-        else
-            gameMap:drawLayer(gameMap.layers['Furniture'])
-            player:draw()
-        end
-        gameMap:drawLayer(gameMap.layers['BotWall'])  
-        gameMap:drawLayer(gameMap.layers['Borders'])  
+        map()
         world:draw()
-        if interactable == true then
+        if isInteractable == true then
             love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
         end
-        if player.currentAnimation == player.animations.right then
-            love.graphics.line(player.x, player.y, player.x + 50, player.y)
-    
-        elseif player.currentAnimation == player.animations.left then
-            love.graphics.line(player.x, player.y, player.x - 50, player.y)
-    
-        elseif player.currentAnimation == player.animations.up then
-            love.graphics.line(player.x, player.y + 30, player.x, player.y - 30)
-    
-        elseif player.currentAnimation == player.animations.down then
-            love.graphics.line(player.x, player.y - 15, player.x, player.y + 50)
-        end
     cam:detach()
-    if timerExpired == true then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.print('Timer Expired', 100, 100)
-    else
-        local timeRemain = myTimer.getCurrentTime()
-        
-        love.graphics.setColor(0, 0, 0, 0.6)
-        
-        love.graphics.rectangle('fill', 100, 100, 200, 100, 100, 100, 15)
-
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print(timeRemain, coolfont, 110, 80, 0, 1, 1)
-
-
-    end
+    myTimer:draw()
+    fade.draw()
     chat:draw()  
 
     end)
     
-    love.graphics.setColor(0,0,0)
-    
     love.graphics.setColor(1,1,1)
-
+    
 
 
 end

@@ -10,7 +10,7 @@ chat.rectangles = {}
 chat.line = 1
 chat.invert = false
 chat.keys = {} -- Make keys a member of the chat table
-
+chat.speaker = nil
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
     local content = f:read("*all")
@@ -23,30 +23,22 @@ function chat:chat(npc, subtable)
     chat.complete = false
     chat.invert = false
     self.index = 1
-    dialogue = chat:loadJson('npcs/dialogue.json')
+    local dialogue = chat:loadJson('npcs/dialogue.json')
     self.npc = npc
     self.subtable = subtable
     chatting = true
     if dialogue and dialogue[npc] and dialogue[npc][subtable] then
         self.CurrentDialogue = dialogue[npc]['1']
-        -- Get the keys
-        self.keys = {} -- Reset keys for each new dialogue
-        for k in pairs(self.CurrentDialogue) do
-            table.insert(self.keys, k)
-        end
-
-
-        table.sort(self.keys)
-        updateAnim(self.keys[1])
-
-        self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
-        end
+        self.line = 1
+        updateAnim(self.CurrentDialogue[self.line].speaker)
+        self.CurrentLine = self.CurrentDialogue[self.line].dialogue
+    end
 end
 
 function updateAnim(s)
     local portrait
     local emotion
-    local i = 0
+    local i = 0    
     for word in string.gmatch(s, '([^/]+)') do
         i = i + 1
         if i == 1 then
@@ -57,21 +49,26 @@ function updateAnim(s)
     end
 
     if portrait == 'butler' then
-        print('hi')
         player.portraitAnimation = player.portraitExpressions[emotion]
-        print(player.portraitAnimation)
+        chat.speaker = player
     end
 
-
+    if portrait == 'explosion' then
+        chat.speaker = explode
+        print('hi')
+    end
 end
+
 function chat:nextLine()
     if self.CurrentDialogue then
         if self.CurrentChar <= #self.CurrentLine then
             self.CurrentChar = #self.CurrentLine
         else
             self.line = self.line + 1
-            if self.keys[self.line] then
-                self.CurrentLine = self.CurrentDialogue[self.keys[self.line]]
+
+            if self.CurrentDialogue[self.line] then
+                updateAnim(self.CurrentDialogue[self.line].speaker)
+                self.CurrentLine = self.CurrentDialogue[self.line].dialogue
                 self.CurrentChar = 1
             else
                 chat:endChat()
@@ -95,23 +92,22 @@ end
 function chat:playSound()
     local length = 0.1 -- The length of the sound in seconds
     local rate = 44100 -- The sample rate of the sound
-    local frequency = math.random(50, 100)
+    local frequency = math.random(75, 100)
     local soundData = love.sound.newSoundData(math.floor(length*rate), rate, 16, 1)
-    local unisonCount = 8 -- The number of unison voices
-    local detuneAmount = 1 -- The amount of detuning for the unison voices
-    local phase = {} -- Initialize phase for each unison voice
+    local unisonCount = 4 -- The number of unison voices
+    local detuneAmount = 0.1 -- The amount of detuning for the unison voices
+    local phase = {}
     for j=1, unisonCount do
         phase[j] = 0
     end
 
-    local fadeTime = 0.01 -- The length of the fade in and fade out in seconds
-    local fadeSamples = fadeTime * rate -- The number of samples over which to fade in and out
+    local fadeTime = 0.01 
+    local fadeSamples = fadeTime * rate 
 
     for i=0, soundData:getSampleCount() - 1 do
-        local t = i / rate -- The time of the sample
-        local volume = 0.5 * (1 + math.sin(0.1 * t)) / unisonCount -- Vary the volume over time and divide by the number of unison voices
+        local t = i / rate
+        local volume = 0.5 * (1 + math.sin(0.1 * t)) / unisonCount 
 
-        -- Apply a fade in and fade out to the volume
         if i < fadeSamples then
             volume = volume * (i / fadeSamples)
         elseif i > soundData:getSampleCount() - fadeSamples then
@@ -119,11 +115,10 @@ function chat:playSound()
         end
 
         local sample = 0
-        -- Generate a triangle wave for each unison voice
         for j=1, unisonCount do
-            local detune = 1 + (j - 1) * detuneAmount -- Calculate the detuning for this voice
-            phase[j] = phase[j] + (frequency * detune / rate) -- Increment the phase
-            phase[j] = phase[j] % 1 -- Wrap the phase to the range [0, 1]
+            local detune = 1 + (j - 1) * detuneAmount
+            phase[j] = phase[j] + (frequency * detune / rate) 
+            phase[j] = phase[j] % 1
             local triangle = 2 * math.abs(2 * phase[j] - 1) - 1
             sample = sample + volume * triangle
         end
@@ -145,11 +140,17 @@ end
 function chat:progressChat(dt)
     if self.CurrentLine and self.CurrentChar < #self.CurrentLine then
         player.portraitAnimation:update(dt)
+        if chat.speaker then
+            chat.speaker.portraitAnimation:update(dt)
+        end
     else
         player.portraitAnimation:gotoFrame(1)
+        if chat.speaker  then
+            chat.speaker.portraitAnimation:gotoFrame(1)
+        end
     end
     self.TimeElapsed = self.TimeElapsed + dt
-    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.07 then
+    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.05 then
         self.CurrentChar = self.CurrentChar + 1
         self.TimeElapsed = 0 -- Reset the timer after updating the character
         -- Call the playSound function
@@ -178,13 +179,15 @@ function chat:draw()
         love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
         if num == 1 then
             love.graphics.setColor(1,1,1)
-
-            player.portraitAnimation:draw(player.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
+            if chat.speaker == player then
+                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
+            elseif chat.speaker then
+                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
+            end
             if self.CurrentLine then
                 love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 4, 4)
             end
         end
     end
 end
-
 return chat

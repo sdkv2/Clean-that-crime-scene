@@ -1,8 +1,18 @@
---explosion.lua
+-- explosion.lua
+local class = require 'libraries/middleclass'
+local NPC = require 'npc'
 
-function interact(name)
-    print("explosion")
-    chat:chat(name, '1')
+Explosion = class('Explosion', NPC)
+
+function Explosion:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
+    print(portraitSheet)
+    NPC.initialize(self, x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
 end
 
-return interact
+function Explosion:interact()
+    print(self.x)
+    chat:chat('explosion', '1')
+end
+
+
+return Explosion

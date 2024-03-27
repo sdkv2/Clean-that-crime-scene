@@ -1,6 +1,7 @@
+--player.lua
+
 local anim8 = require 'libraries/anim8'
 local class = require 'libraries/middleclass'
-
 local player = class('player')
 
 function player:initialize()
@@ -33,52 +34,51 @@ function player:initialize()
     self.portraitAnimation = self.portraitExpressions.neutral
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
-    self.collider = world:newBSGRectangleCollider(self.x, self.y, 9*3, 7*3, 4)
+    self.collider = world:newBSGRectangleCollider(self.x, self.y, self.spriteWidth, self.spriteHeight/3, 4)
     self.collider:setFixedRotation(true)
+    self.collider:setCollisionClass('Player')
     self.renderAboveFurniture = false
+    self.animationMap = {
+        [self.animations.right] = {idle = self.animations.rightidle},
+        [self.animations.left] = {idle = self.animations.leftidle},
+        [self.animations.up] = {idle = self.animations.upidle},
+        [self.animations.down] = {idle = self.animations.downidle},
+    }
 end
 
+
 function player:draw()
-    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 1.5, nil, 8.5, 12.5)
+    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 1.5, nil, self.spriteWidth/2, self.spriteHeight/2)
 end
 
 function player:moveCheck()
     if player.isMoving == false then
-        if self.currentAnimation == self.animations.right then
-            self.currentAnimation = self.animations.rightidle
-        elseif self.currentAnimation == self.animations.left then
-            self.currentAnimation = self.animations.leftidle
-        elseif self.currentAnimation == self.animations.up then
-            self.currentAnimation = self.animations.upidle
-        elseif self.currentAnimation == self.animations.down then
-            self.currentAnimation = self.animations.downidle
+        local animation = self.animationMap[self.currentAnimation]
+        if animation then
+            self.currentAnimation = animation.idle
         end
     end
 end
+
 function player:update(dt)
-    -- Query the based on direction
-    if self.currentAnimation == self.animations.right or self.currentAnimation == self.animations.rightidle then
-        items = world:queryLine(self.x, self.y, self.x + 50, self.y, {'Interactive'})
-        if not self.isMoving and self.currentAnimation ~= self.animations.rightidle then
-            self.currentAnimation = self.animations.rightidle
-        end
+    self.x = self.collider:getX()
+    self.y = self.collider:getY() - 20
+    if self.collider:enter('LoadZone') then
+        local collision_data = self.collider:getEnterCollisionData('LoadZone')
+        local load = collision_data.collider:getObject()
+        load:trigger()
+    end
+    self.animationMap[self.animations.right].queryLine = {self.x, self.y, self.x + 50, self.y}
+    self.animationMap[self.animations.left].queryLine = {self.x, self.y, self.x - 50, self.y}
+    self.animationMap[self.animations.up].queryLine = {self.x, self.y + 30, self.x, self.y - 30}
+    self.animationMap[self.animations.down].queryLine = {self.x, self.y - 30, self.x, self.y + 90}
 
-    elseif self.currentAnimation == self.animations.left or self.currentAnimation == self.animations.leftidle then
-        items = world:queryLine(self.x, self.y, self.x - 50, self.y, {'Interactive'})
-        if not self.isMoving and self.currentAnimation ~= self.animations.leftidle then
-            self.currentAnimation = self.animations.leftidle
-        end
-
-    elseif self.currentAnimation == self.animations.up or self.currentAnimation == self.animations.upidle then
-        items = world:queryLine(self.x, self.y + 30, self.x, self.y - 30, {'Interactive'})
-        if not self.isMoving and self.currentAnimation ~= self.animations.upidle then
-            self.currentAnimation = self.animations.upidle
-        end
-
-    elseif self.currentAnimation == self.animations.down or self.currentAnimation == self.animations.downidle then
-        items = world:queryLine(self.x, self.y - 30, self.x, self.y + 90, {'Interactive'})
-        if not self.isMoving and self.currentAnimation ~= self.animations.downidle then
-            self.currentAnimation = self.animations.downidle
+    local animation = self.animationMap[self.currentAnimation]
+    if animation then
+        local queryLine = animation.queryLine
+        items = world:queryLine(queryLine[1], queryLine[2], queryLine[3], queryLine[4], {'Interactive'})
+        if not self.isMoving and self.currentAnimation ~= animation.idle then
+            self.currentAnimation = animation.idle
         end
     end
 

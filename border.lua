@@ -1,3 +1,5 @@
+--border.lua
+
 function border(dt, rectangles, inverted, chat)
     local invert = inverted or false
 

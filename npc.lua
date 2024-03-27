@@ -3,7 +3,7 @@ local class = require 'libraries/middleclass'
 local NPC = class('NPC')
 
 
-function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, animations, name)
+function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
     self.x = x
     self.y = y
     self.scale = 2
@@ -13,8 +13,12 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, an
     self.spriteSheet = love.graphics.newImage('sprites/' .. spriteSheet)
     self.grid = anim8.newGrid(spriteWidth, spriteHeight, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
     self.animations = {}
-    for animName, animFrames in pairs(animations) do
-        self.animations[animName] = anim8.newAnimation(self.grid:getFrames(unpack(animFrames)), 0.1)
+    for animType, animData in pairs(animations) do
+        if animType == 'overworld' then
+            for animName, animFrames in pairs(animData) do
+                self.animations[animName] = anim8.newAnimation(self.grid:getFrames(unpack(animFrames)), 0.1)
+            end
+        end
     end
     self.collider = world:newRectangleCollider(self.x - self.width / 2, self.y - self.height / 2, self.width * self.scale, self.height * self.scale)
     self.currentAnimation = self.animations['start']
@@ -22,6 +26,20 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, border, an
     self.collider:setCollisionClass('Interactive')
     self.collider:setType('static')
     self.collider:setObject(self)
+    print(portraitSheet)
+    if portraitSheet then
+        self.portraitExpressions = {}
+        self.portraitSheet = love.graphics.newImage('sprites/' .. portraitSheet)
+        self.portraitGrid = anim8.newGrid(spriteHeight, spriteWidth, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())
+        for animType, animData in pairs(animations) do
+            if animType == 'portrait' then
+                for animName, animFrames in pairs(animData) do
+                    self.portraitExpressions[animName] = anim8.newAnimation(self.grid:getFrames(unpack(animFrames)), 0.1)
+                end
+            end
+        end
+        self.portraitAnimation = self.portraitExpressions.neutral
+    end
     table.insert(npcs, self)
 end
 
@@ -30,8 +48,6 @@ function NPC:draw()
 end
 
 function NPC:interact()
-    local chatting = require('npcs/' .. self.name)
-    chatting(self.name)
 end
 
 return NPC

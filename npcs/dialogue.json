@@ -1,16 +1,18 @@
 {
     "explosion": {
-        "1": {
-            "butler/neutral": "Ah... the house is burning down",
-            "explosion_neutral": "How awful."
-        },
-        "2": {
-            "property1": "value1",
-            "property2": "value2"
-        },
-        "3": {
-            "property1": "value1",
-            "property2": "value2"
-        }
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "Ah... the house is burning down"},
+            {"speaker": "explosion/neutral", "dialogue": "Sucks to be you"},
+            {"speaker": "explosion/neutral", "dialogue": "You should have been more careful"},
+            {"speaker": "butler/neutral", "dialogue": "Aww shucks, I'm out of a job now."}
+        ],
+        "2": [
+            {"speaker": "property1", "dialogue": "value1"},
+            {"speaker": "property2", "dialogue": "value2"}
+        ],
+        "3": [
+            {"speaker": "property1", "dialogue": "value1"},
+            {"speaker": "property2", "dialogue": "value2"}
+        ]
     }
 }
