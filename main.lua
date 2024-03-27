@@ -3,7 +3,7 @@ chat = require("npcs.chat")
 local loadzone = require("loadzone")
 local interact = love.graphics.newImage('sprites/interact.png')
 interactable = require 'interact'
-local isInteractable -- declare a new variable at the top of your script
+local isInteractable
 rectangleX = screenWidth
 rectangleY = 0
 rectangleState = 'waiting'
@@ -114,6 +114,7 @@ function map()
 
     
 end
+
 function pan(cam, object, dt)
     cam:lockPosition(object.x, object.y, cam.smooth.linear(1000))
 end
