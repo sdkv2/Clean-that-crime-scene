@@ -7,7 +7,7 @@
             {"speaker": "butler/neutral", "dialogue": "Aww shucks, I'm out of a job now."}
         ],
         "2": [
-            {"speaker": "property1", "dialogue": "value1"},
+            {"speaker": "butler/neutral", "dialogue": "value1"},
             {"speaker": "property2", "dialogue": "value2"}
         ],
         "3": [

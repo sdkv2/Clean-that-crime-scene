@@ -28,7 +28,7 @@ function chat:chat(npc, subtable)
     self.subtable = subtable
     chatting = true
     if dialogue and dialogue[npc] and dialogue[npc][subtable] then
-        self.CurrentDialogue = dialogue[npc]['1']
+        self.CurrentDialogue = dialogue[npc][subtable]
         self.line = 1
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
