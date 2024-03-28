@@ -11,7 +11,10 @@ end
 function Minigame3:update(dt)
     -- Update logic for minigame 3
 end
- 
+-- Add this to each minigame class
+function Minigame3:keypressed(key)
+    -- Handle key press for Minigame1
+end
 function Minigame3:draw()
     -- Draw logic for minigame 3
 end

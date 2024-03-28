@@ -8,6 +8,11 @@ function Minigame2.new()
     return self
 end
 
+-- Add this to each minigame class
+function Minigame2:keypressed(key)
+    -- Handle key press for Minigame1
+end
+
 function Minigame2:update(dt)
     -- Update logic for minigame 1
 end

@@ -14,6 +14,13 @@ function Minigame1.new()
     return self
 end
 
+function Minigame1:keypressed(key, minigame)
+    -- Handle key press for Minigame1
+    if key == 'space' then
+        minigame:setMinigame(0)
+    end
+end
+
 function Minigame1:update(dt)
     self.bowlingballAnimation:update(dt)
     -- Update logic for minigame 1

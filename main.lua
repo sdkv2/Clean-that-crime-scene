@@ -213,21 +213,25 @@ end
 function love.keypressed(key)
     --If chatting is true, the player can press z to move to the next line of text
     -- else if the player is able to interact with an object, they can press z to interact with the object
-    if key == "z" then
-        if chat.chatting == true then
-            chat:nextLine()
-        elseif isInteractable == true then
-            rectangles = {}
-            object = player.interactables[1]:getObject()
-            target = object
-            object:interact()
+    if minigame.currentMinigame ~= nil then
+        minigame:keypressed(key)
+    else
+        if key == "z" then
+            if chat.chatting == true then
+                chat:nextLine()
+            elseif isInteractable == true then
+                rectangles = {}
+                object = player.interactables[1]:getObject()
+                target = object
+                object:interact()
+            end
         end
-    end
 
-    if key == "j" then
-        fade.isActive = true
-        minigame:setMinigame(1)
+        if key == "j" then
+            fade.isActive = true
+            minigame:setMinigame(1)
 
+        end
     end
     
     if key == "escape" then

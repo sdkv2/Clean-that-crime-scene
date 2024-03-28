@@ -23,6 +23,13 @@ function Minigame:setMinigame(minigameNumber)
         self.currentMinigame = nil
     end
 end
+
+function Minigame:keypressed(key)
+    if self.currentMinigame ~= nil then
+        self.currentMinigame:keypressed(key, self)
+    end
+end
+
 function Minigame:update(dt)
     if self.currentMinigame ~= nil then
         self.currentMinigame:update(dt)
