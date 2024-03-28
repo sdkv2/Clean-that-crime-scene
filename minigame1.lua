@@ -109,9 +109,9 @@ end
 function Minigame1:draw()
     if #self.textures == 0 then
         love.graphics.setFont(customFont)
-        love.graphics.print(string.sub("completed", 1, self.completedIndex), w/2 - 200, h/2 - 300, 0, 1, 1)
+        love.graphics.print(string.sub("completed", 1, self.completedIndex), w/2 - 200, 100, 0, 1, 1)
     end
-    self.bowlingballAnimation:draw(self.bowlingball, w/2, h/2 + 100, 0, 5, 5, self.spriteWidth/2, self.spriteHeight/2)
+    self.bowlingballAnimation:draw(self.bowlingball, w/2, h/2 + 100, 0, 6, 7, self.spriteWidth/2, self.spriteHeight/2)
     local currentFrame = self.bowlingballAnimation.position
     for i, texture in ipairs(self.textures) do
         if currentFrame >= texture.frameStart and currentFrame <= texture.frameEnd then
