@@ -11,7 +11,8 @@ local fade = require 'fade'
 local panning = false
 zoom = 2
 chatting = false
-
+local Minigame = require 'minigame'
+local minigame = Minigame.new()
 function love.load()
     local Explosion = require 'npcs/explosion'
     target = nil
@@ -130,6 +131,7 @@ function loadNewMap(mapPath,x,y)
     walls = {}
     -- Load new map
     gameMap = sti(mapPath)
+    -- Add new colliders
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
         wall:setType('static')
@@ -140,7 +142,6 @@ function loadNewMap(mapPath,x,y)
         end
         
     end
-    -- Add new colliders
 end
 
 function camCheck(zoom)
@@ -166,57 +167,67 @@ end
 
 
 function love.update(dt)
-    if not myTimer:isExpired() then myTimer:update(dt) end
-    player.isMoving = false
-    player.currentAnimation:update(dt)
     fade.handleFade(dt)
+    if minigame.currentMinigame ~= nil then
+        minigame:update(dt)
+        if not myTimer:isExpired() then myTimer:update(dt) end
 
-    if panning == false then
-        pan(cam, player, dt)
-    end
-    chat:update(dt)
-    world:update(dt)
-
-    -- If not interacting with an object, check for player movement
-    if target == nil then
-        player:moveCheck()
-        camCheck(zoom)
-        movePlayer(player, dt)
-    end
-
-    --Checks if the player is in the loadzone or if they are able to interact with an object
-    x = player:update(dt)
-    if x[1] ~= nil then
-        isInteractable = true
     else
-        isInteractable = false
+        if not myTimer:isExpired() then myTimer:update(dt) end
+        player.isMoving = false
+        player.currentAnimation:update(dt)
+
+        if panning == false then
+            pan(cam, player, dt)
+        end
+        chat:update(dt)
+        world:update(dt)
+
+        -- If not interacting with an object, check for player movement
+        if target == nil then
+            player:moveCheck()
+            camCheck(zoom)
+            movePlayer(player, dt)
+        end
+
+        --Checks if the player is in the loadzone or if they are able to interact with an object
+        player:update(dt)
+        if player.interactables[1] ~= nil then
+            isInteractable = true
+        else
+            isInteractable = false
+        end
+
+
+        -- Update the NPCs
+        for _, npc in pairs(npcs) do
+            npc.x = npc.collider:getX() 
+            npc.y = npc.collider:getY()
+            npc.r = npc.collider:getAngle()
+            npc.currentAnimation:update(dt)
+        end
+
+        player.isMoving = false
     end
-
-
-    -- Update the NPCs
-    for _, npc in pairs(npcs) do
-        npc.x = npc.collider:getX() 
-        npc.y = npc.collider:getY()
-        npc.r = npc.collider:getAngle()
-        npc.currentAnimation:update(dt)
-    end
-
-    player.isMoving = false
-
 end
 function love.keypressed(key)
     --If chatting is true, the player can press z to move to the next line of text
     -- else if the player is able to interact with an object, they can press z to interact with the object
     if key == "z" then
-        if chatting == true then
-            chatting = true
+        if chat.chatting == true then
             chat:nextLine()
         elseif isInteractable == true then
             rectangles = {}
-            object = x[1]:getObject()
+            object = player.interactables[1]:getObject()
             target = object
             object:interact()
         end
+    end
+
+    if key == "j" then
+        fade.isActive = true
+        minigame:setMinigame(1)
+
     end
     
     if key == "escape" then
@@ -225,23 +236,22 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    effect(function()    
-    cam:attach()
-        cam:zoomTo(zoom)
-        map()
-        world:draw()
-        if isInteractable == true then
-            love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
+    effect(function()   
+        if minigame.currentMinigame ~= nil then
+            minigame:draw()
+            myTimer:draw()
+        else 
+            cam:attach()
+                cam:zoomTo(zoom)
+                map()
+                world:draw()
+                if isInteractable == true then
+                    love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
+                end
+            cam:detach()
+            myTimer:draw()
+            chat:draw()
         end
-    cam:detach()
-    myTimer:draw()
-    fade.draw()
-    chat:draw()  
-
+        fade.draw() -- Moved outside the if-else block
     end)
-    
-    love.graphics.setColor(1,1,1)
-    
-
-
 end

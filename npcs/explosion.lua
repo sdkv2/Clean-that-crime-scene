@@ -11,7 +11,7 @@ end
 
 function Explosion:interact()
     print(self.x)
-    chat:chat('explosion', '2')
+    chat:chat('explosion', '1')
 end
 
 

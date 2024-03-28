@@ -11,6 +11,7 @@ chat.line = 1
 chat.invert = false
 chat.keys = {} -- Make keys a member of the chat table
 chat.speaker = nil
+chat.chatting = false
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
     local content = f:read("*all")
@@ -26,7 +27,7 @@ function chat:chat(npc, subtable)
     local dialogue = chat:loadJson('npcs/dialogue.json')
     self.npc = npc
     self.subtable = subtable
-    chatting = true
+    chat.chatting = true
     if dialogue and dialogue[npc] and dialogue[npc][subtable] then
         self.CurrentDialogue = dialogue[npc][subtable]
         self.line = 1
@@ -85,7 +86,7 @@ function chat:endChat()
     self.CurrentChar = 0
     self.line = 1
     self.keys = {}
-    chatting = false
+    chat.chatting = false
     target = nil
 end
 

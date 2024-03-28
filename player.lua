@@ -76,13 +76,13 @@ function player:update(dt)
     local animation = self.animationMap[self.currentAnimation]
     if animation then
         local queryLine = animation.queryLine
-        items = world:queryLine(queryLine[1], queryLine[2], queryLine[3], queryLine[4], {'Interactive'})
+        self.interactables = world:queryLine(queryLine[1], queryLine[2], queryLine[3], queryLine[4], {'Interactive'})
         if not self.isMoving and self.currentAnimation ~= animation.idle then
             self.currentAnimation = animation.idle
         end
     end
 
-    return items
+    return self.interactables
 end
 
 return player
