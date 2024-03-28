@@ -32,7 +32,7 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations
         self.portraitSheet = love.graphics.newImage('sprites/' .. portraitSheet)
         self.portraitGrid = anim8.newGrid(128, 128, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())  
         self.portraitExpressions = {
-            neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.2),
+            neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.1),
         }
         self.portraitAnimation = self.portraitExpressions.neutral
     end

@@ -28,7 +28,7 @@ function player:initialize()
     }
     self.portraitGrid = anim8.newGrid(128, 128, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())  
     self.portraitExpressions = {
-        neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.6),
+        neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.3),
     }
     self.currentAnimation = self.animations.down
     self.portraitAnimation = self.portraitExpressions.neutral

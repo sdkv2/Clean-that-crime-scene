@@ -4,16 +4,28 @@ local loadzone = require("loadzone")
 local interact = love.graphics.newImage('sprites/interact.png')
 interactable = require 'interact'
 local isInteractable
-rectangleX = screenWidth
-rectangleY = 0
 rectangleState = 'waiting'
 fade = require 'fade'
-
+gameState = "title"
 local panning = false
 zoom = 2
 chatting = false
 local Minigame = require 'minigame'
 local minigame = Minigame.new()
+local titleArt = love.graphics.newImage('sprites/guy.png')
+local borderSize = 6
+local alpha = 0
+local increasing = true
+local delay = 0
+local delayMax = 0.1
+local alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
+local alphaIndex = 1
+local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
+
+local text = love.graphics.newText(font, "Press Enter to start")
+
+
+
 function love.load()
     
     local Explosion = require 'npcs/explosion'
@@ -27,6 +39,9 @@ function love.load()
     love.window.setMode(screenWidth, screenHeight, fullscreenMode)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
+    TitleWidth = (w - text:getWidth()) / 2
+    TitleHeight = (h - text:getHeight()) / 2 + 200
+    TitleText = love.graphics.newText(font, "Press Enter to start")
 
     rectangles = {}
     love.graphics.setBackgroundColor(0,0,0)
@@ -191,7 +206,34 @@ end
 
 
 function love.update(dt)
-    
+    if gameState == "title" then
+        if love.keyboard.isDown("return") then
+            gameState = "game"
+        end
+        if increasing then
+            delay = delay + dt * 2
+            if delay >= delayMax then
+                delay = 0
+                alphaIndex = alphaIndex + 1
+                if alphaIndex > #alphaValues then
+                    alphaIndex = #alphaValues
+                    increasing = false
+                end
+                alpha = alphaValues[alphaIndex]
+            end
+        else
+            delay = delay + dt * 1.6
+            if delay >= delayMax then
+                delay = 0
+                alphaIndex = alphaIndex - 1
+                if alphaIndex < 1 then
+                    alphaIndex = 1
+                    increasing = true
+                end
+                alpha = alphaValues[alphaIndex]
+            end
+        end
+    else
     fade.handleFade(dt)
     if minigame.currentMinigame ~= nil then
         minigame:update(dt)
@@ -263,24 +305,44 @@ function love.keypressed(key)
         love.event.quit()
     end
 end
+end
 
 function love.draw()
-    effect(function()   
-        if minigame.currentMinigame ~= nil then
-            minigame:draw()
-            myTimer:draw()
-        else 
-            cam:attach()
-                cam:zoomTo(zoom)
-                map()
-                world:draw()
-                if isInteractable == true then
-                    love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
-                end
-            cam:detach()
-            myTimer:draw()
-            chat:draw()
+    if gameState == "title" then
+        love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
+
+        love.graphics.setColor(1, 1, 1, alpha)
+
+        -- Draw the text with the current alpha
+        love.graphics.setColor(0, 0, 0, alpha) -- Set the color to black with the current alpha
+        for dx=-borderSize, borderSize do
+            for dy=-borderSize, borderSize do
+                love.graphics.draw(TitleText, TitleWidth + dx, TitleHeight + dy)
+            end
         end
-        fade.draw() -- Moved outside the if-else block
-    end)
+
+        love.graphics.setColor(1, 1, 1, alpha) -- Set the color to white with the current alpha
+        love.graphics.draw(TitleText, TitleWidth, TitleHeight)
+        love.graphics.setColor(1, 1, 1)
+
+    else
+        effect(function()   
+            if minigame.currentMinigame ~= nil then
+                minigame:draw()
+                myTimer:draw()
+            else 
+                cam:attach()
+                    cam:zoomTo(zoom)
+                    map()
+                    world:draw()
+                    if isInteractable == true then
+                        love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
+                    end
+                cam:detach()
+                myTimer:draw()
+                chat:draw()
+            end
+            fade.draw() -- Moved outside the if-else block
+        end)
+    end
 end
