@@ -13,6 +13,24 @@
         "3": [
             {"speaker": "property1", "dialogue": "value1"},
             {"speaker": "property2", "dialogue": "value2"}
+
+        ]
+    },
+    "kyle": {
+        "1": [
+            {"speaker": "kyle/neutral", "dialogue": "I'm Kyle"},
+            {"speaker": "butler/neutral", "dialogue": "I'm a cooler guy buddy"},
+            {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"},
+            {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"}
+        ],
+        "2": [
+            {"speaker": "kyle/neutral", "dialogue": "value1"},
+            {"speaker": "property2", "dialogue": "value2"}
+        ],
+        "3": [
+            {"speaker": "property1", "dialogue": "value1"},
+            {"speaker": "property2", "dialogue": "value2"}
+
         ]
     }
 }

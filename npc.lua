@@ -6,7 +6,7 @@ local NPC = class('NPC')
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
     self.x = x
     self.y = y
-    self.scale = 2
+    self.scale = 1.5
     self.width = spriteWidth
     self.height = spriteHeight
     self.name = name
@@ -21,7 +21,7 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations
         end
     end
     self.collider = world:newRectangleCollider(self.x - self.width / 2, self.y - self.height / 2, self.width * self.scale, self.height * self.scale)
-    self.currentAnimation = self.animations['start']
+    self.currentAnimation = self.animations['downidle']
     self.collider:setFixedRotation(true)
     self.collider:setCollisionClass('Interactive')
     self.collider:setType('static')
@@ -30,14 +30,10 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations
     if portraitSheet then
         self.portraitExpressions = {}
         self.portraitSheet = love.graphics.newImage('sprites/' .. portraitSheet)
-        self.portraitGrid = anim8.newGrid(spriteHeight, spriteWidth, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())
-        for animType, animData in pairs(animations) do
-            if animType == 'portrait' then
-                for animName, animFrames in pairs(animData) do
-                    self.portraitExpressions[animName] = anim8.newAnimation(self.grid:getFrames(unpack(animFrames)), 0.1)
-                end
-            end
-        end
+        self.portraitGrid = anim8.newGrid(128, 128, self.portraitSheet:getWidth(), self.portraitSheet:getHeight())  
+        self.portraitExpressions = {
+            neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.2),
+        }
         self.portraitAnimation = self.portraitExpressions.neutral
     end
     table.insert(npcs, self)

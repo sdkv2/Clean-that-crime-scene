@@ -53,11 +53,18 @@ function updateAnim(s)
         player.portraitAnimation = player.portraitExpressions[emotion]
         chat.speaker = player
     end
-
+    
     if portrait == 'explosion' then
         chat.speaker = explode
         print('hi')
     end
+   
+    if portrait == 'kyle' then
+        kyle.portraitAnimation = kyle.portraitExpressions[emotion]
+        chat.speaker = kyle
+        print('hi')
+    end
+
 end
 
 function chat:nextLine()
@@ -164,6 +171,7 @@ function chat:progressChat(dt)
 end
 
 function chat:update(dt)
+    
     if invert == false then
         self:progressChat(dt)
     end

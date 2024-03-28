@@ -15,6 +15,7 @@ local Minigame = require 'minigame'
 local minigame = Minigame.new()
 function love.load()
     local Explosion = require 'npcs/explosion'
+    local Kyle = require 'npcs/kyle'
     target = nil
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -60,13 +61,27 @@ function love.load()
     animation = {
         explosion = {
             overworld = {
-                start = {'1-6',1,'1-6',2,'1-6',3}
+                downidle = {'1-6',1,'1-6',2,'1-6',3}
             },
             portrait = {
                 neutral = {'1-6',1,'1-6',2,'1-6',3}
             }
         },
-
+        kyle = {
+            overworld = {
+                downidle = {1, 1},
+                down = {1, 1, 2, 1, 1, 1, 3, 1},
+                up = {4, 1, 5, 1, 4, 1, 6, 1},
+                upidle = {4, 1},
+                left = {12, 1, 10, 1, 12, 1, 11, 1},
+                leftidle ={12, 1},
+                right = {7, 1, 8, 1, 7, 1, 9, 1},
+                rightidle = {7, 1}
+            },
+            portrait = {
+                neutral = {'1-2',1}
+            }
+        }
     }
     
     player = players:new()
@@ -75,6 +90,7 @@ function love.load()
     mapH = gameMap.height * gameMap.tileheight
 
     explode = Explosion:new(500, 500, 'explosion.png', 72, 100, animation['explosion'], 'explosion', 'explosion.png')
+    kyle = Kyle:new(100, 100, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
 
     Load1 = loadzone:initialize('Kitchen', player.x, player.y - 150, 100, 100, 'maps/2.lua', 100, 100)
     loadNewMap('maps/mansionroomtrial.lua', 300, 300)
