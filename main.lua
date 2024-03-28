@@ -130,8 +130,10 @@ function map()
     if player.renderAboveFurniture then
         player:draw()
         gameMap:drawLayer(gameMap.layers['Furniture'])
+        gameMap:drawLayer(gameMap.layers['Furniture2'])
     else
         gameMap:drawLayer(gameMap.layers['Furniture'])
+        gameMap:drawLayer(gameMap.layers['Furniture2'])
         player:draw()
     end
     gameMap:drawLayer(gameMap.layers['BotWall'])  
