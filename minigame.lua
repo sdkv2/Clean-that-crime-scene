@@ -14,11 +14,11 @@ end
 function Minigame:setMinigame(minigameNumber)
     self.minigameNumber = minigameNumber
     if minigameNumber == 1 then
-        self.currentMinigame = Minigame1.new()
+        self.currentMinigame = Minigame1.new(self)
     elseif minigameNumber == 2 then
-        self.currentMinigame = Minigame2.new()
+        self.currentMinigame = Minigame2.new(self)
     elseif minigameNumber == 3 then
-        self.currentMinigame = Minigame3.new()
+        self.currentMinigame = Minigame3.new(self)
     else
         self.currentMinigame = nil
     end
@@ -26,7 +26,7 @@ end
 
 function Minigame:keypressed(key)
     if self.currentMinigame ~= nil then
-        self.currentMinigame:keypressed(key, self)
+        self.currentMinigame:keypressed(key)
     end
 end
 
@@ -36,12 +36,17 @@ function Minigame:update(dt)
     end
 end
 
+function Minigame:mousepressed(x, y, button)
+    if self.currentMinigame ~= nil then
+        self.currentMinigame:mousepressed(x, y, button)
+    end
+end
+
 function Minigame:draw()
 
     if self.currentMinigame == nil then
         love.graphics.print('No minigame selected', 10, 10)
     else
-        love.graphics.print('Minigame ' .. self.minigameNumber, 10, 10)
         self.currentMinigame:draw()
     end
 end

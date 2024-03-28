@@ -24,6 +24,10 @@ function fade.handleFade(dt)
     end
 end
 
+function fade.startFade()
+    fade.isActive = true
+end
+
 function fade.draw()
     love.graphics.setColor(0, 0, 0, fade.fadeAmount)
     love.graphics.rectangle('fill', 0, 0, screenWidth, screenHeight)

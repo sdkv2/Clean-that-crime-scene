@@ -12,6 +12,7 @@ chat.invert = false
 chat.keys = {} -- Make keys a member of the chat table
 chat.speaker = nil
 chat.chatting = false
+
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
     local content = f:read("*all")
@@ -34,6 +35,9 @@ function chat:chat(npc, subtable)
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
     end
+    local customFont = love.graphics.newFont('MS_PAIN.ttf', 72) -- Change the path and size to match your font
+    love.graphics.setFont(customFont)
+
 end
 
 function updateAnim(s)
@@ -51,6 +55,8 @@ function updateAnim(s)
 
     if portrait == 'butler' then
         player.portraitAnimation = player.portraitExpressions[emotion]
+        local customFont = love.graphics.newFont('Oswald.ttf', 72) -- Change the path and size to match your font
+        love.graphics.setFont(customFont)
         chat.speaker = player
     end
     
@@ -62,7 +68,8 @@ function updateAnim(s)
     if portrait == 'kyle' then
         kyle.portraitAnimation = kyle.portraitExpressions[emotion]
         chat.speaker = kyle
-        print('hi')
+        local customFont = love.graphics.newFont('MS_PAIN.ttf', 72) -- Change the path and size to match your font
+        love.graphics.setFont(customFont)
     end
 
 end
@@ -191,10 +198,10 @@ function chat:draw()
             if chat.speaker == player then
                 chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
             elseif chat.speaker then
-                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
+                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2 ,2)
             end
             if self.CurrentLine then
-                love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 4, 4)
+                love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 1, 1)
             end
         end
     end

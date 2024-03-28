@@ -20,7 +20,6 @@ function LoadZone:initialize(name, x, y, width, height, targetMap, spawnX, spawn
 end
 
 function LoadZone:trigger()
-    fade = true
     -- Load the target map and set the player's position to the spawn location
     loadNewMap(self.targetMap)
     player.collider:setPosition(self.spawnX, self.spawnY)

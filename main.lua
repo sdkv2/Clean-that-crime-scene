@@ -7,13 +7,15 @@ local isInteractable
 rectangleX = screenWidth
 rectangleY = 0
 rectangleState = 'waiting'
-local fade = require 'fade'
+fade = require 'fade'
+
 local panning = false
 zoom = 2
 chatting = false
 local Minigame = require 'minigame'
 local minigame = Minigame.new()
 function love.load()
+    
     local Explosion = require 'npcs/explosion'
     local Kyle = require 'npcs/kyle'
     target = nil
@@ -136,8 +138,13 @@ function pan(cam, object, dt)
     cam:lockPosition(object.x, object.y, cam.smooth.linear(1000))
 end
 
+function love.mousepressed(x, y, button)
+    minigame:mousepressed(x, y, button)
+end
+
 function loadNewMap(mapPath,x,y)
-    fade.isActive = true
+    fade.startFade()
+
     -- Delete old colliders
     for _, wall in ipairs(walls) do
         if wall:isDestroyed() == false then
@@ -158,6 +165,7 @@ function loadNewMap(mapPath,x,y)
         end
         
     end
+    
 end
 
 function camCheck(zoom)
@@ -183,6 +191,7 @@ end
 
 
 function love.update(dt)
+    
     fade.handleFade(dt)
     if minigame.currentMinigame ~= nil then
         minigame:update(dt)
