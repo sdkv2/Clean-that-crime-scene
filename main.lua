@@ -267,9 +267,9 @@ function love.update(dt)
             -- If not interacting with an object, check for player movement
             if target == nil then
                 player:moveCheck()
-                camCheck(zoom)
                 movePlayer(player, dt)
             end
+            camCheck(zoom)
 
             --Checks if the player is in the loadzone or if they are able to interact with an object
             player:update(dt)
