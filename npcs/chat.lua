@@ -38,7 +38,7 @@ function chat:chat(npc, subtable)
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
     end
-    local customFont = love.graphics.newFont('MS_PAIN.ttf', 72) -- Change the path and size to match your font
+    local customFont = love.graphics.newFont('MS_PAIN.ttf', 45) -- Change the path and size to match your font
     love.graphics.setFont(customFont)
 
 end
@@ -183,31 +183,34 @@ function chat:update(dt)
 end
 
 function chat:draw()
-    love.graphics.setColor(0,0,0)
+
     for num, rect in ipairs(chat.rectangles) do
-        love.graphics.rectangle('fill', rect.x, rect.y, rect.width, rect.height)
+        love.graphics.setColor(0.5,0.5,0.5)
+        love.graphics.rectangle('fill', rect.x - 5, rect.y + 65, rect.width + 10, rect.height - 65)
+        love.graphics.setColor(0,0,0)
+        love.graphics.rectangle('fill', rect.x, rect.y + 70, rect.width, rect.height - 70)
         if num == 1 then
             love.graphics.setColor(1,1,1)
             if chat.firstSpeaker then
                 if chat.speaker == chat.firstSpeaker then
                     chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
                 else
-                    love.graphics.setColor(0.5, 0.5, 0.5) -- Grey out the non-speaking character
+                    love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
                     chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2) -- Slide the portrait
                     love.graphics.setColor(1,1,1) -- Reset the color
                 end
             end
             if chat.secondSpeaker then
                 if chat.speaker == chat.secondSpeaker then
-                    chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + w - 128 * 2, h - rect.height, 0, 2 ,2)
+                    chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2)
                 else
-                    love.graphics.setColor(0.5, 0.5, 0.5) -- Grey out the non-speaking character
-                    chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + w - 128 * 2, h - rect.height, 0, 2 ,2) -- Slide the portrait
+                    love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
+                    chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2) -- Slide the portrait
                     love.graphics.setColor(1,1,1) -- Reset the color
                 end
             end
             if self.CurrentLine then
-                love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 1, 1)
+                love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 100, 0, 1, 1)
             end
         end
     end

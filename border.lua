@@ -46,7 +46,7 @@ function border(dt, rectangles, inverted, chat)
     end
     if chat then
         rectangles = {
-            {x = 0, y = h - newBottomRectHeight, width = w, height = newBottomRectHeight}
+            {x = 200, y = h - newBottomRectHeight, width = w-400, height = newBottomRectHeight}
         }
     else
         rectangles = {

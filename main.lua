@@ -113,7 +113,7 @@ function love.load()
     mapH = gameMap.height * gameMap.tileheight
 
     explode = Explosion:new(500, 500, 'explosion.png', 72, 100, animation['explosion'], 'explosion', 'explosion.png')
-    kyle = Kyle:new(100, 100, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+    kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
 
     Load1 = loadzone:initialize('Kitchen', player.x, player.y - 150, 100, 100, 'maps/2.lua', 100, 100)
     loadNewMap('maps/mansionroomtrial.lua', 300, 300)
