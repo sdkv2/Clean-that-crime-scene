@@ -62,7 +62,7 @@ end
 
 function player:update(dt)
     self.x = self.collider:getX()
-    self.y = self.collider:getY() - 20
+    self.y = self.collider:getY() - 30
     if self.collider:enter('LoadZone') then
         local collision_data = self.collider:getEnterCollisionData('LoadZone')
         local load = collision_data.collider:getObject()
