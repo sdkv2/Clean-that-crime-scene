@@ -198,7 +198,7 @@ function chat:draw()
             if chat.speaker == player then
                 chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
             elseif chat.speaker then
-                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x, h - rect.height, 0, 2 ,2)
+                chat.speaker.portraitAnimation:draw(chat.speaker.portraitSheet, rect.x + w - 128 * 2, h - rect.height, 0, 2 ,2)
             end
             if self.CurrentLine then
                 love.graphics.print(string.sub(self.CurrentLine, 1, self.CurrentChar), rect.x + 300, h - rect.height + 30, 0, 1, 1)

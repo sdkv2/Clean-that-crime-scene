@@ -5,9 +5,11 @@ local Minigame1 = require 'minigame1'
 local Minigame2 = require 'minigame2'
 local Minigame3 = require 'minigame3'
 
+
 function Minigame.new()
     local self = setmetatable({}, Minigame)
     self.currentMinigame = nil
+    self.completedMinigames = {} -- Add this line
     return self
 end
 
@@ -40,6 +42,10 @@ function Minigame:mousepressed(x, y, button)
     if self.currentMinigame ~= nil then
         self.currentMinigame:mousepressed(x, y, button)
     end
+end
+-- Add this method
+function Minigame:completeMinigame(minigameNumber)
+    self.completedMinigames[minigameNumber] = true
 end
 
 function Minigame:draw()

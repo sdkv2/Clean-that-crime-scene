@@ -6,8 +6,13 @@ interactable = require 'interact'
 local isInteractable
 rectangleState = 'waiting'
 fade = require 'fade'
-gameState = "title"
-local panning = false
+-- Define game states
+local PLAYING = 1
+local CUTSCENE = 2
+local TITLE = 3
+
+-- Initialize game state
+local gameState = TITLE
 zoom = 2
 chatting = false
 local Minigame = require 'minigame'
@@ -54,6 +59,7 @@ function love.load()
     local moonshine = require 'libraries/moonshine'
 
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
+    effect.crt.distortionFactor = {1.02, 1.04}
     effect.scanlines.opacity = 0.1
     effect.scanlines.phase = 1
     effect.scanlines.thickness = 1
@@ -208,9 +214,9 @@ end
 
 
 function love.update(dt)
-    if gameState == "title" then
+    if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = "game"
+            gameState = PLAYING
         end
         if increasing then
             delay = delay + dt * 2
@@ -236,47 +242,54 @@ function love.update(dt)
             end
         end
     else
-    fade.handleFade(dt)
-    if minigame.currentMinigame ~= nil then
-        minigame:update(dt)
-        if not myTimer:isExpired() then myTimer:update(dt) end
-
-    else
-        if not myTimer:isExpired() then myTimer:update(dt) end
-        player.isMoving = false
-        player.currentAnimation:update(dt)
-
-        if panning == false then
-            pan(cam, player, dt)
-        end
-        chat:update(dt)
+        if gameState == CUTSCENE then
         world:update(dt)
-
-        -- If not interacting with an object, check for player movement
-        if target == nil then
-            player:moveCheck()
-            camCheck(zoom)
-            movePlayer(player, dt)
-        end
-
-        --Checks if the player is in the loadzone or if they are able to interact with an object
-        player:update(dt)
-        if player.interactables[1] ~= nil then
-            isInteractable = true
-        else
-            isInteractable = false
-        end
-
-
-        -- Update the NPCs
         for _, npc in pairs(npcs) do
             npc.x = npc.collider:getX() 
             npc.y = npc.collider:getY()
             npc.r = npc.collider:getAngle()
             npc.currentAnimation:update(dt)
         end
+    else
+        if minigame.currentMinigame ~= nil then
+            minigame:update(dt)
+            if not myTimer:isExpired() then myTimer:update(dt) end
 
-        player.isMoving = false
+        else
+            if not myTimer:isExpired() then myTimer:update(dt) end
+            player.isMoving = false
+            player.currentAnimation:update(dt)
+
+            pan(cam, player, dt)
+            chat:update(dt)
+            world:update(dt)
+
+            -- If not interacting with an object, check for player movement
+            if target == nil then
+                player:moveCheck()
+                camCheck(zoom)
+                movePlayer(player, dt)
+            end
+
+            --Checks if the player is in the loadzone or if they are able to interact with an object
+            player:update(dt)
+            if player.interactables[1] ~= nil then
+                isInteractable = true
+            else
+                isInteractable = false
+            end
+
+
+            -- Update the NPCs
+            for _, npc in pairs(npcs) do
+                npc.x = npc.collider:getX() 
+                npc.y = npc.collider:getY()
+                npc.r = npc.collider:getAngle()
+                npc.currentAnimation:update(dt)
+            end
+
+            player.isMoving = false
+        end
     end
 end
 function love.keypressed(key)
@@ -310,7 +323,7 @@ end
 end
 
 function love.draw()
-    if gameState == "title" then
+    if gameState == TITLE then
         love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
 
         love.graphics.setColor(1, 1, 1, alpha)
