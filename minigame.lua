@@ -48,6 +48,10 @@ function Minigame:completeMinigame(minigameNumber)
     self.completedMinigames[minigameNumber] = true
 end
 
+function Minigame:mousereleased(x,y,button)
+    self.currentMinigame:mousereleased(x,y,button)
+end
+
 function Minigame:draw()
 
     if self.currentMinigame == nil then

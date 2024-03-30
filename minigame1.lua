@@ -3,8 +3,37 @@ local Minigame1 = {}
 Minigame1.__index = Minigame1
 local anim8 = require 'libraries/anim8'
 local customFont = love.graphics.newFont('MS_PAIN.ttf', 72) -- Change the path and size to match your font
+local keyboardArrows = love.graphics.newImage('sprites/keyboard_arrows.png')
+local horizontalArrows = love.graphics.newImage('sprites/keyboard_arrows_horizontal.png')
+local mouse = love.graphics.newImage('sprites/mouse.png')
+local mouseClick = love.graphics.newImage('sprites/mouse_left.png')
+local currentImage2 = mouse
+local currentImage = keyboardArrows
+local lastSwitch = love.timer.getTime()
+local allParticleData = require 'libraries.bubbles'
+
+function Minigame1:initializeOrResetParticles()
+	for _, particleData in ipairs(allParticleData) do
+		-- Note that particle systems are already started when created, so we
+		-- don't need to call particleSystem:start() at any point.
+		local particleSystem = particleData.system
+
+		particleSystem:reset()
+		particleSystem:setPosition(allParticleData.x+particleData.x, allParticleData.y+particleData.y)
+
+		for step = 1, particleData.kickStartSteps do -- kickStartSteps may be 0.
+			particleSystem:update(particleData.kickStartDt)
+		end     
+        particleData.system:stop() -- Stop emitting particles when mouse button is released
+
+	end
+end
+
+
 
 function Minigame1.new(ParentMinigame)
+    Minigame1:initializeOrResetParticles()
+    love.graphics.setFont(customFont)
     local self = setmetatable({}, Minigame1)
     self.ParentMinigame = ParentMinigame
 
@@ -58,60 +87,104 @@ function Minigame1:keypressed(key)
         self.ParentMinigame:setMinigame(nil)
     end
 end
-function Minigame1:update(dt)
-    if #self.textures == 0 then
-        if self.FrameSpin == 0 then
-            self.bowlingballAnimation:gotoFrame(1)
-        end
-        self.bowlingballAnimation:update(dt)
+function Minigame1:updateTextures(dt)
+    local currentFrame = self.bowlingballAnimation.position
 
-        self.FrameSpin = self.FrameSpin + dt
-        if self.FrameSpin >= 3.6 then
-            fade.isActive = true
-        end
-        if self.FrameSpin >= 3.8 then
-            self.ParentMinigame:setMinigame(nil)
-        end
-
-        -- Increment letterChangeCounter and check if it's time to add a new letter
-        self.letterChangeCounter = self.letterChangeCounter + dt
-        if self.letterChangeCounter >= self.letterChangeThreshold then
-            self.completedIndex = math.min(self.completedIndex + 1, 9) -- 9 is the length of "completed"
-            self.letterChangeCounter = 0
-        end
- 
-    else
-
-        local totalFrames = 35 -- Change this to the number of frames in your animation
-
-        self.frameChangeCounter = self.frameChangeCounter + dt
-
-        if self.frameChangeCounter >= self.frameChangeThreshold then
-            if love.keyboard.isDown('right') then
-                local currentFrame = self.bowlingballAnimation.position
-                self.bowlingballAnimation:gotoFrame((currentFrame % totalFrames) + 1)
-            elseif love.keyboard.isDown('left') then
-                local currentFrame = self.bowlingballAnimation.position
-                self.bowlingballAnimation:gotoFrame(((currentFrame - 2) % totalFrames) + 1)
-            end
-            self.frameChangeCounter = 0
-        end
-
-        local currentFrame = self.bowlingballAnimation.position
-
-        for i, texture in ipairs(self.textures) do
-            if currentFrame >= texture.frameStart and currentFrame <= texture.frameEnd then
-                texture.x = ((w / 30) * (currentFrame - texture.frameStart)) + texture.offset
-            end
+    for i, texture in ipairs(self.textures) do
+        if currentFrame >= texture.frameStart and currentFrame <= texture.frameEnd then
+            texture.x = ((w / 30) * (currentFrame - texture.frameStart)) + texture.offset
         end
     end
 end
-function Minigame1:draw()
+function Minigame1:updateAnimation(dt)
+    if self.FrameSpin == 0 then
+        self.bowlingballAnimation:gotoFrame(1)
+    end
+    self.bowlingballAnimation:update(dt)
+
+    self.FrameSpin = self.FrameSpin + dt
+    if self.FrameSpin >= 3.5 then
+        print('hi')
+        fade.startFade()
+    end
+    if self.FrameSpin >= 3.8 then
+        self.ParentMinigame:setMinigame(nil)
+    end
+end
+
+function Minigame1:updateLetterChange(dt)
+    -- Increment letterChangeCounter and check if it's time to add a new letter
+    self.letterChangeCounter = self.letterChangeCounter + dt
+    if self.letterChangeCounter >= self.letterChangeThreshold then
+        self.completedIndex = math.min(self.completedIndex + 1, 9) -- 9 is the length of "completed"
+        self.letterChangeCounter = 0
+    end
+end
+
+function Minigame1:updateFrameChange(dt)
+    local totalFrames = 35 -- Change this to the number of frames in your animation
+
+    self.frameChangeCounter = self.frameChangeCounter + dt
+
+    if self.frameChangeCounter >= self.frameChangeThreshold then
+        if love.keyboard.isDown('right') then
+            local currentFrame = self.bowlingballAnimation.position
+            self.bowlingballAnimation:gotoFrame((currentFrame % totalFrames) + 1)
+        elseif love.keyboard.isDown('left') then
+            local currentFrame = self.bowlingballAnimation.position
+            self.bowlingballAnimation:gotoFrame(((currentFrame - 2) % totalFrames) + 1)
+        end
+        self.frameChangeCounter = 0
+    end
+end
+function Minigame1:updateImages()
+    if love.timer.getTime() - lastSwitch >= 0.5 then
+        -- Switch the image
+        if currentImage2 == mouseClick then
+            currentImage2 = mouse
+        else
+            currentImage2 = mouseClick
+        end
+        if currentImage == keyboardArrows then
+            currentImage = horizontalArrows
+        else
+            currentImage = keyboardArrows
+        end
+
+        -- Update the time of the last switch
+        lastSwitch = love.timer.getTime()
+    end
+end
+function Minigame1:update(dt)
+    local mouseX, mouseY = love.mouse.getPosition()
+
     if #self.textures == 0 then
-        love.graphics.setFont(customFont)
+        self:updateAnimation(dt)
+        self:updateLetterChange(dt)
+    else
+        self:updateFrameChange(dt)
+        self:updateTextures(dt)
+    end
+    self:updateImages()
+    for _, particleData in ipairs(allParticleData) do
+        particleData.system:update(dt)
+        particleData.system:setPosition(mouseX, mouseY)
+    end
+
+end
+
+function Minigame1:draw()
+
+    love.graphics.print("Controls:", 50, h - 300, 0, 0.5, 0.5)
+    love.graphics.draw(currentImage, 80, h - 250, 0, 2, 2)
+    love.graphics.print("= Rotate ball", 200, h - 200, 0, 0.5, 0.5)
+    love.graphics.draw(currentImage2, 80, h - 150, 0, 2, 2)
+    love.graphics.print("= Clean blood", 200, h - 100, 0, 0.5, 0.5)
+
+    if #self.textures == 0 then
         love.graphics.print(string.sub("completed", 1, self.completedIndex), w/2 - 200, 100, 0, 1, 1)
     end
-    self.bowlingballAnimation:draw(self.bowlingball, w/2, h/2 + 100, 0, 6, 7, self.spriteWidth/2, self.spriteHeight/2)
+    self.bowlingballAnimation:draw(self.bowlingball, w/2, h/2 + 100, 0, 5, 6, self.spriteWidth/2, self.spriteHeight/2)
     local currentFrame = self.bowlingballAnimation.position
     for i, texture in ipairs(self.textures) do
         if currentFrame >= texture.frameStart and currentFrame <= texture.frameEnd then
@@ -120,12 +193,21 @@ function Minigame1:draw()
             love.graphics.setColor(1, 1, 1, 1)
         end
     end
-        love.graphics.print(currentFrame, 10, 10, 0, 3, 3)
-    end
+    love.graphics.print(currentFrame, 10, 10, 0, 3, 3)
+    for _, particleData in ipairs(allParticleData) do
+		love.graphics.draw(particleData.system)
+	end
+end
+
     
 
 function Minigame1:mousepressed(x, y, button)
+
     if button == 1 then
+        for _, particleData in ipairs(allParticleData) do
+            particleData.system:start() -- Start emitting particles
+            particleData.system:emit(particleData.emitAtStart)
+        end
         for i = #self.textures, 1, -1 do
             local texture = self.textures[i]
             local textureWidth, textureHeight = self.texture:getDimensions()
@@ -139,6 +221,14 @@ function Minigame1:mousepressed(x, y, button)
                 end
                 break 
             end
+        end
+    end
+end
+
+function Minigame1:mousereleased(x, y, button)
+    if button == 1 then
+        for _, particleData in ipairs(allParticleData) do
+            particleData.system:stop() -- Stop emitting particles when mouse button is released
         end
     end
 end
