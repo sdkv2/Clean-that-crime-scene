@@ -44,11 +44,12 @@ function player:initialize()
         [self.animations.up] = {idle = self.animations.upidle},
         [self.animations.down] = {idle = self.animations.downidle},
     }
+    self.name = 'Butler'
 end
 
 
 function player:draw()
-    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 1.5, nil, self.spriteWidth/2, self.spriteHeight/2)
+    return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, nil, 1.25, nil, self.spriteWidth/2, self.spriteHeight/2)
 end
 
 function player:moveCheck()
