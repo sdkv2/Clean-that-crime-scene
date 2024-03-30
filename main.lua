@@ -126,6 +126,7 @@ function love.load()
 
 end
 
+
 function map()
     gameMap:drawLayer(gameMap.layers['Floor'])
     gameMap:drawLayer(gameMap.layers['TopWall'])
@@ -212,35 +213,39 @@ function camCheck(zoom)
     end
 end
 
+function updateAlphaValues(dt)
+    if increasing then
+        delay = delay + dt * 2
+        if delay >= delayMax then
+            delay = 0
+            alphaIndex = alphaIndex + 1
+            if alphaIndex > #alphaValues then
+                alphaIndex = #alphaValues
+                increasing = false
+            end
+            alpha = alphaValues[alphaIndex]
+        end
+    else
+        delay = delay + dt * 1.6
+        if delay >= delayMax then
+            delay = 0
+            alphaIndex = alphaIndex - 1
+            if alphaIndex < 1 then
+                alphaIndex = 1
+                increasing = true
+            end
+            alpha = alphaValues[alphaIndex]
+        end
+    end
+end
+
 
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
             gameState = PLAYING
         end
-        if increasing then
-            delay = delay + dt * 2
-            if delay >= delayMax then
-                delay = 0
-                alphaIndex = alphaIndex + 1
-                if alphaIndex > #alphaValues then
-                    alphaIndex = #alphaValues
-                    increasing = false
-                end
-                alpha = alphaValues[alphaIndex]
-            end
-        else
-            delay = delay + dt * 1.6
-            if delay >= delayMax then
-                delay = 0
-                alphaIndex = alphaIndex - 1
-                if alphaIndex < 1 then
-                    alphaIndex = 1
-                    increasing = true
-                end
-                alpha = alphaValues[alphaIndex]
-            end
-        end
+        updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
         world:update(dt)
@@ -267,9 +272,9 @@ function love.update(dt)
             -- If not interacting with an object, check for player movement
             if target == nil then
                 player:moveCheck()
-                camCheck(zoom)
                 movePlayer(player, dt)
             end
+            camCheck(zoom)
 
             --Checks if the player is in the loadzone or if they are able to interact with an object
             player:update(dt)
@@ -291,6 +296,7 @@ function love.update(dt)
             player.isMoving = false
         end
     end
+    fade.handleFade(dt)
 end
 function love.keypressed(key)
     --If chatting is true, the player can press z to move to the next line of text
@@ -312,6 +318,11 @@ function love.keypressed(key)
         if key == "j" then
             fade.isActive = true
             minigame:setMinigame(1)
+
+        end
+        if key == "l" then
+            fade.isActive = true
+            minigame:setMinigame(2)
 
         end
     end
@@ -359,5 +370,13 @@ function love.draw()
             end
             fade.draw() -- Moved outside the if-else block
         end)
+    end
+end
+
+
+function love.mousereleased(x,y, button)
+    print(minigame.currentMinigame)
+    if minigame.currentMinigame ~= nil then
+        minigame:mousereleased(x, y, button)
     end
 end
