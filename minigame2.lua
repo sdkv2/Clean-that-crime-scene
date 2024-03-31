@@ -83,8 +83,14 @@ function Minigame2:draw()
     love.graphics.rectangle('fill', 0, screenHeight - rectHeight, rectWidth, rectHeight)    
 end
 
+
 function Minigame2:mousepressed(x, y, button)
 
 end
+
+function Minigame2:mousereleased(x, y, button)
+    
+end
+
 
 return Minigame2

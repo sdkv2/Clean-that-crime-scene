@@ -13,6 +13,15 @@ chat.speaker = nil
 chat.chatting = false
 chat.firstSpeaker = player
 chat.secondSpeaker = nil
+local time = 0
+local tween = require 'libraries.tween'
+local currentColor = {1, 0.396, 0.129, 0.6}
+local colors = {
+    kyle = {1, 0.396, 0.129, 0.6},
+    player = {0.2, 0.2, 0.2, 0.6}
+}
+local colorTween = nil
+local complete = true
 
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
@@ -37,6 +46,9 @@ function chat:chat(npc, subtable)
         self.line = 1
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
+    end
+    if chat.firstSpeaker then
+        currentColor = colors[chat.firstSpeaker]
     end
     local customFont = love.graphics.newFont('MS_PAIN.ttf', 45) -- Change the path and size to match your font
     love.graphics.setFont(customFont)
@@ -170,24 +182,48 @@ function chat:progressChat(dt)
 end
 
 function chat:update(dt)
-    
+    time = time + dt
+
     if invert == false then
         self:progressChat(dt)
     end
     if chat.complete == false then
         chat.rectangles, chat.complete = border(dt, chat.rectangles, chat.invert, true)
     end
+    
+    if chat.speaker == kyle and complete == true then
+        if currentColor[1] ~= colors['kyle'][1] or currentColor[2] ~= colors['kyle'][2] or currentColor[3] ~= colors['kyle'][3] or currentColor[4] ~= colors['kyle'][4] then
+            colorTween = tween.new(0.3, currentColor, colors['kyle'], tween.easing.inOutQuad)
+            complete = false
+        end
+    elseif chat.speaker == player and complete == true then
+        if currentColor[1] ~= colors['player'][1] or currentColor[2] ~= colors['player'][2] or currentColor[3] ~= colors['player'][3] or currentColor[4] ~= colors['player'][4] then
+            colorTween = tween.new(0.3, currentColor, colors['player'], tween.easing.inOutQuad)
+            complete = false
+        end
+    end
+    if colorTween then
+        complete = colorTween:update(dt)
+    end
+
 
 
 end
 
 function chat:draw()
     for num, rect in ipairs(chat.rectangles) do
-        love.graphics.setColor(181/255, 56/255, 100/255, 1)
-        love.graphics.rectangle('fill', rect.x + 10, rect.y + 60, rect.width, rect.height, 5 , 5)
-        love.graphics.setColor(0,0,0, 1)
-        love.graphics.rectangle('fill', rect.x, rect.y + 70, rect.width, rect.height - 70, 5, 5)
-        love.graphics.setColor(1,1,1)
+        love.graphics.setColor(unpack(currentColor))
+        love.graphics.push()
+        love.graphics.translate(rect.x + rect.width / 2 + math.cos(time) * 7 + 5, rect.y + 60 + rect.height / 2 + math.sin(time) * 10)
+        love.graphics.rotate(math.rad(1)) -- Rotate by 45 degrees
+        love.graphics.rectangle('fill', -rect.width / 2 + 5, -rect.height / 2, rect.width- 10, rect.height, 5 , 5)
+        love.graphics.pop() -- Restore the coordinate system
+
+        
+        love.graphics.setColor(0, 0, 0, 1) 
+        love.graphics.rectangle('fill', rect.x, rect.y + 70 + math.sin(time), rect.width, rect.height - 70, 5, 5)
+        love.graphics.setColor(1, 1, 1, 1) 
+
         if chat.firstSpeaker then
             if chat.speaker == chat.firstSpeaker then
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)

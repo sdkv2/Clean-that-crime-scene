@@ -333,9 +333,8 @@ function love.keypressed(key)
 end
 end
 
-function love.draw()
-    if gameState == TITLE then
-        love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
+function titleDraw()
+    love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
 
         love.graphics.setColor(1, 1, 1, alpha)
 
@@ -350,6 +349,11 @@ function love.draw()
         love.graphics.setColor(1, 1, 1, alpha) -- Set the color to white with the current alpha
         love.graphics.draw(TitleText, TitleWidth, TitleHeight)
         love.graphics.setColor(1, 1, 1)
+    end
+function love.draw()
+    if gameState == TITLE then
+        titleDraw()
+        
 
     else
         effect(function()   
