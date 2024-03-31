@@ -356,7 +356,7 @@ function love.draw()
         
 
     else
-        effect(function()   
+        effect(function() 
             if minigame.currentMinigame ~= nil then
                 minigame:draw()
                 myTimer:draw()
