@@ -214,14 +214,14 @@ function chat:draw()
     for num, rect in ipairs(chat.rectangles) do
         love.graphics.setColor(unpack(currentColor))
         love.graphics.push()
-        love.graphics.translate(rect.x + rect.width / 2 + math.cos(time) * 7 + 5, rect.y + 60 + rect.height / 2 + math.sin(time) * 10)
-        love.graphics.rotate(math.rad(1)) -- Rotate by 45 degrees
+        love.graphics.translate(rect.x + rect.width / 2  + 5, rect.y + 60 + rect.height / 2)
+        love.graphics.rotate(math.rad(1.5)) -- Rotate by 45 degrees
         love.graphics.rectangle('fill', -rect.width / 2 + 5, -rect.height / 2, rect.width- 10, rect.height, 5 , 5)
         love.graphics.pop() -- Restore the coordinate system
 
         
         love.graphics.setColor(0, 0, 0, 1) 
-        love.graphics.rectangle('fill', rect.x, rect.y + 70 + math.sin(time), rect.width, rect.height - 70, 15, 15)
+        love.graphics.rectangle('fill', rect.x, rect.y + 70, rect.width, rect.height - 70, 15, 15)
         love.graphics.setColor(1, 1, 1, 1) 
 
         if chat.firstSpeaker then
