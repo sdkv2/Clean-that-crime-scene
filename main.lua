@@ -352,7 +352,7 @@ function love.draw()
         love.graphics.setColor(1, 1, 1)
 
     else
-        effect(function()   
+        effect(function() 
             if minigame.currentMinigame ~= nil then
                 minigame:draw()
                 myTimer:draw()
