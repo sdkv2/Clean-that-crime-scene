@@ -112,11 +112,23 @@ end
 function chat:playSound()
     local length = 0.1 -- The length of the sound in seconds
     local rate = 44100 -- The sample rate of the sound
-    local frequency = math.random(75, 100)
+    local frequency 
     local soundData = love.sound.newSoundData(math.floor(length*rate), rate, 16, 1)
-    local unisonCount = 4 -- The number of unison voices
-    local detuneAmount = 0.1 -- The amount of detuning for the unison voices
+    local unisonCount
+    local detuneAmount
     local phase = {}
+    if chat.speaker == player then
+        rate = 44100 -- The sample rate of the sound
+        frequency = math.random(75, 100)
+        unisonCount = 4 -- The number of unison voices
+        detuneAmount = 0.1 -- The amount of detuning for the unison voices
+
+    elseif chat.speaker == kyle then
+        rate = 44100 -- The sample rate of the sound
+        frequency = math.random(100, 125)
+        unisonCount = 8 -- The number of unison voices
+        detuneAmount = 0.1 -- The amount of detuning for the unison voices
+    end
     for j=1, unisonCount do
         phase[j] = 0
     end
@@ -213,17 +225,15 @@ end
 function chat:draw()
     for num, rect in ipairs(chat.rectangles) do
         love.graphics.setColor(unpack(currentColor))
-        love.graphics.push()
-        love.graphics.translate(rect.x + rect.width / 2  + 5, rect.y + 60 + rect.height / 2)
-        love.graphics.rotate(math.rad(1.5)) -- Rotate by 45 degrees
-        love.graphics.rectangle('fill', -rect.width / 2 + 5, -rect.height / 2, rect.width- 10, rect.height, 5 , 5)
-        love.graphics.pop() -- Restore the coordinate system
-
-        
+        love.graphics.rectangle('fill', rect.x - 5, rect.y + 60, rect.width , rect.height + 5, 15, 15)
         love.graphics.setColor(0, 0, 0, 1) 
         love.graphics.rectangle('fill', rect.x, rect.y + 70, rect.width, rect.height - 70, 15, 15)
         love.graphics.setColor(1, 1, 1, 1) 
-
+        if chat.speaker == chat.firstSpeaker then
+            love.graphics.print(chat.speaker.name, rect.x + 128 * 2, rect.y + 200, 0, 1, 1)
+        elseif chat.speaker == chat.secondSpeaker then
+            love.graphics.print(chat.speaker.name, rect.x + rect.width - 128 * 3, rect.y + 200, 0, 1, 1)
+        end
         if chat.firstSpeaker then
             if chat.speaker == chat.firstSpeaker then
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
