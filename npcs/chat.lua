@@ -221,7 +221,7 @@ function chat:draw()
 
         
         love.graphics.setColor(0, 0, 0, 1) 
-        love.graphics.rectangle('fill', rect.x, rect.y + 70 + math.sin(time), rect.width, rect.height - 70, 5, 5)
+        love.graphics.rectangle('fill', rect.x, rect.y + 70 + math.sin(time), rect.width, rect.height - 70, 15, 15)
         love.graphics.setColor(1, 1, 1, 1) 
 
         if chat.firstSpeaker then
@@ -229,7 +229,7 @@ function chat:draw()
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
             else
                 love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
-                chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2) -- Slide the portrait
+                chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
                 love.graphics.setColor(1,1,1) -- Reset the color
             end
         end
@@ -238,7 +238,7 @@ function chat:draw()
                 chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2)
             else
                 love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
-                chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2) -- Slide the portrait
+                chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2)
                 love.graphics.setColor(1,1,1) -- Reset the color
             end
         end
