@@ -184,10 +184,25 @@ function loadNewMap(mapPath,x,y)
         wall:setType('static')
         table.insert(walls, wall)
         if obj.name == 'Door' then
-            Door2 = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
+            Door = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
 
         end
-        
+        if obj.name == 'Door1' then
+            Door1 = interactable:new('Door1', obj.x, obj.y, obj.width, obj.height)
+
+        end
+        if obj.name == 'Door2' then
+            Door2 = interactable:new('Door2', obj.x, obj.y, obj.width, obj.height)
+
+        end
+        if obj.name == 'Door3' then
+            Door3 = interactable:new('Door3', obj.x, obj.y, obj.width, obj.height)
+
+        end
+        if obj.name == 'Door4' then
+            Door4 = interactable:new('Door4', obj.x, obj.y, obj.width, obj.height)
+
+        end
     end
     
 end
