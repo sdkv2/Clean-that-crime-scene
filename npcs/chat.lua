@@ -229,11 +229,6 @@ function chat:draw()
         love.graphics.setColor(0, 0, 0, 1) 
         love.graphics.rectangle('fill', rect.x, rect.y + 70, rect.width, rect.height - 70, 15, 15)
         love.graphics.setColor(1, 1, 1, 1) 
-        if chat.speaker == chat.firstSpeaker then
-            love.graphics.print(chat.speaker.name, rect.x + 128 * 2, rect.y + 200, 0, 1, 1)
-        elseif chat.speaker == chat.secondSpeaker then
-            love.graphics.print(chat.speaker.name, rect.x + rect.width - 128 * 3, rect.y + 200, 0, 1, 1)
-        end
         if chat.firstSpeaker then
             if chat.speaker == chat.firstSpeaker then
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
