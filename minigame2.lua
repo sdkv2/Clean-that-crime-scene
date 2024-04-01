@@ -19,7 +19,14 @@ local handWidth = handSprite:getWidth()
 local handHeight = handSprite:getHeight()
 local handRaised = false
 local handSpawned = false
-function Minigame2.new()
+local broomStopped = false
+local score = 0
+local tween = require 'libraries.tween'
+local broomTween = nil
+local ParentMinigame
+
+function Minigame2.new(Parent)
+    ParentMinigame = Parent
     screenWidth, screenHeight = love.graphics.getDimensions()
     rectWidth = screenWidth
     handY = screenHeight + handHeight
@@ -42,24 +49,64 @@ function Minigame2:keypressed(key)
 end
 
 function Minigame2:broomWiggle(dt)
-    broomR = broomR + 3 * math.pi * love.timer.getDelta()
-    broomY = 200 + math.sin(broomR) * 5
+    
+end
+local broomTween = nil
+local broomPos = {y = 0}
+local UpwardTween = false
+function Minigame2:broomMove(dt)
+    if not broomStopped then
+        broomR = broomR + 3 * math.pi * love.timer.getDelta()
+        broomY = 200 + math.sin(broomR) * 5
+        if Reverse then
+            broomX = broomX - 400 * dt * (score > 1 and score or 1)
+        else
+            broomX = broomX + 400 * dt * (score > 1 and score or 1)
+        end
+        if broomX > screenWidth * 0.7 then
+            Reverse = true
+        elseif broomX < screenWidth * 0.2 then
+            Reverse = false
+        end
+    else
+        if broomTween == nil then
+            broomPos.y = broomY
+            broomTween = tween.new(1, broomPos, {y = screenHeight - 300}, 'inQuad')
+        else
+            local complete = broomTween:update(dt)
+            broomY = broomPos.y
+            if complete then
+                if UpwardTween == true then
+                    broomPos = {y = 200}
+                    UpwardTween = false
+                    broomStopped = false
+                    broomTween = nil
+                    complete = false
+                    print('complete') 
+                else
+                    broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
+                    UpwardTween = true
+                end
+            end
+        end
+    end
 end
 
-function Minigame2:broomMove(dt)
-    if Reverse then
-        broomX = broomX - 400 * dt
-    else
-        broomX = broomX + 400 * dt
-    end
-    if broomX > screenWidth * 0.7 then
-        Reverse = true
-    elseif broomX < screenWidth * 0.2 then
-        Reverse = false
-    end
-end
 
 function Minigame2:update(dt)
+    if score == 4 then
+        fade.startFade()
+        ParentMinigame:setMinigame(nil)
+    end
+    if broomX < handX + handWidth and broomX + broomSpriteWidth > handX and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
+        handSpawned = false
+        handRaised = false
+        handY = screenHeight + handHeight
+        score = score + 1
+        broomPos.y = broomY
+        broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
+        UpwardTween = true
+    end
     self:broomWiggle(dt)
     self:broomMove(dt)
     if not handRaised then
@@ -71,6 +118,7 @@ function Minigame2:update(dt)
         currenTime = 0
     end
     currenTime = currenTime + dt
+
     
 end
 
@@ -85,7 +133,9 @@ end
 
 
 function Minigame2:mousepressed(x, y, button)
-
+    if button == 1 then
+        broomStopped = true
+    end
 end
 
 function Minigame2:mousereleased(x, y, button)
