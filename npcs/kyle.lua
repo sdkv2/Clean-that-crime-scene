@@ -10,7 +10,6 @@ end
 
 function Kyle:interact()
     self.currentAnimation = self.animations['up']
-    print(self.x)
     chat:chat(self.name, '1')
 end
 
@@ -29,7 +28,6 @@ function Kyle:setY(y)
 end
 
 function Kyle:draw()
-    print(self.x, self.y)
     return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, self.r, self.scale, nil, self.width / 2, self.height / 2)
 end
 

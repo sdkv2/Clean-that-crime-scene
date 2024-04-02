@@ -11,6 +11,9 @@ local currentImage2 = mouse
 local currentImage = keyboardArrows
 local lastSwitch = love.timer.getTime()
 local allParticleData = require 'libraries.bubbles'
+local anim8 = require 'libraries/anim8'
+local bloodSplatters = love.graphics.newImage('sprites/blood.png')
+local g = anim8.newGrid(128, 128, bloodSplatters:getWidth(), bloodSplatters:getHeight())
 
 function Minigame1:initializeOrResetParticles()
 	for _, particleData in ipairs(allParticleData) do
@@ -46,8 +49,7 @@ function Minigame1.new(ParentMinigame)
     self.spriteWidth, self.spriteHeight = self.bowlingballAnimation:getDimensions()
     self.frameChangeCounter = 0
     self.frameChangeThreshold = 0.05
-    self.texture = love.graphics.newImage('sprites/blood.png') 
-    self.textureWidth, self.textureHeight = self.texture:getDimensions()
+    self.textureWidth, self.textureHeight = 128, 128
     self.FrameSpin = 0
     self.completedIndex = 1
     self.letterChangeThreshold = 0.3
@@ -55,28 +57,79 @@ function Minigame1.new(ParentMinigame)
     self.textures = {
 
         {
-            y = h/2,
+            y = h/2 - 50,
             offset = 650,
             frameStart = 1,
             frameEnd = 10,
             opacity = 1
         },
         {
-            y = h/2 - 170,
-            offset = 750,
-            frameStart = 2,
-            frameEnd = 8,
+            y = h/2 - 50,
+            offset = 850,
+            frameStart = 1,
+            frameEnd = 7,
+            opacity = 1
+        },
+        {
+            y = h/2 + 100,
+            offset = 650,
+            frameStart = 3,
+            frameEnd = 9,
             opacity = 1
         },
         {
             y = h/2 - 130,
             offset = 750,
-            frameStart = 10,
-            frameEnd = 17,
+            frameStart = 7,
+            frameEnd = 14,
             opacity = 1
         },
-        -- Add more textures here...
+        {
+            y = h/2 - 150,
+            offset = 700,
+            frameStart = 4,
+            frameEnd = 11,
+            opacity = 1
+        },
+        {
+            y = h/2 - 100,
+            offset = 700,
+            frameStart = 10,
+            frameEnd = 15,
+            opacity = 1
+        },
+        {
+            y = h/2 - 50,
+            offset = 700,
+            frameStart = 15,
+            frameEnd = 23,
+            opacity = 1
+        },
+        {
+            y = h/2 - 100,
+            offset = 700,
+            frameStart = 20,
+            frameEnd = 28,
+            opacity = 1
+        },
+        {
+            y = h/2 - 150,
+            offset = 700,
+            frameStart = 25,
+            frameEnd = 33,
+            opacity = 1
+        },
+        {
+            y = h/2 - 200,
+            offset = 700,
+            frameStart = 28,
+            frameEnd = 35,
+            opacity = 1
+        }
     }
+    for i, texture in ipairs(self.textures) do
+        texture.image = anim8.newAnimation(g(math.random(1,5), 1), 0.1)
+    end
     return self
     
 end
@@ -189,7 +242,7 @@ function Minigame1:draw()
     for i, texture in ipairs(self.textures) do
         if currentFrame >= texture.frameStart and currentFrame <= texture.frameEnd then
             love.graphics.setColor(1, 1, 1, texture.opacity) 
-            love.graphics.draw(self.texture, texture.x, texture.y, 0, 3, 3)
+            texture.image:draw(bloodSplatters, texture.x, texture.y, 0, 1, 1)
             love.graphics.setColor(1, 1, 1, 1)
         end
     end
@@ -210,8 +263,7 @@ function Minigame1:mousepressed(x, y, button)
         end
         for i = #self.textures, 1, -1 do
             local texture = self.textures[i]
-            local textureWidth, textureHeight = self.texture:getDimensions()
-            textureWidth, textureHeight = textureWidth * 3, textureHeight * 3 -- Adjust for scale
+            local textureWidth, textureHeight = 128, 128
             if texture.x and texture.y and x >= texture.x and x <= texture.x + textureWidth and y >= texture.y and y <= texture.y + textureHeight then
                 if texture.opacity then
                     texture.opacity = texture.opacity - 0.5

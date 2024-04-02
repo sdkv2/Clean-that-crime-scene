@@ -1,7 +1,6 @@
 if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
 chat = require("npcs.chat")
 local loadzone = require("loadzone")
-local interact = love.graphics.newImage('sprites/interact.png')
 interactable = require 'interact'
 local isInteractable
 rectangleState = 'waiting'
@@ -31,6 +30,7 @@ local text = love.graphics.newText(font, "Press Enter to start")
 local AvailableLoadZones = {}
 local cutsceneLogic = require 'cutscene'
 Kyle = require 'npcs/kyle'
+local interact 
 
 function love.load()
     
@@ -38,7 +38,7 @@ function love.load()
     target = nil
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
-
+    interact = love.graphics.newImage('sprites/interact.png')
     screenWidth, screenHeight = love.window.getDesktopDimensions()
     local fullscreenMode = {fullscreen = false, fullscreentype = "desktop"}
     love.window.setMode(screenWidth, screenHeight, fullscreenMode)
@@ -287,20 +287,16 @@ end
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = CUTSCENE
-            
-            cutsceneLogic:init()
+            gameState = PLAYING
             complete = false
-            
             kyle:setX(986)
-            kyle:setY(400)
-
+            kyle:setY(400)            
         end 
         updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
+            cutsceneLogic:init()
             pan(cam, kyle, dt)
-            chat:update(dt)
             cutsceneLogic:update(dt)
             world:update(dt)
             
@@ -316,9 +312,12 @@ function love.update(dt)
 
             world:update(dt)
 
+
             -- If not interacting with an object, check for player movement
             if target == nil then
                 player:moveCheck()
+                love.graphics.setFont(love.graphics.newFont(12))
+
                 movePlayer(player, dt)
             end
             pan(cam, player, dt)
@@ -344,6 +343,8 @@ function love.update(dt)
             player.isMoving = false
         end
     end
+    chat:update(dt)
+
     fade.handleFade(dt)
 end
 function love.keypressed(key)
@@ -360,6 +361,7 @@ function love.keypressed(key)
                 object = player.interactables[1]:getObject()
                 target = object
                 object:interact()
+                print('hi')
             end
         end
 

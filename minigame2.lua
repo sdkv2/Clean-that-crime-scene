@@ -24,13 +24,22 @@ local score = 0
 local tween = require 'libraries.tween'
 local broomTween = nil
 local ParentMinigame
+local anim8 = require 'libraries.anim8'
 local mouse = love.graphics.newImage('sprites/mouse.png')
 local mouseClick = love.graphics.newImage('sprites/mouse_left.png')
 local currentImage2 = mouse
 local lastSwitch = love.timer.getTime()
 local customFont = love.graphics.newFont('MS_PAIN.ttf', 72)
 local allParticleData = require 'blood'
-
+local trashChute = love.graphics.newImage('sprites/trashchute1.png')
+local trashChute2 = love.graphics.newImage('sprites/trashchute2.png')
+local trashChute3 = love.graphics.newImage('sprites/trashchute3.png')
+local kiranLimb = love.graphics.newImage('sprites/kiranlimbs.png')
+local g = anim8.newGrid(64, 128, kiranLimb:getWidth(), kiranLimb:getHeight())
+local kiranLimbs = anim8.newAnimation(g('1-4', 1), 0.1)
+local buttonSprite = love.graphics.newImage('sprites/button.png')
+local g2 = anim8.newGrid(32, 32, buttonSprite:getWidth(), buttonSprite:getHeight())
+local button = anim8.newAnimation(g2('1-2', 1), 0.1)
 function Minigame2.new(Parent)
     love.graphics.setFont(customFont)
     ParentMinigame = Parent
@@ -56,7 +65,7 @@ function Minigame2:updateImages()
     end
 end
 function Minigame2:spawnHand()
-    handX = love.math.random(screenWidth * 0.3, screenWidth * 0.6)
+    handX = love.math.random(screenWidth * 0.2, screenWidth * 0.6)
 end
 
 function Minigame2:raiseHand(dt)
@@ -116,8 +125,7 @@ end
 
 function Minigame2:update(dt)
     if score == 4 then
-        fade.startFade()
-        ParentMinigame:setMinigame(nil)
+        ParentMinigame:completeMinigame(2)
     end
     if broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
         handSpawned = false
@@ -155,17 +163,39 @@ function Minigame2:update(dt)
 end
 
 function Minigame2:draw()
+    love.graphics.draw(trashChute, 0, 0, 0, 2.5, 2.5)
+    --love.graphics.draw(trashChute2, 0, 0 , 0, 2.5, 2.5)
     for _, particleData in ipairs(allParticleData) do
 		love.graphics.draw(particleData.system)
 	end
     love.graphics.draw(broomSprite, broomX, broomY, 0, 2, 2)
+    if score == 0 then
+        kiranLimbs:gotoFrame(2)
+        kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
+    end
+    if score == 1 then
+        kiranLimbs:gotoFrame(1)
+        kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
+    end
+    if score == 2 then
+        kiranLimbs:gotoFrame(4)
+        kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
+    end
+    if score == 3 then
+        kiranLimbs:gotoFrame(3)
+        kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
+    end
     love.graphics.print(broomX, 10, 10)
     love.graphics.print(handY, 20, 20)
-
-    love.graphics.draw(handSprite, handX, handY, 0, 3, 3)
+    love.graphics.draw(trashChute3, 0, 0, 0, 2.5, 2.5)
     love.graphics.print("Controls:", 50, h - 200, 0, 0.5, 0.5)
     love.graphics.draw(currentImage2, 30, h - 150, 0, 2, 2)
     love.graphics.print("= HIT BODY", 150, h - 100, 0, 0.5, 0.5) 
+    button:draw(buttonSprite, 95, 425, 0, 3, 3)
+
+
+    
+
 end
 
 
