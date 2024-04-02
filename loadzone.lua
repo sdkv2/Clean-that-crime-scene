@@ -2,6 +2,10 @@
 local class = require 'libraries/middleclass'
 
 local LoadZone = class('LoadZone')
+function LoadZone:new(name, x, y, width, height, targetMap, spawnX, spawnY)
+    local instance = LoadZone:initialize(name, x, y, width, height, targetMap, spawnX, spawnY)
+    return instance
+end
 
 function LoadZone:initialize(name, x, y, width, height, targetMap, spawnX, spawnY)
     self.name = name
@@ -17,12 +21,18 @@ function LoadZone:initialize(name, x, y, width, height, targetMap, spawnX, spawn
     self.collider:setCollisionClass('LoadZone')
     self.collider:setType('static')
     self.collider:setObject(self)
+    return self
 end
 
 function LoadZone:trigger()
+    player.collider:setPosition(self.spawnX, self.spawnY)
+
     -- Load the target map and set the player's position to the spawn location
     loadNewMap(self.targetMap)
-    player.collider:setPosition(self.spawnX, self.spawnY)
+end
+
+function LoadZone:destroy()
+    self.collider:destroy()
 end
 
 return LoadZone

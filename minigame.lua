@@ -9,7 +9,7 @@ local Minigame3 = require 'minigame3'
 function Minigame.new()
     local self = setmetatable({}, Minigame)
     self.currentMinigame = nil
-    self.completedMinigames = {} -- Add this line
+    self.completedMinigames = {}
     return self
 end
 

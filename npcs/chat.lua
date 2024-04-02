@@ -18,7 +18,8 @@ local tween = require 'libraries.tween'
 local currentColor = {1, 0.396, 0.129, 0.6}
 local colors = {
     kyle = {1, 0.396, 0.129, 0.6},
-    player = {0.2, 0.2, 0.2, 0.6}
+    player = {0.2, 0.2, 0.2, 0.6},
+    kiran = {0, 0, 0.5, 0.6}
 }
 local colorTween = nil
 local complete = true
@@ -76,7 +77,10 @@ function updateAnim(s)
         kyle.portraitAnimation = kyle.portraitExpressions[emotion]
         chat.speaker = kyle
         chat.secondSpeaker = kyle
-
+    elseif portrait == 'kiran' then
+        kiran.portraitAnimation = kiran.portraitExpressions[emotion]
+        chat.speaker = kiran
+        chat.firstSpeaker = kiran
     end
 end
 function chat:nextLine()
@@ -123,7 +127,7 @@ function chat:playSound()
         unisonCount = 4 -- The number of unison voices
         detuneAmount = 0.1 -- The amount of detuning for the unison voices
 
-    elseif chat.speaker == kyle then
+    elseif chat.speaker == kyle or chat.speaker == kiran then
         rate = 44100 -- The sample rate of the sound
         frequency = math.random(100, 125)
         unisonCount = 8 -- The number of unison voices
@@ -213,7 +217,14 @@ function chat:update(dt)
             colorTween = tween.new(0.3, currentColor, colors['player'], tween.easing.inOutQuad)
             complete = false
         end
+
+    elseif chat.speaker == kiran and complete == true then
+        if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
+            colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
+            complete = false
+        end
     end
+
     if colorTween then
         complete = colorTween:update(dt)
     end

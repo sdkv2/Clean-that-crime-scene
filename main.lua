@@ -10,7 +10,6 @@ fade = require 'fade'
 local PLAYING = 1
 local CUTSCENE = 2
 local TITLE = 3
-
 -- Initialize game state
 local gameState = TITLE
 zoom = 2
@@ -29,12 +28,13 @@ local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as nee
 
 local text = love.graphics.newText(font, "Press Enter to start")
 
-
+local AvailableLoadZones = {}
+local cutsceneLogic = require 'cutscene'
+Kyle = require 'npcs/kyle'
 
 function love.load()
     
     local Explosion = require 'npcs/explosion'
-    local Kyle = require 'npcs/kyle'
     target = nil
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -47,8 +47,6 @@ function love.load()
     TitleWidth = (w - text:getWidth()) / 2
     TitleHeight = (h - text:getHeight()) / 2 + 200
     TitleText = love.graphics.newText(font, "Press Enter to start")
-
-    rectangles = {}
     love.graphics.setBackgroundColor(0,0,0)
     anim8 = require 'libraries/anim8'
     sti = require 'libraries/sti'
@@ -69,7 +67,6 @@ function love.load()
     NPC = require 'npc'
     border = require "border"
     Timer = require 'timer'
-    
     npcs = {}
     walls = {}
 
@@ -112,10 +109,6 @@ function love.load()
     mapW = gameMap.width * gameMap.tilewidth
     mapH = gameMap.height * gameMap.tileheight
 
-    explode = Explosion:new(500, 500, 'explosion.png', 72, 100, animation['explosion'], 'explosion', 'explosion.png')
-    kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-
-    Load1 = loadzone:initialize('Kitchen', player.x, player.y - 150, 100, 100, 'maps/2.lua', 100, 100)
     loadNewMap('maps/mansionroomtrial.lua', 300, 300)
 
     cam.x = player.x
@@ -168,6 +161,40 @@ end
 
 function loadNewMap(mapPath,x,y)
     fade.startFade()
+    gameMap = sti(mapPath)
+
+    for _, npc in pairs(npcs) do
+        npc.collider:destroy()
+    end
+    npcs = {}
+    
+    for _, loadzone in pairs(AvailableLoadZones) do
+        loadzone:destroy()
+    end
+    AvailableLoadZones = {}
+
+    if mapPath == 'maps/mansionroomtrial.lua' then
+        kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+        kiran = Kyle:new(1000, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kieran', 'kiranportrait.png')
+        local newLoadZone = loadzone:new('Kitchen', 450, 760, 10, 100, 'maps/kitchen.lua', 1274,516)  -- Create a new instance of the loadzone class
+        table.insert(AvailableLoadZones, newLoadZone)  
+        
+            
+    end
+    if mapPath == 'maps/kitchen.lua' then
+        local newLoadZone = loadzone:new('Living Room', 1500, 516, 10, 100, 'maps/mansionroomtrial.lua', 504, 764)
+        table.insert(AvailableLoadZones, newLoadZone)
+    end
+    world:update(0) 
+
+
+    cam.x = player.collider:getX()
+    cam.y = player.collider:getY()
+
+    
+
+    
+
 
     -- Delete old colliders
     for _, wall in ipairs(walls) do
@@ -177,7 +204,6 @@ function loadNewMap(mapPath,x,y)
     end
     walls = {}
     -- Load new map
-    gameMap = sti(mapPath)
     -- Add new colliders
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
@@ -204,6 +230,9 @@ function loadNewMap(mapPath,x,y)
 
         end
     end
+    
+
+    
     
 end
 
@@ -258,18 +287,23 @@ end
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = PLAYING
-        end
+            gameState = CUTSCENE
+            
+            cutsceneLogic:init()
+            complete = false
+            
+            kyle:setX(986)
+            kyle:setY(400)
+
+        end 
         updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
-        world:update(dt)
-        for _, npc in pairs(npcs) do
-            npc.x = npc.collider:getX() 
-            npc.y = npc.collider:getY()
-            npc.r = npc.collider:getAngle()
-            npc.currentAnimation:update(dt)
-        end
+            pan(cam, kyle, dt)
+            chat:update(dt)
+            cutsceneLogic:update(dt)
+            world:update(dt)
+            
     else
         if minigame.currentMinigame ~= nil then
             minigame:update(dt)
@@ -280,8 +314,6 @@ function love.update(dt)
             player.isMoving = false
             player.currentAnimation:update(dt)
 
-            pan(cam, player, dt)
-            chat:update(dt)
             world:update(dt)
 
             -- If not interacting with an object, check for player movement
@@ -289,6 +321,7 @@ function love.update(dt)
                 player:moveCheck()
                 movePlayer(player, dt)
             end
+            pan(cam, player, dt)
             camCheck(zoom)
 
             --Checks if the player is in the loadzone or if they are able to interact with an object
@@ -369,7 +402,6 @@ function love.draw()
     if gameState == TITLE then
         titleDraw()
         
-
     else
         effect(function() 
             if minigame.currentMinigame ~= nil then
@@ -386,15 +418,19 @@ function love.draw()
                 cam:detach()
                 myTimer:draw()
                 chat:draw()
+                love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
+                love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
             end
             fade.draw() -- Moved outside the if-else block
         end)
+    if gameState == CUTSCENE then
+        cutsceneLogic:draw()
+    end
     end
 end
 
 
 function love.mousereleased(x,y, button)
-    print(minigame.currentMinigame)
     if minigame.currentMinigame ~= nil then
         minigame:mousereleased(x, y, button)
     end
