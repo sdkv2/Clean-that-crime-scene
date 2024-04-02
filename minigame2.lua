@@ -40,6 +40,7 @@ local kiranLimbs = anim8.newAnimation(g('1-4', 1), 0.1)
 local buttonSprite = love.graphics.newImage('sprites/button.png')
 local g2 = anim8.newGrid(32, 32, buttonSprite:getWidth(), buttonSprite:getHeight())
 local button = anim8.newAnimation(g2('1-2', 1), 0.1)
+local chuteY = -900
 function Minigame2.new(Parent)
     love.graphics.setFont(customFont)
     ParentMinigame = Parent
@@ -125,7 +126,11 @@ end
 
 function Minigame2:update(dt)
     if score == 4 then
-        ParentMinigame:completeMinigame(2)
+        if chuteY == 0 then
+            ParentMinigame:completeMinigame(2)
+        else
+            chuteY = chuteY + 100 * dt
+        end
     end
     if broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
         handSpawned = false
@@ -192,6 +197,7 @@ function Minigame2:draw()
     love.graphics.draw(currentImage2, 30, h - 150, 0, 2, 2)
     love.graphics.print("= HIT BODY", 150, h - 100, 0, 0.5, 0.5) 
     button:draw(buttonSprite, 95, 425, 0, 3, 3)
+    love.graphics.draw(trashChute2, 0, chuteY, 0, 2.5, 2.5)
 
 
     
