@@ -39,8 +39,9 @@ local g = anim8.newGrid(64, 128, kiranLimb:getWidth(), kiranLimb:getHeight())
 local kiranLimbs = anim8.newAnimation(g('1-4', 1), 0.1)
 local buttonSprite = love.graphics.newImage('sprites/button.png')
 local g2 = anim8.newGrid(32, 32, buttonSprite:getWidth(), buttonSprite:getHeight())
-local button = anim8.newAnimation(g2('1-2', 1), 0.1)
+local button = anim8.newAnimation(g2('1-2', 1), 0.4)
 local chuteY = -900
+local text = "= HIT BODY"
 function Minigame2.new(Parent)
     love.graphics.setFont(customFont)
     ParentMinigame = Parent
@@ -126,43 +127,45 @@ end
 
 function Minigame2:update(dt)
     if score == 4 then
-        if chuteY == 0 then
-            ParentMinigame:completeMinigame(2)
-        else
-            chuteY = chuteY + 100 * dt
+        if chuteY < 0 then
+            chuteY = chuteY + 400 * dt
+        elseif chuteY >= 0 then
+            button:update(dt)
+            text = "= PRESS BUTTON"
+            
         end
-    end
-    if broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
-        handSpawned = false
-        handRaised = false
-        handY = screenHeight + handHeight
-        score = score + 1
-        broomPos.y = broomY
-        broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
-        UpwardTween = true
+    else
+        if broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
+            handSpawned = false
+            handRaised = false
+            handY = screenHeight + handHeight
+            score = score + 1
+            broomPos.y = broomY
+            broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
+            UpwardTween = true
+            for _, particleData in ipairs(allParticleData) do
+                particleData.system:start() -- Start emitting particles
+                particleData.system:emit(particleData.emitAtStart)
+            end
+        end
         for _, particleData in ipairs(allParticleData) do
-            particleData.system:start() -- Start emitting particles
-            particleData.system:emit(particleData.emitAtStart)
+            particleData.system:update(dt)
+            particleData.system:setPosition(broomX + broomSpriteWidth / 2, broomY + broomSpriteHeight * 2)
+            end
+        self:broomWiggle(dt)
+        self:broomMove(dt)
+        if not handRaised then
+            self:raiseHand(dt)
         end
-    end
-    for _, particleData in ipairs(allParticleData) do
-        particleData.system:update(dt)
-        particleData.system:setPosition(broomX + broomSpriteWidth / 2, broomY + broomSpriteHeight * 2)
+        if currenTime > 1 and not handSpawned then
+            self:spawnHand()
+            handSpawned = true
+            currenTime = 0
         end
-    self:broomWiggle(dt)
-    self:broomMove(dt)
-    if not handRaised then
-        self:raiseHand(dt)
+        currenTime = currenTime + dt
     end
-    if currenTime > 1 and not handSpawned then
-        self:spawnHand()
-        handSpawned = true
-        currenTime = 0
-    end
-    currenTime = currenTime + dt
     Minigame2:updateImages()
-    
-    
+
 
     
 end
@@ -192,12 +195,13 @@ function Minigame2:draw()
     end
     love.graphics.print(broomX, 10, 10)
     love.graphics.print(handY, 20, 20)
+    love.graphics.draw(trashChute2, 0, chuteY, 0, 2.5, 2.5)
+
     love.graphics.draw(trashChute3, 0, 0, 0, 2.5, 2.5)
     love.graphics.print("Controls:", 50, h - 200, 0, 0.5, 0.5)
     love.graphics.draw(currentImage2, 30, h - 150, 0, 2, 2)
-    love.graphics.print("= HIT BODY", 150, h - 100, 0, 0.5, 0.5) 
+    love.graphics.print(text, 150, h - 100, 0, 0.5, 0.5) 
     button:draw(buttonSprite, 95, 425, 0, 3, 3)
-    love.graphics.draw(trashChute2, 0, chuteY, 0, 2.5, 2.5)
 
 
     
