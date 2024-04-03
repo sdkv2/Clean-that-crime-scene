@@ -20,6 +20,8 @@ local handHeight = handSprite:getHeight()
 local handRaised = false
 local handSpawned = false
 local broomStopped = false
+local broomHit = false
+
 local score = 0
 local tween = require 'libraries.tween'
 local broomTween = nil
@@ -42,6 +44,8 @@ local g2 = anim8.newGrid(32, 32, buttonSprite:getWidth(), buttonSprite:getHeight
 local button = anim8.newAnimation(g2('1-2', 1), 0.4)
 local chuteY = -900
 local text = "= HIT BODY"
+local handHit = false
+local handActive = true
 function Minigame2.new(Parent)
     love.graphics.setFont(customFont)
     ParentMinigame = Parent
@@ -50,6 +54,7 @@ function Minigame2.new(Parent)
     handY = screenHeight + handHeight
     local self = setmetatable({}, Minigame2)
     score = 0
+    self:spawnHand()
     return self
 end
 
@@ -70,13 +75,31 @@ function Minigame2:spawnHand()
     handX = love.math.random(screenWidth * 0.2, screenWidth * 0.6)
 end
 
+-- Modify this function
+-- Modify this function
 function Minigame2:raiseHand(dt)
-    handY = handY - 100 * dt
-    if handY < screenHeight - handHeight * 3 - rectHeight then
-        handY = screenHeight - handHeight * 3 - rectHeight
-        handRaised = true
+    if handHit then
+        handY = handY + 200 * dt
+        if handY > screenHeight + handHeight then
+            self:spawnHand()
+
+            handY = screenHeight + handHeight
+            handHit = false
+            handActive = true
+            if score == 2 then
+                kiranLimbs:gotoFrame(4)
+            end
+        end
+    else
+        if handY < screenHeight - handHeight * 3 - rectHeight then
+            handY = screenHeight - handHeight * 3 - rectHeight
+            handActive = true
+        else
+            handY = handY - 100 * dt
+        end
     end
 end
+
 function Minigame2:keypressed(key)
 end
 
@@ -114,6 +137,7 @@ function Minigame2:broomMove(dt)
                     broomStopped = false
                     broomTween = nil
                     complete = false
+                    broomHit = false
                     print('complete') 
                 else
                     broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
@@ -124,7 +148,6 @@ function Minigame2:broomMove(dt)
     end
 end
 
-
 function Minigame2:update(dt)
     if score == 4 then
         if chuteY < 0 then
@@ -132,50 +155,31 @@ function Minigame2:update(dt)
         elseif chuteY >= 0 then
             button:update(dt)
             text = "= PRESS BUTTON"
-            
         end
     else
-        if broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
-            handSpawned = false
-            handRaised = false
-            handY = screenHeight + handHeight
-            score = score + 1
-            broomPos.y = broomY
-            broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
-            UpwardTween = true
-            for _, particleData in ipairs(allParticleData) do
-                particleData.system:start() -- Start emitting particles
-                particleData.system:emit(particleData.emitAtStart)
+        -- Check if the hand is active before checking for a hit
+        if handActive and broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
+            if not broomHit then
+                broomHit = true
+                score = score + 1
+                broomPos.y = broomY
+                broomTween = tween.new(1, broomPos, {y = 200}, 'inQuad')
+                UpwardTween = true
+                -- Set the hand to inactive and hit after it has been hit
+                handActive = false
+                handHit = true
             end
         end
-        for _, particleData in ipairs(allParticleData) do
-            particleData.system:update(dt)
-            particleData.system:setPosition(broomX + broomSpriteWidth / 2, broomY + broomSpriteHeight * 2)
-            end
         self:broomWiggle(dt)
         self:broomMove(dt)
-        if not handRaised then
-            self:raiseHand(dt)
-        end
-        if currenTime > 1 and not handSpawned then
-            self:spawnHand()
-            handSpawned = true
-            currenTime = 0
-        end
-        currenTime = currenTime + dt
+        self:raiseHand(dt)
     end
     Minigame2:updateImages()
-
-
-    
 end
 
 function Minigame2:draw()
     love.graphics.draw(trashChute, 0, 0, 0, 2.5, 2.5)
     --love.graphics.draw(trashChute2, 0, 0 , 0, 2.5, 2.5)
-    for _, particleData in ipairs(allParticleData) do
-		love.graphics.draw(particleData.system)
-	end
     love.graphics.draw(broomSprite, broomX, broomY, 0, 2, 2)
     if score == 0 then
         kiranLimbs:gotoFrame(2)
@@ -185,16 +189,21 @@ function Minigame2:draw()
         kiranLimbs:gotoFrame(1)
         kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
     end
+    
     if score == 2 then
-        kiranLimbs:gotoFrame(4)
         kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
     end
+    
     if score == 3 then
         kiranLimbs:gotoFrame(3)
         kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
     end
-    love.graphics.print(broomX, 10, 10)
-    love.graphics.print(handY, 20, 20)
+    
+    if score == 4 then
+        kiranLimbs:draw(kiranLimb, handX, handY, 0, 3, 3)
+
+    end
+    
     love.graphics.draw(trashChute2, 0, chuteY, 0, 2.5, 2.5)
 
     love.graphics.draw(trashChute3, 0, 0, 0, 2.5, 2.5)
@@ -202,6 +211,8 @@ function Minigame2:draw()
     love.graphics.draw(currentImage2, 30, h - 150, 0, 2, 2)
     love.graphics.print(text, 150, h - 100, 0, 0.5, 0.5) 
     button:draw(buttonSprite, 95, 425, 0, 3, 3)
+    love.graphics.print(broomX, 10, 10)
+    love.graphics.print("Y=" .. handY, 20, 60)
 
 
     
@@ -210,6 +221,16 @@ end
 
 
 function Minigame2:mousepressed(x, y, button)
+    if score == 4 and chuteY >= 0 then
+        if button == 1 then
+            if x > 95 and x < 95 + buttonSprite:getWidth() * 3 and y > 425 and y < 425 + buttonSprite:getHeight() * 3 then
+                print('button pressed')
+                ParentMinigame.completedMinigames[2] = true
+                ParentMinigame.currentMinigame = nil
+                fade.isActive = true
+            end
+        end
+    end
     if button == 1 then
         broomStopped = true
     end
