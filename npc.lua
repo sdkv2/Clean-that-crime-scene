@@ -6,7 +6,7 @@ local NPC = class('NPC')
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
     self.x = x
     self.y = y
-    self.scale = 1
+    self.scale = 1.5
     self.width = spriteWidth
     self.height = spriteHeight
     self.name = name
@@ -24,7 +24,6 @@ function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations
     self.currentAnimation = self.animations['downidle']
     self.collider:setFixedRotation(true)
     self.collider:setCollisionClass('Interactive')
-    self.collider:setType('static')
     self.collider:setObject(self)
     print(portraitSheet)
     if portraitSheet then

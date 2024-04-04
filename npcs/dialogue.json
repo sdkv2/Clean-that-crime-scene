@@ -18,14 +18,13 @@
     },
     "kyle": {
         "1": [
-            {"speaker": "kyle/neutral", "dialogue": "I'm Kyle"},
-            {"speaker": "butler/neutral", "dialogue": "I'm a cooler guy buddy"},
-            {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"},
-            {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"}
+            {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up!"},
+            {"speaker": "kyle/neutral", "dialogue": "What's the rush, Kiran?"},
+            {"speaker": "kiran/neutral", "dialogue": "We're going to be late for the bowling\n tournament."},
+            {"speaker": "kyle/neutral", "dialogue": "Alright, I'm coming."}
         ],
         "2": [
-            {"speaker": "kyle/neutral", "dialogue": "value1"},
-            {"speaker": "property2", "dialogue": "value2"}
+            {"speaker": "kyle/neutral", "dialogue": "Whoops!"}
         ],
         "3": [
             {"speaker": "property1", "dialogue": "value1"},

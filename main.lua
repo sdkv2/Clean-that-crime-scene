@@ -287,15 +287,13 @@ function love.update(dt)
             gameState = CUTSCENE
             cutsceneLogic:init()
             complete = false
-            kyle:setX(986)
-            kyle:setY(400)            
+           
         end 
         updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
             pan(cam, kyle, dt)
             cutsceneLogic:update(dt)
-            world:update(dt)
             
     else
         if minigame.currentMinigame ~= nil then
@@ -307,8 +305,7 @@ function love.update(dt)
             player.isMoving = false
             player.currentAnimation:update(dt)
 
-            world:update(dt)
-
+            
 
             -- If not interacting with an object, check for player movement
             if target == nil then
@@ -330,18 +327,20 @@ function love.update(dt)
 
             chat:update(dt)
 
-            
+            world:update(dt)
+
 
             player.isMoving = false
         end
     end
-    -- Update the NPCs
     for _, npc in pairs(npcs) do
         npc.x = npc.collider:getX() 
         npc.y = npc.collider:getY()
         npc.r = npc.collider:getAngle()
         npc.currentAnimation:update(dt)
     end
+    world:update(dt)
+
     fade.handleFade(dt)
 end
 function love.keypressed(key)
@@ -413,6 +412,9 @@ function love.draw()
                     if isInteractable == true then
                         love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
                     end
+                if gameState == CUTSCENE then
+                    cutsceneLogic:draw()
+                end
                 cam:detach()
                 myTimer:draw()
                 chat:draw()
@@ -421,9 +423,7 @@ function love.draw()
             end 
         end)
     fade.draw()
-    if gameState == CUTSCENE then
-        cutsceneLogic:draw()
-    end
+    cutsceneLogic:drawText()
     end
 end
 
