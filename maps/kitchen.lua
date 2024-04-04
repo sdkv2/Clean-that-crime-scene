@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 12,
-  nextobjectid = 33,
+  nextobjectid = 39,
   properties = {},
   tilesets = {
     {
@@ -602,45 +602,6 @@ return {
           properties = {}
         },
         {
-          id = 21,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 767,
-          y = 366,
-          width = 160,
-          height = 32,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 22,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 769,
-          y = 367,
-          width = 63,
-          height = 48,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 23,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 864,
-          y = 366,
-          width = 65,
-          height = 50,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 24,
           name = "",
           type = "",
@@ -717,6 +678,19 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 34,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 768,
+          y = 383,
+          width = 158,
+          height = 31,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     },
@@ -733,7 +707,34 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {}
+      objects = {
+        {
+          id = 33,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 1055,
+          y = 511,
+          width = 201,
+          height = 48,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 35,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 734,
+          y = 350,
+          width = 214,
+          height = 38,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
     },
     {
       type = "objectgroup",
@@ -750,32 +751,37 @@ return {
       properties = {},
       objects = {
         {
-          id = 1,
+          id = 37,
           name = "Closet",
           type = "",
           shape = "rectangle",
-          x = 1292.67,
-          y = 479.333,
-          width = 50,
-          height = 96,
+          x = 1305,
+          y = 478,
+          width = 43,
+          height = 109,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["spawnX"] = "960",
+            ["spawnY"] = "447"
+          }
         },
         {
-          id = 2,
-          name = "Mainhall",
+          id = 38,
+          name = "MansionRoom",
           type = "",
           shape = "rectangle",
-          x = 582.667,
-          y = 479.333,
-          width = 39.3333,
-          height = 95.3333,
+          x = 585,
+          y = 495,
+          width = 28,
+          height = 92,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        
+          properties = {
+            ["spawnX"] = "1440",
+            ["spawnY"] = "800"
+          }
+        }
       }
     }
   }

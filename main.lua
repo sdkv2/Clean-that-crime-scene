@@ -109,7 +109,7 @@ function love.load()
     mapW = gameMap.width * gameMap.tilewidth
     mapH = gameMap.height * gameMap.tileheight
 
-    loadNewMap('maps/mansionroomtrial.lua', 300, 300)
+    loadNewMap('maps/mansionroom.lua', 300, 300)
 
     cam.x = player.x
     cam.y = player.y
@@ -173,14 +173,12 @@ function loadNewMap(mapPath,x,y)
     end
     AvailableLoadZones = {}
 
-    if mapPath == 'maps/mansionroomtrial.lua' then
+    if mapPath == 'maps/mansionroom.lua' then
         kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
         kiran = Kyle:new(1000, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')        
             
     end
     if mapPath == 'maps/kitchen.lua' then
-        local newLoadZone = loadzone:new('Living Room', 1500, 516, 10, 100, 'maps/mansionroomtrial.lua', 504, 764)
-        table.insert(AvailableLoadZones, newLoadZone)
     end
     world:update(0) 
     for _, obj in pairs(gameMap.layers['Load'].objects) do
@@ -284,8 +282,8 @@ end
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = CUTSCENE
-            cutsceneLogic:init()
+            gameState = PLAYING
+            --cutsceneLogic:init()
             complete = false
            
         end 
@@ -327,7 +325,6 @@ function love.update(dt)
 
             chat:update(dt)
 
-            world:update(dt)
 
 
             player.isMoving = false
