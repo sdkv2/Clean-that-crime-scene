@@ -19,7 +19,7 @@
     "kyle": {
         "1": [
             {"speaker": "kyle/neutral", "dialogue": "I'm Kyle"},
-            {"speaker": "kiran/neutral", "dialogue": "I'm a cooler guy buddy"},
+            {"speaker": "butler/neutral", "dialogue": "I'm a cooler guy buddy"},
             {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"},
             {"speaker": "kyle/neutral", "dialogue": "I'm a cool guy"}
         ],

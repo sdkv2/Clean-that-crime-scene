@@ -775,32 +775,7 @@ return {
           visible = true,
           properties = {}
         },
-        {
-          id = 4,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 748.667,
-          y = 351.333,
-          width = 194.667,
-          height = 35.3333,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 5,
-          name = "",
-          type = "",
-          shape = "rectangle",
-          x = 1075.33,
-          y = 512.667,
-          width = 178.667,
-          height = 46,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        }
+        
       }
     }
   }

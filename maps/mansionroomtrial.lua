@@ -1112,7 +1112,10 @@ return {
           height = 74,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            spawnX = 656, 
+            spawnY = 524   
+        }
         },
         {
           id = 47,

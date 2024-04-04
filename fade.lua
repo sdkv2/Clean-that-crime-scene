@@ -1,7 +1,7 @@
 -- fade.lua
 local fade = {}
 
-fade.fadeAmount = 0
+fade.fadeAmount = 1
 fade.fadeTimer = 0.4
 fade.fadeStarted = false
 fade.isActive = false 

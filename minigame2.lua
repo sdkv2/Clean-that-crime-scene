@@ -21,7 +21,6 @@ local handRaised = false
 local handSpawned = false
 local broomStopped = false
 local broomHit = false
-
 local score = 0
 local tween = require 'libraries.tween'
 local broomTween = nil
@@ -42,7 +41,7 @@ local kiranLimbs = anim8.newAnimation(g('1-4', 1), 0.1)
 local buttonSprite = love.graphics.newImage('sprites/button.png')
 local g2 = anim8.newGrid(32, 32, buttonSprite:getWidth(), buttonSprite:getHeight())
 local button = anim8.newAnimation(g2('1-2', 1), 0.4)
-local chuteY = -900
+local chuteY = -750
 local text = "= HIT BODY"
 local handHit = false
 local handActive = true

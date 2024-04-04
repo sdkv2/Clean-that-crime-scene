@@ -15,14 +15,14 @@ chat.firstSpeaker = player
 chat.secondSpeaker = nil
 local time = 0
 local tween = require 'libraries.tween'
-local currentColor = {1, 0.396, 0.129, 0.6}
 local colors = {
     kyle = {1, 0.396, 0.129, 0.6},
-    player = {0.2, 0.2, 0.2, 0.6},
+    Butler = {0.2, 0.2, 0.2, 0.6},
     kiran = {0, 0, 0.5, 0.6}
 }
 local colorTween = nil
 local complete = true
+local currentColor = nil
 
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
@@ -31,9 +31,12 @@ function chat:loadJson(filePath)
     return json:decode(content)
 end
 
-function chat:chat(npc, subtable)
+function chat:chat(npc, subtable, callback)  
+    colorTween = nil  
     chat.firstSpeaker = nil
     chat.secondSpeaker = nil
+    chat.speaker = nil
+    currentColor = nil
     player.collider:setLinearVelocity(0, 0)
     chat.complete = false
     chat.invert = false
@@ -48,17 +51,18 @@ function chat:chat(npc, subtable)
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
     end
-    if chat.firstSpeaker then
-        currentColor = colors[chat.firstSpeaker]
-    end
+
+    print("Speaker: ", chat.speaker.name)
+    currentColor = {unpack(colors[self.speaker.name])}
     local customFont = love.graphics.newFont('MS_PAIN.ttf', 45) -- Change the path and size to match your font
     love.graphics.setFont(customFont)
+    self.endChatCallback = callback
 
 end
 
 function updateAnim(s)
-    local portrait
-    local emotion
+    local portrait = nil
+    local emotion = nil
     local i = 0    
     for word in string.gmatch(s, '([^/]+)') do
         i = i + 1
@@ -68,7 +72,6 @@ function updateAnim(s)
             emotion = word
         end
     end
-
     if portrait == 'butler' then
         player.portraitAnimation = player.portraitExpressions[emotion]
         chat.speaker = player
@@ -111,27 +114,29 @@ function chat:endChat()
     self.keys = {}
     chat.chatting = false
     target = nil
+    if self.endChatCallback and type(self.endChatCallback) == "function" then
+        self.endChatCallback()
+    end
 end
-
 function chat:playSound()
     local length = 0.1 -- The length of the sound in seconds
     local rate = 44100 -- The sample rate of the sound
-    local frequency 
+    local frequency -- The frequency of the sound
     local soundData = love.sound.newSoundData(math.floor(length*rate), rate, 16, 1)
-    local unisonCount
-    local detuneAmount
+    local unisonCount -- The number of unison voices to use
+    local detuneAmount -- The amount of detuning for the unison voices
     local phase = {}
     if chat.speaker == player then
-        rate = 44100 -- The sample rate of the sound
+        rate = 44100 
         frequency = math.random(75, 100)
-        unisonCount = 4 -- The number of unison voices
-        detuneAmount = 0.1 -- The amount of detuning for the unison voices
+        unisonCount = 4 
+        detuneAmount = 0.1
 
     elseif chat.speaker == kyle or chat.speaker == kiran then
-        rate = 44100 -- The sample rate of the sound
+        rate = 44100 
         frequency = math.random(100, 125)
-        unisonCount = 8 -- The number of unison voices
-        detuneAmount = 0.1 -- The amount of detuning for the unison voices
+        unisonCount = 8
+        detuneAmount = 0.1 
     end
     for j=1, unisonCount do
         phase[j] = 0
@@ -206,25 +211,24 @@ function chat:update(dt)
     if chat.complete == false then
         chat.rectangles, chat.complete = border(dt, chat.rectangles, chat.invert, true)
     end
-    
-    if chat.speaker == kyle and complete == true then
-        if currentColor[1] ~= colors['kyle'][1] or currentColor[2] ~= colors['kyle'][2] or currentColor[3] ~= colors['kyle'][3] or currentColor[4] ~= colors['kyle'][4] then
-            colorTween = tween.new(0.3, currentColor, colors['kyle'], tween.easing.inOutQuad)
-            complete = false
-        end
-    elseif chat.speaker == player and complete == true then
-        if currentColor[1] ~= colors['player'][1] or currentColor[2] ~= colors['player'][2] or currentColor[3] ~= colors['player'][3] or currentColor[4] ~= colors['player'][4] then
-            colorTween = tween.new(0.3, currentColor, colors['player'], tween.easing.inOutQuad)
-            complete = false
-        end
-
-    elseif chat.speaker == kiran and complete == true then
-        if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
-            colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
-            complete = false
+    if chat.speaker then
+        if chat.speaker.name == 'kyle' and complete == true then
+            if currentColor[1] ~= colors['kyle'][1] or currentColor[2] ~= colors['kyle'][2] or currentColor[3] ~= colors['kyle'][3] or currentColor[4] ~= colors['kyle'][4] then
+                colorTween = tween.new(0.3, currentColor, colors['kyle'], tween.easing.inOutQuad)
+                complete = false
+            end
+        elseif chat.speaker == player and complete == true then
+            if currentColor[1] ~= colors['Butler'][1] or currentColor[2] ~= colors['Butler'][2] or currentColor[3] ~= colors['Butler'][3] or currentColor[4] ~= colors['Butler'][4] then
+                colorTween = tween.new(0.3, currentColor, colors['Butler'], tween.easing.inOutQuad)
+                complete = false
+            end
+        elseif chat.speaker.name == 'kiran' and complete == true then
+            if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
+                colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
+                complete = false
+            end
         end
     end
-
     if colorTween then
         complete = colorTween:update(dt)
     end

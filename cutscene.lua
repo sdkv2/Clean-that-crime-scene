@@ -2,30 +2,53 @@
 
 -- Define the cutscene class
 local cutscene = {}
+local textAlpha = 0
+local fadeOut = false
+local timer = 0
+local fadeComplete = false
 
 -- Constructor
 function cutscene:init()
     self.borderRect = {}
     self.complete = false
-    chat:chat('kyle', '1')
+    chat:chat('kyle', '1', function () self:moveOn()
+        
+    end)
     -- Initialize the cutscene here
+end
+
+function cutscene:moveOn()
+    print('moving on')
 end
 
 -- Update method
 function cutscene:update(dt)
-    for _, npc in pairs(npcs) do
-        npc.x = npc.collider:getX() 
-        npc.y = npc.collider:getY()
-        npc.r = npc.collider:getAngle()
-        npc.currentAnimation:update(dt)
+    if not fadeComplete then
+        self:fadeText(dt)
+    else
+        chat:update(dt)
     end
-    chat:update(dt)
+end
 
 
+function cutscene:fadeText(dt)
+    fade.fadeAmount = 1
+    if textAlpha < 1 and not fadeOut then
+        textAlpha = textAlpha + dt * 0.5  
+    end
+
+    if textAlpha >= 1 and not fadeOut then
+        timer = timer + dt
+        if timer >= 0.2 then
+            fadeOut = true
+        end
+    end
     
-
-    
-    -- Update the cutscene logic here
+    if fadeOut and textAlpha > 0 then
+        textAlpha = textAlpha - dt * 0.5  -- Decrease the alpha value by half of dt
+    elseif fadeOut and textAlpha <= 0 then
+        fadeComplete = true
+    end
 end
 
 function cutscene:draw()
@@ -38,6 +61,9 @@ function cutscene:draw()
             love.graphics.setColor(1, 1, 1, 1) 
         end
     end
+    love.graphics.setColor(1, 1, 1, textAlpha)  -- Set the color with the alpha value
+    love.graphics.print('In a mansion... somewhere in the English countryside', w/2-600, h/2)
+    love.graphics.setColor(1, 1, 1, 1)  -- Reset the color
 end
 
 -- Return the cutscene class

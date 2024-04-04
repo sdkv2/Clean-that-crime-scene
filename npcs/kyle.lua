@@ -9,7 +9,6 @@ function Kyle:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animation
 end
 
 function Kyle:interact()
-    self.currentAnimation = self.animations['up']
     chat:chat(self.name, '1')
 end
 

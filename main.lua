@@ -23,8 +23,8 @@ local delay = 0
 local delayMax = 0.1
 local alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
 local alphaIndex = 1
-local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 
+local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 local text = love.graphics.newText(font, "Press Enter to start")
 
 local AvailableLoadZones = {}
@@ -175,10 +175,7 @@ function loadNewMap(mapPath,x,y)
 
     if mapPath == 'maps/mansionroomtrial.lua' then
         kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-        kiran = Kyle:new(1000, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kieran', 'kiranportrait.png')
-        local newLoadZone = loadzone:new('Kitchen', 450, 760, 10, 100, 'maps/kitchen.lua', 1274,516)  -- Create a new instance of the loadzone class
-        table.insert(AvailableLoadZones, newLoadZone)  
-        
+        kiran = Kyle:new(1000, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')        
             
     end
     if mapPath == 'maps/kitchen.lua' then
@@ -186,15 +183,15 @@ function loadNewMap(mapPath,x,y)
         table.insert(AvailableLoadZones, newLoadZone)
     end
     world:update(0) 
-
+    for _, obj in pairs(gameMap.layers['Load'].objects) do
+        local loadZone = loadzone:new(obj.name, obj.x, obj.y, obj.width, obj.height, 'maps/' .. obj.name .. '.lua', obj.properties.spawnX, obj.properties.spawnY)
+        if loadZone then
+            table.insert(AvailableLoadZones, loadZone)
+        end
+    end
 
     cam.x = player.collider:getX()
     cam.y = player.collider:getY()
-
-    
-
-    
-
 
     -- Delete old colliders
     for _, wall in ipairs(walls) do
@@ -287,7 +284,8 @@ end
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = PLAYING
+            gameState = CUTSCENE
+            cutsceneLogic:init()
             complete = false
             kyle:setX(986)
             kyle:setY(400)            
@@ -295,7 +293,6 @@ function love.update(dt)
         updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
-            cutsceneLogic:init()
             pan(cam, kyle, dt)
             cutsceneLogic:update(dt)
             world:update(dt)
@@ -331,20 +328,20 @@ function love.update(dt)
                 isInteractable = false
             end
 
+            chat:update(dt)
 
-            -- Update the NPCs
-            for _, npc in pairs(npcs) do
-                npc.x = npc.collider:getX() 
-                npc.y = npc.collider:getY()
-                npc.r = npc.collider:getAngle()
-                npc.currentAnimation:update(dt)
-            end
+            
 
             player.isMoving = false
         end
     end
-    chat:update(dt)
-
+    -- Update the NPCs
+    for _, npc in pairs(npcs) do
+        npc.x = npc.collider:getX() 
+        npc.y = npc.collider:getY()
+        npc.r = npc.collider:getAngle()
+        npc.currentAnimation:update(dt)
+    end
     fade.handleFade(dt)
 end
 function love.keypressed(key)
@@ -361,7 +358,6 @@ function love.keypressed(key)
                 object = player.interactables[1]:getObject()
                 target = object
                 object:interact()
-                print('hi')
             end
         end
 
@@ -422,9 +418,9 @@ function love.draw()
                 chat:draw()
                 love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
                 love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
-            end
-            fade.draw() -- Moved outside the if-else block
+            end 
         end)
+    fade.draw()
     if gameState == CUTSCENE then
         cutsceneLogic:draw()
     end
