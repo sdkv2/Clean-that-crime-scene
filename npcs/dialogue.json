@@ -27,8 +27,8 @@
             {"speaker": "kyle/neutral", "dialogue": "Whoops!"}
         ],
         "3": [
-            {"speaker": "property1", "dialogue": "value1"},
-            {"speaker": "property2", "dialogue": "value2"}
+            {"speaker": "kyle/neutral", "dialogue": "value1"},
+            {"speaker": "kyle/neutral", "dialogue": "value2"}
 
         ]
     }

@@ -11,12 +11,17 @@ local cutscene = {}
 local anim8 = require 'libraries.anim8'
 local bowlingGraphic = love.graphics.newImage('sprites/bowlingball.png')
 local g = anim8.newGrid(32, 32, bowlingGraphic:getWidth(), bowlingGraphic:getHeight())
-local bowlingball = anim8.newAnimation(g('1-10', 1), 0.4)
+local bowlingball = anim8.newAnimation(g('1-10', 1), 0.05)
 local offsetBowling = false
 local drop = love.audio.newSource("sfx/drop.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
-
+local hit = love.audio.newSource("sfx/hit.wav", "static")
+local bowlingballY = 400
+local kiranSprite = love.graphics.newImage('sprites/kiransprite.png')
+local kiranFallen = love.graphics.newImage('sprites/kiranfallen.png')
 -- Constructor
 function cutscene:init()
+    self.target = kyle
+    self.bowlingObject = {x = 950, y = 400}
     self.moveOn = false
     kyle:setX(600)
     kyle:setY(400) 
@@ -50,18 +55,38 @@ function cutscene:update(dt)
             offsetBowling = true
             kyle.collider:setLinearVelocity(0, 0)
             if self.moveOn then
-                state = "chat2"
                 self.moveOn = false
                 chat:chat('kyle', '2', function () self:dropBowlingBall() end)
             end
         end
     elseif state == "chat2" then
+        bowlingball:update(dt)
         chat:update(dt)
+        if bowlingballY > 800 then
+            hit:play()
+            state = "chat3"
+        else
+            bowlingballY = bowlingballY + 200 * dt
+            self.bowlingObject = {x = 950, y = bowlingballY}
+        end
+        cutscene.target = self.bowlingObject
+    elseif state == "chat3" then
+        if bowlingballY < 850 then
+            bowlingball:update(dt)
+            bowlingballY = bowlingballY + 200 * dt
+        else
+            cutscene.target = kyle
+            chat:chat('kyle', '3', function () self:goNext() end)
+        end
+        
+
 
     end
 end
 
 function cutscene:dropBowlingBall()
+    state = "chat2"
+    cutscene.target = self.bowlingObject
     drop:play()
 end
 
@@ -96,9 +121,16 @@ function cutscene:draw()
         end
     end
     if offsetBowling then
-        bowlingball:draw(bowlingGraphic, kyle.collider:getX() - kyle.width/2 - 15, kyle.collider:getY() - kyle.height/2 + 25, nil, 0.75)
+        bowlingball:draw(bowlingGraphic, kyle.collider:getX() - kyle.width/2, bowlingballY, nil, 0.75)
     elseif state == "chat" then
         bowlingball:draw(bowlingGraphic, kyle.collider:getX() - kyle.width/2, kyle.collider:getY() - kyle.height/2 + 25, nil, 0.75)
+    end
+
+    if state == "chat2" then
+        love.graphics.draw(kiranSprite, 920, 750, 0, 1.5, 1.5)
+    end
+    if state == "chat3" then
+        love.graphics.draw(kiranFallen, 920, 780, 0, 1.5, 1.5)
     end
     
 

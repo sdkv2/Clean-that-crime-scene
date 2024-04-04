@@ -175,7 +175,7 @@ function loadNewMap(mapPath,x,y)
 
     if mapPath == 'maps/mansionroom.lua' then
         kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-        kiran = Kyle:new(1000, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')        
+        kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')        
             
     end
     if mapPath == 'maps/kitchen.lua' then
@@ -282,15 +282,15 @@ end
 function love.update(dt)
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
-            gameState = PLAYING
-            --cutsceneLogic:init()
+            gameState = CUTSCENE
+            cutsceneLogic:init()
             complete = false
            
         end 
         updateAlphaValues(dt)
     else
         if gameState == CUTSCENE then
-            pan(cam, kyle, dt)
+            pan(cam, cutsceneLogic.target, dt)
             cutsceneLogic:update(dt)
             
     else
@@ -313,7 +313,6 @@ function love.update(dt)
                 movePlayer(player, dt)
             end
             pan(cam, player, dt)
-            camCheck(zoom)
 
             --Checks if the player is in the loadzone or if they are able to interact with an object
             player:update(dt)
@@ -337,6 +336,7 @@ function love.update(dt)
         npc.currentAnimation:update(dt)
     end
     world:update(dt)
+    camCheck(zoom)
 
     fade.handleFade(dt)
 end
