@@ -6,7 +6,7 @@ local NPC = class('NPC')
 function NPC:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animations, name, portraitSheet)
     self.x = x
     self.y = y
-    self.scale = 1.5
+    self.scale = 1.25
     self.width = spriteWidth
     self.height = spriteHeight
     self.name = name

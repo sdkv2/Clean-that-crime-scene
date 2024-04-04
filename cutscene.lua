@@ -68,6 +68,7 @@ function cutscene:update(dt)
         chat:update(dt)
         if bowlingballY > 800 then
             hit:play()
+            player.currentAnimation = player.animations.rightidle
             state = "chat3"
         else
             bowlingballY = bowlingballY + 200 * dt
@@ -107,7 +108,7 @@ function cutscene:update(dt)
     elseif state == "chat5" then
         chat:update(dt)
         if self.moveOn then
-            if bowlingball2Y > 800 then
+            if bowlingball2Y > 780 then
                 if not hit:isPlaying() then
                     kiranFallen = love.graphics.newImage('sprites/kirandead.png')
                     hit:play()

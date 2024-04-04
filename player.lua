@@ -9,10 +9,10 @@ function player:initialize()
     local height = love.graphics.getHeight()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     self.speed = 350
-    self.x = 800
-    self.y = 800
+    self.x = 880
+    self.y = 785
     self.isPlayer = true
-    self.scale = 3
+    self.scale = 1
     self.spriteSheet = love.graphics.newImage('sprites/butlersprites.png')
     self.portraitSheet = love.graphics.newImage('sprites/butler-portrait.png')
     self.grid = anim8.newGrid(32, 48, self.spriteSheet:getWidth(), self.spriteSheet:getHeight())
@@ -30,7 +30,7 @@ function player:initialize()
     self.portraitExpressions = {
         neutral = anim8.newAnimation(self.portraitGrid('1-2', 1), 0.3),
     }
-    self.currentAnimation = self.animations.down
+    self.currentAnimation = self.animations.upidle
     self.portraitAnimation = self.portraitExpressions.neutral
     self.spriteWidth, self.spriteHeight = self.currentAnimation:getDimensions()
 
