@@ -21,6 +21,7 @@ local bowlingballY = 400
 local kiranSprite = love.graphics.newImage('sprites/kiransprite.png')
 local kiranFallen = love.graphics.newImage('sprites/kiranfallen.png')
 local currentX = nil
+local splat = love.audio.newSource("sfx/splat.mp3", "static")
 
 -- Constructor
 function cutscene:init()
@@ -109,9 +110,9 @@ function cutscene:update(dt)
         chat:update(dt)
         if self.moveOn then
             if bowlingball2Y > 780 then
-                if not hit:isPlaying() then
+                if not splat:isPlaying() then
                     kiranFallen = love.graphics.newImage('sprites/kirandead.png')
-                    hit:play()
+                    splat:play()
                 end
                 if bowlingball2Y < 825 then
                     bowlingball2:update(dt)
