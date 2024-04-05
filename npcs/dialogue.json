@@ -18,10 +18,10 @@
     },
     "kyle": {
         "1": [
-            {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up!"},
-            {"speaker": "kyle/neutral", "dialogue": "What's the rush, Kiran?"},
-            {"speaker": "kiran/neutral", "dialogue": "We're going to be late for the bowling\n tournament."},
-            {"speaker": "kyle/neutral", "dialogue": "Alright, I'm coming."}
+            {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up! We're going to be late!"},
+            {"speaker": "kyle/neutral", "dialogue": "Chill out Kiran! These \nbowling balls aren't light."},
+            {"speaker": "kiran/neutral", "dialogue": "Do you really need your own bowling ball?"},
+            {"speaker": "kyle/neutral", "dialogue": "Of course I do!"}
         ],
         "2": [
             {"speaker": "kyle/neutral", "dialogue": "Whoops!"}
@@ -35,20 +35,22 @@
             {"speaker": "kyle/neutral", "dialogue": "Few, that was a close one. I'm glad you're\n okay."}
         ],
         "5": [
-            {"speaker": "kyle/neutral", "dialogue": "I think... he is dead."},
-            {"speaker": "butler/neutral", "dialogue": "Are you okay Master? This must be a \n quite traumatic event for you."},
-            {"speaker": "kyle/neutral", "dialogue": "Oh no..."},
-            {"speaker": "kyle/neutral", "dialogue": "This is horrible..."},
-            {"speaker": "kyle/neutral", "dialogue": "I can't believe it..."},
-            {"speaker": "kyle/neutral", "dialogue": "IM GOING TO MISS MY BOWLING TOURNAMENT!"},
+            {"speaker": "butler/neutral", "dialogue": "Your friend seems to have sustained a head injury"},
+            {"speaker": "kyle/neutral", "dialogue": "This is terrible.."},
+            {"speaker": "kyle/neutral", "dialogue": "I can't believe this is happening..."},
+            {"speaker": "kyle/neutral", "dialogue": "And now I'll miss my bowling tournament!"},
             {"speaker": "butler/neutral", "dialogue": "..."},
-            {"speaker": "butler/neutral", "dialogue": "I think you have bigger problems than \n that, Master."},
-            {"speaker": "butler/neutral", "dialogue": "We need to dispose of this cadevar\n or else you could be sent to jail."},
+            {"speaker": "butler/neutral", "dialogue": "There are more pressing concerns at hand, Master Kyle."},
+            {"speaker": "butler/neutral", "dialogue": "We need to clean up this mess we have found ourselves in."},
+            {"speaker": "butler/neutral", "dialogue": "Lest we wish to be sent to jail."},
             {"speaker": "kyle/neutral", "dialogue": "J-JAIL!?!?! T-They can't do that to me! \nI'm rich!"},
-            {"speaker": "butler/neutral", "dialogue": "You are rich, but you are also the \nlead suspect unfortunately"},
+            {"speaker": "butler/neutral", "dialogue": "Wealth may not shield you from suspicion, Master Kyle."},
             {"speaker": "kyle/neutral", "dialogue": "You gotta help me man! My parents will \ndisown me for a second time at this rate!"},
-            {"speaker": "butler/neutral", "dialogue": "I will do my best, Master. \n However we must act quickly"},
-            {"speaker": "butler/neutral", "dialogue": "I suspect the police will arive in around\n 5:00 minutes"}
+            {"speaker": "butler/neutral", "dialogue": "I will do my best, Master Kyle. \n However we must act quickly"},
+            {"speaker": "butler/neutral", "dialogue": "I suspect the police will be arriving shortly."},
+            {"speaker": "kyle/neutral", "dialogue": "I-I can't go to jail!"},
+            {"speaker": "kyle/neutral", "dialogue": "I'll do anything!"},
+            {"speaker": "butler/neutral", "dialogue": "Then let us begin, Master Kyle."}
 
 
             
