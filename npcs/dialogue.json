@@ -44,7 +44,7 @@
             {"speaker": "butler/neutral", "dialogue": "We need to clean up this mess we have found ourselves in."},
             {"speaker": "butler/neutral", "dialogue": "Lest we wish to be sent to jail."},
             {"speaker": "kyle/neutral", "dialogue": "J-JAIL!?!?! T-They can't do that to me! \nI'm rich!"},
-            {"speaker": "butler/neutral", "dialogue": "Wealth may not shield you from suspicion, Master Kyle."},
+            {"speaker": "butler/neutral", "dialogue": "Wealth may not shield you from suspicion,\nMaster Kyle."},
             {"speaker": "kyle/neutral", "dialogue": "You gotta help me man! My parents will \ndisown me for a second time at this rate!"},
             {"speaker": "butler/neutral", "dialogue": "I will do my best, Master Kyle. \n However we must act quickly"},
             {"speaker": "butler/neutral", "dialogue": "I suspect the police will be arriving shortly."},
