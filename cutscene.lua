@@ -189,13 +189,13 @@ function cutscene:draw()
     end
 
     if state == "chat2" then
-        love.graphics.draw(kiranSprite, 920, 750, 0, 1.5, 1.5)
+        love.graphics.draw(kiranSprite, 930, 750, 0, 1.25, 1.25)
     end
     if state == "chat3" then
-        love.graphics.draw(kiranFallen, 920, 780, 0, 1.5, 1.5)
+        love.graphics.draw(kiranFallen, 930, 780, 0, 1.25, 1.25)
     end
     if state == "chat4" or state == "chat5" or state == "chat6" then
-        love.graphics.draw(kiranFallen, 920, 780, 0, 1.5, 1.5)
+        love.graphics.draw(kiranFallen, 930, 780, 0, 1.25, 1.25)
         bowlingball2:draw(bowlingGraphic, 950, bowlingball2Y, nil, 0.75)
     end
 
