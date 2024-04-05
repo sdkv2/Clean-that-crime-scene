@@ -120,7 +120,7 @@ function cutscene:update(dt)
                     bowlingball2Y = bowlingball2Y + 200 * dt
                 else
                     delayTime = 1  -- Delay for 1 second
-                    chat:chat('kyle', '5', function () self:goNext() end)
+                    chat:chat('kyle', '5', function () gameState = PLAYING end)
                     state = "chat6"
                 end
             else

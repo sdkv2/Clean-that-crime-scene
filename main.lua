@@ -6,11 +6,11 @@ local isInteractable
 rectangleState = 'waiting'
 fade = require 'fade'
 -- Define game states
-local PLAYING = 1
+ PLAYING = 1
 local CUTSCENE = 2
 local TITLE = 3
 -- Initialize game state
-local gameState = TITLE
+gameState = TITLE
 zoom = 2
 chatting = false
 local Minigame = require 'minigame'
@@ -316,10 +316,15 @@ function love.update(dt)
 
             --Checks if the player is in the loadzone or if they are able to interact with an object
             player:update(dt)
-            if player.interactables[1] ~= nil then
-                isInteractable = true
+            -- Ensure 'interactables' is not nil before performing operations
+            if player.interactables ~= nil then
+                if player.interactables[1] ~= nil then
+                    isInteractable = true
+                else
+                    isInteractable = false
+                end
             else
-                isInteractable = false
+                print("Error: player.interactables is nil")
             end
 
             chat:update(dt)
