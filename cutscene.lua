@@ -13,7 +13,7 @@ local bowlingGraphic = love.graphics.newImage('sprites/bowlingball.png')
 local g = anim8.newGrid(32, 32, bowlingGraphic:getWidth(), bowlingGraphic:getHeight())
 local bowlingball = anim8.newAnimation(g('1-10', 1), 0.05)
 local bowlingball2 = anim8.newAnimation(g('1-10', 1), 0.05)
-local bowlingball2Y = 300
+local bowlingball2Y = 400
 local offsetBowling = false
 local drop = love.audio.newSource("sfx/drop.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
 local hit = love.audio.newSource("sfx/hit.wav", "static")
@@ -22,6 +22,7 @@ local kiranSprite = love.graphics.newImage('sprites/kiransprite.png')
 local kiranFallen = love.graphics.newImage('sprites/kiranfallen.png')
 local currentX = nil
 local splat = love.audio.newSource("sfx/splat.mp3", "static")
+local delayTime = 0
 
 -- Constructor
 function cutscene:init()
@@ -117,7 +118,9 @@ function cutscene:update(dt)
                 if bowlingball2Y < 825 then
                     bowlingball2:update(dt)
                     bowlingball2Y = bowlingball2Y + 200 * dt
-                else 
+                else
+                    delayTime = 1  -- Delay for 1 second
+                    chat:chat('kyle', '5', function () self:goNext() end)
                     state = "chat6"
                 end
             else
@@ -127,7 +130,13 @@ function cutscene:update(dt)
             
 
         end
-
+    elseif state == "chat6" then
+        if delayTime > 0 then
+            delayTime = delayTime - dt
+        else
+            chat:update(dt)
+        end
+        
 
 
     

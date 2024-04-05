@@ -31,7 +31,8 @@ function chat:loadJson(filePath)
     return json:decode(content)
 end
 
-function chat:chat(npc, subtable, callback)  
+function chat:chat(npc, subtable, callback, dialogueSpeed)  
+    self.dialogueSpeed = dialogueSpeed or 0.05
     colorTween = nil  
     chat.firstSpeaker = nil
     chat.secondSpeaker = nil
@@ -190,7 +191,7 @@ function chat:progressChat(dt)
         end
     end
     self.TimeElapsed = self.TimeElapsed + dt
-    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= 0.05 then
+    if self.CurrentLine and self.CurrentChar <= #self.CurrentLine and self.TimeElapsed >= self.dialogueSpeed then
         self.CurrentChar = self.CurrentChar + 1
         self.TimeElapsed = 0 -- Reset the timer after updating the character
         -- Call the playSound function
