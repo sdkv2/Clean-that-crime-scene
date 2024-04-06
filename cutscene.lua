@@ -56,7 +56,6 @@ function cutscene:update(dt)
     elseif state == "chat" then
         kyle.collider:setLinearVelocity(100, 0)
         chat:update(dt)
-        print(kyle.collider:getLinearVelocity())
         if kyle.collider:getX() > 950 then
             kyle.currentAnimation = kyle.animations.downidle
             offsetBowling = true
@@ -95,7 +94,6 @@ function cutscene:update(dt)
             kyle.collider:setLinearVelocity(0, 200)
         end
         if kyle.collider:getY() >= 750 then
-            print(kyle.collider:getX())
             kyle.currentAnimation = kyle.animations.right
             kyle.collider:setLinearVelocity(200, 0)
         end
@@ -121,7 +119,8 @@ function cutscene:update(dt)
                     bowlingball2Y = bowlingball2Y + 200 * dt
                 else
                     delayTime = 1  -- Delay for 1 second
-                    chat:chat('kyle', '5', function () gameState = PLAYING end)
+                    self.cutsceneFinished = true
+                    chat:chat('kyle', '5', function () gameState = PLAYING loadNewMap("maps/mansionroom.lua", 300, 400) end)
                     state = "chat6"
                 end
             else

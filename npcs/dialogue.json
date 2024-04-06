@@ -51,15 +51,18 @@
             {"speaker": "kyle/neutral", "dialogue": "5 minutes!?!? That's not enough time!"},
             {"speaker": "butler/neutral", "dialogue": "We must try, Master Kyle. We have no \nother choice."},
             {"speaker": "kyle/neutral", "dialogue": "Okay, okay. Let's get to work."},
-            {"speaker": "butler/neutral", "dialogue": "Very well, Master Kyle. Let us begin."}
+            {"speaker": "butler/neutral", "dialogue": "Very well, Master Kyle. Let us begin."}],
+        "6": [
+            {"speaker": "kyle/neutral", "dialogue": "Hurry up! we need to get rid of \nthis body somehow."}
 
-
-            
-
-
-
-
-            
         ]
+
+            
+
+
+
+
+            
+
     }
 }

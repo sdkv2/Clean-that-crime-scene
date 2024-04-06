@@ -9,7 +9,7 @@ function Kyle:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animation
 end
 
 function Kyle:interact()
-    chat:chat(self.name, '1')
+    chat:chat(self.name, '6')
 end
 
 function Kyle:setX(x)

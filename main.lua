@@ -1,4 +1,12 @@
-if arg[#arg] == "vsc_debug" then require("lldebugger").start() end
+if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
+    local lldebugger = require "lldebugger"
+    lldebugger.start()
+    local run = love.run
+    function love.run(...)
+        local f = lldebugger.call(run, false, ...)
+        return function(...) return lldebugger.call(f, false, ...) end
+    end
+end
 chat = require("npcs.chat")
 local loadzone = require("loadzone")
 interactable = require 'interact'
@@ -26,7 +34,7 @@ local alphaIndex = 1
 
 local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 local text = love.graphics.newText(font, "Press Enter to start")
-
+local interactables = {}
 local AvailableLoadZones = {}
 local cutsceneLogic = require 'cutscene'
 Kyle = require 'npcs/kyle'
@@ -160,28 +168,45 @@ function love.mousepressed(x, y, button)
 end
 
 function loadNewMap(mapPath,x,y)
+    fade.fadeAmount = 1
     fade.startFade()
     gameMap = sti(mapPath)
 
     for _, npc in pairs(npcs) do
         npc.collider:destroy()
     end
+    for _, interactable in pairs(interactables) do
+        interactable:destroy()
+    end
     npcs = {}
-    
+    interactables = {}
     for _, loadzone in pairs(AvailableLoadZones) do
         loadzone:destroy()
     end
     AvailableLoadZones = {}
-
+    mapPath = string.lower(mapPath)
     if mapPath == 'maps/mansionroom.lua' then
-        kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-        kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')   
+        print(cutsceneLogic.cutsceneFinished)
         if cutsceneLogic.cutsceneFinished then
-            kyle.x = 300
-            kyle.y = 300
-        end     
-            
+            print("cutscene finished")
+            kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+            kyle.collider:setType("static")
+        else 
+            kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+            kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')   
+        end
     end
+    if mapPath == 'maps/closet.lua' then
+        for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+            if obj.name == 'Door' or obj.name == 'Door1' or obj.name == 'Door2' or obj.name == 'Door3' or obj.name == 'Door4' then
+                local door = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height)
+                table.insert(interactables, door)
+            end
+        end
+            
+        
+    end
+    
     if mapPath == 'maps/kitchen.lua' then
     end
     world:update(0) 
@@ -204,32 +229,18 @@ function loadNewMap(mapPath,x,y)
     walls = {}
     -- Load new map
     -- Add new colliders
+   interactables = {}
+
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
         wall:setType('static')
         table.insert(walls, wall)
-        if obj.name == 'Door' then
-            Door = interactable:new('Door', obj.x, obj.y, obj.width, obj.height)
-
-        end
-        if obj.name == 'Door1' then
-            Door1 = interactable:new('Door1', obj.x, obj.y, obj.width, obj.height)
-
-        end
-        if obj.name == 'Door2' then
-            Door2 = interactable:new('Door2', obj.x, obj.y, obj.width, obj.height)
-
-        end
-        if obj.name == 'Door3' then
-            Door3 = interactable:new('Door3', obj.x, obj.y, obj.width, obj.height)
-
-        end
-        if obj.name == 'Door4' then
-            Door4 = interactable:new('Door4', obj.x, obj.y, obj.width, obj.height)
-
+        if obj.name == 'Door' or obj.name == 'Door1' or obj.name == 'Door2' or obj.name == 'Door3' or obj.name == 'Door4' then
+            local door = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height)
+            table.insert(interactables, door)
         end
     end
-    
+        
 
     
     
@@ -327,10 +338,7 @@ function love.update(dt)
                 else
                     isInteractable = false
                 end
-            else
-                print("Error: player.interactables is nil")
             end
-
             chat:update(dt)
 
 
@@ -374,6 +382,12 @@ function love.keypressed(key)
         if key == "l" then
             fade.isActive = true
             minigame:setMinigame(2)
+
+        end
+        if key == "x" then
+            chat:endChat()
+            cutsceneLogic.cutsceneFinished = true
+            gameState = PLAYING
 
         end
     end
