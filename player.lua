@@ -69,8 +69,8 @@ function player:update(dt)
         local load = collision_data.collider:getObject()
         load:trigger()
     end
-    self.animationMap[self.animations.right].queryLine = {self.x, self.y, self.x + 50, self.y}
-    self.animationMap[self.animations.left].queryLine = {self.x, self.y, self.x - 50, self.y}
+    self.animationMap[self.animations.right].queryLine = {self.x, self.y, self.x + 50, self.y + 30}
+    self.animationMap[self.animations.left].queryLine = {self.x, self.y, self.x - 50, self.y + 30}
     self.animationMap[self.animations.up].queryLine = {self.x, self.y + 30, self.x, self.y - 30}
     self.animationMap[self.animations.down].queryLine = {self.x, self.y - 30, self.x, self.y + 90}
 
