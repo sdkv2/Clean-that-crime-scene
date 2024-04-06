@@ -1,3 +1,4 @@
+--MiniGame class_commons
 local Minigame = {}
 Minigame.__index = Minigame
 

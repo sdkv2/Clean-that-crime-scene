@@ -264,7 +264,7 @@ function loadNewMap(mapPath,x,y)
     if mapPath == 'maps/kitchen.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'Chute' then
-                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() if kiranDraw == false then fade.startFade() minigame:setMinigame(2)  end end)
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() if kiranDraw == false then fade.startFade() minigame:setMinigame(2) else chat:chat('Chute', "1")  end end)
                 table.insert(interactables, obj)
             end
         end

@@ -94,5 +94,11 @@
             {"speaker": "butler/neutral", "dialogue": "Gah... very well, Master Kyle."}
 
         ]
+    },
+    "Chute": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "This chute should be useful for \ndisposing of the body."},
+            {"speaker": "butler/neutral", "dialogue": "We should try to find a way to open it."}
+        ]
     }
 }
