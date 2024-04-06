@@ -13,6 +13,7 @@ interactable = require 'interact'
 local isInteractable
 rectangleState = 'waiting'
 fade = require 'fade'
+local broomGet = false
 -- Define game states
  PLAYING = 1
 local CUTSCENE = 2
@@ -117,7 +118,7 @@ function love.load()
     mapW = gameMap.width * gameMap.tilewidth
     mapH = gameMap.height * gameMap.tileheight
 
-    loadNewMap('maps/mansionroom.lua', 300, 300)
+    loadNewMap('maps/mansionroom.lua')
 
     cam.x = player.x
     cam.y = player.y
@@ -134,6 +135,9 @@ function map()
     gameMap:drawLayer(gameMap.layers['Decor'])
     for _, npc in pairs(npcs) do
         npc:draw()
+    end
+    for _, interactable in pairs(interactables) do
+        interactable:draw()
     end
     if player.renderAboveFurniture then
         player:draw()
@@ -163,15 +167,29 @@ function pan(cam, object, dt)
     cam:lockPosition(object.x, object.y, cam.smooth.linear(1000))
 end
 
+function broomInteract()
+    if broomGet == false then
+        chat:chat('Broom', '1', function () broomGet = true end)
+    else
+        chat:chat('Broom', '2')
+    end
+end
+
 function love.mousepressed(x, y, button)
     minigame:mousepressed(x, y, button)
 end
 
 function loadNewMap(mapPath,x,y)
+    target = nil
+    if player.interactables then
+    player.interactables[1] = nil
+    end
     fade.fadeAmount = 1
     fade.startFade()
     gameMap = sti(mapPath)
-
+    if x and y then
+        player.collider:setPosition(x, y)
+    end
     for _, npc in pairs(npcs) do
         npc.collider:destroy()
     end
@@ -189,8 +207,22 @@ function loadNewMap(mapPath,x,y)
         print(cutsceneLogic.cutsceneFinished)
         if cutsceneLogic.cutsceneFinished then
             print("cutscene finished")
-            kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+            kyle = Kyle:new(1016, 763, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+            kyle.currentAnimation = kyle.animations.leftidle
             kyle.collider:setType("static")
+            local kiran = interactable:new('kiran', 940, 762, 48, 32, "sprites/kirandead.png", 1.25, function() chat:chat('Kiran', '1') end)
+            table.insert(interactables, kiran)
+            for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+                if obj.name == 'Door' then
+                    local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() chat:chat('Door', '1') end)
+                    table.insert(interactables, obj)
+                end
+                if obj.name == 'Door2' then
+                    local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() loadNewMap("maps/cctv.lua", 953, 620) chat:endChat() end)
+                    table.insert(interactables, obj)
+                end
+            end
+
         else 
             kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
             kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')   
@@ -198,9 +230,9 @@ function loadNewMap(mapPath,x,y)
     end
     if mapPath == 'maps/closet.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
-            if obj.name == 'Door' or obj.name == 'Door1' or obj.name == 'Door2' or obj.name == 'Door3' or obj.name == 'Door4' then
-                local door = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height)
-                table.insert(interactables, door)
+            if obj.name == 'Broom' then
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() broomInteract() end)
+                table.insert(interactables, obj)
             end
         end
             
@@ -208,6 +240,12 @@ function loadNewMap(mapPath,x,y)
     end
     
     if mapPath == 'maps/kitchen.lua' then
+        for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+            if obj.name == 'Broom' then
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() broomInteract() end)
+                table.insert(interactables, obj)
+            end
+        end
     end
     world:update(0) 
     for _, obj in pairs(gameMap.layers['Load'].objects) do
@@ -229,20 +267,12 @@ function loadNewMap(mapPath,x,y)
     walls = {}
     -- Load new map
     -- Add new colliders
-   interactables = {}
 
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
         wall:setType('static')
-        table.insert(walls, wall)
-        if obj.name == 'Door' or obj.name == 'Door1' or obj.name == 'Door2' or obj.name == 'Door3' or obj.name == 'Door4' then
-            local door = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height)
-            table.insert(interactables, door)
-        end
+        table.insert(walls, wall)   
     end
-        
-
-    
     
 end
 
@@ -388,6 +418,7 @@ function love.keypressed(key)
             chat:endChat()
             cutsceneLogic.cutsceneFinished = true
             gameState = PLAYING
+            loadNewMap("maps/mansionroom.lua", 600, 400)
 
         end
     end
@@ -445,6 +476,7 @@ function love.draw()
     fade.draw()
     cutsceneLogic:drawText()
     end
+
 end
 
 

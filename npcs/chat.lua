@@ -85,6 +85,9 @@ function updateAnim(s)
         kiran.portraitAnimation = kiran.portraitExpressions[emotion]
         chat.speaker = kiran
         chat.firstSpeaker = kiran
+    elseif portrait == "ooc" then
+        chat.speaker = nil
+    
     end
 end
 function chat:nextLine()
@@ -138,6 +141,9 @@ function chat:playSound()
         frequency = math.random(100, 125)
         unisonCount = 8
         detuneAmount = 0.1 
+    end
+    if chat.speaker == nil then
+        return
     end
     for j=1, unisonCount do
         phase[j] = 0
