@@ -175,7 +175,11 @@ function loadNewMap(mapPath,x,y)
 
     if mapPath == 'maps/mansionroom.lua' then
         kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-        kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')        
+        kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')   
+        if cutsceneLogic.cutsceneFinished then
+            kyle.x = 300
+            kyle.y = 300
+        end     
             
     end
     if mapPath == 'maps/kitchen.lua' then

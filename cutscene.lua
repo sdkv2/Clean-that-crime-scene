@@ -34,6 +34,7 @@ function cutscene:init()
     kyle.currentAnimation = kyle.animations.right
     self.borderRect = {}
     self.complete = false
+    self.cutsceneFinished = false
     chat:chat('kyle', '1', function () self:goNext()
         
     end)
