@@ -79,11 +79,9 @@ function love.load()
     Timer = require 'timer'
     npcs = {}
     walls = {}
-
+    gameMap = sti("maps/mansionroom.lua")
     cam = camera()
     world = wf.newWorld(0, 0, true)
-
-    gameMap = sti('maps/mansionroomtrial.lua')
 
     world:addCollisionClass('Interactive')
     world:addCollisionClass('Player')
@@ -240,7 +238,7 @@ function loadNewMap(mapPath,x,y)
                     table.insert(interactables, obj)
                 end
                 if obj.name == 'Door2' then
-                    local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() loadNewMap("maps/cctv.lua", 953, 620) chat:endChat() end)
+                    local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() loadNewMap("maps/cctv.lua", 953, 620)  end)
                     table.insert(interactables, obj)
                 end
             end
@@ -260,11 +258,20 @@ function loadNewMap(mapPath,x,y)
             
         
     end
-    
+    if mapPath == 'maps/cctv.lua' then
+        for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+            if obj.name == 'PC' then
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() Minigame:setMinigame(4) end)
+                table.insert(interactables, obj)
+            end
+        end
+            
+        
+    end
     if mapPath == 'maps/kitchen.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'Chute' then
-                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() if kiranDraw == false then fade.startFade() minigame:setMinigame(2) else chat:chat('Chute', "1")  end end)
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()if minigame:isComplete(2) then chat:chat("Chute", "2") elseif kiranDraw == false then fade.startFade() minigame:setMinigame(2) else chat:chat('Chute', "1")  end end)
                 table.insert(interactables, obj)
             end
         end
@@ -375,15 +382,11 @@ function love.update(dt)
             -- If not interacting with an object, check for player movement
             if target == nil then
                 player:moveCheck()
-                love.graphics.setFont(love.graphics.newFont(12))
-
                 movePlayer(player, dt)
             end
             pan(cam, player, dt)
 
-            --Checks if the player is in the loadzone or if they are able to interact with an object
             player:update(dt)
-            -- Ensure 'interactables' is not nil before performing operations
             if player.interactables ~= nil then
                 if player.interactables[1] ~= nil then
                     isInteractable = true
@@ -409,6 +412,7 @@ function love.update(dt)
 
     fade.handleFade(dt)
 end
+
 function love.keypressed(key)
     --If chatting is true, the player can press z to move to the next line of text
     -- else if the player is able to interact with an object, they can press z to interact with the object
@@ -433,7 +437,7 @@ function love.keypressed(key)
         end
         if key == "l" then
             fade.isActive = true
-            minigame:setMinigame(2)
+            minigame:setMinigame(4)
 
         end
         if key == "x" then
@@ -445,10 +449,10 @@ function love.keypressed(key)
         end
     end
     
-    if key == "escape" then
-        love.event.quit()
+        if key == "escape" then
+            love.event.quit()
+        end
     end
-end
 end
 
 function titleDraw()
@@ -457,17 +461,19 @@ function titleDraw()
         love.graphics.setColor(1, 1, 1, alpha)
 
         -- Draw the text with the current alpha
-        love.graphics.setColor(0, 0, 0, alpha) -- Set the color to black with the current alpha
+        love.graphics.setColor(0, 0, 0, alpha) 
         for dx=-borderSize, borderSize do
             for dy=-borderSize, borderSize do
                 love.graphics.draw(TitleText, TitleWidth + dx, TitleHeight + dy)
             end
         end
 
-        love.graphics.setColor(1, 1, 1, alpha) -- Set the color to white with the current alpha
+        love.graphics.setColor(1, 1, 1, alpha) 
         love.graphics.draw(TitleText, TitleWidth, TitleHeight)
         love.graphics.setColor(1, 1, 1)
     end
+
+
 function love.draw()
     if gameState == TITLE then
         titleDraw()
@@ -481,7 +487,7 @@ function love.draw()
                 cam:attach()
                     cam:zoomTo(zoom)
                     map()
-                    --world:draw()
+                    world:draw()
                     if isInteractable == true then
                         love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
                     end
@@ -491,8 +497,8 @@ function love.draw()
                 cam:detach()
                 myTimer:draw()
                 chat:draw()
-                --love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
-                --love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
+                love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
+                love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
             end 
         end)
     fade.draw()

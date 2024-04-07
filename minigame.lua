@@ -5,6 +5,7 @@ Minigame.__index = Minigame
 local Minigame1 = require 'minigame1'
 local Minigame2 = require 'minigame2'
 local Minigame3 = require 'minigame3'
+local Minigame4 = require 'minigame4'
 
 
 function Minigame.new()
@@ -22,7 +23,10 @@ function Minigame:setMinigame(minigameNumber)
         self.currentMinigame = Minigame2.new(self)
     elseif minigameNumber == 3 then
         self.currentMinigame = Minigame3.new(self)
+    elseif minigameNumber == 4 then
+        self.currentMinigame = Minigame4.new(self)
     else
+
         self.currentMinigame = nil
     end
 end
@@ -31,6 +35,10 @@ function Minigame:keypressed(key)
     if self.currentMinigame ~= nil then
         self.currentMinigame:keypressed(key)
     end
+end
+
+function Minigame:isComplete(minigameNumber)
+    return self.completedMinigames[minigameNumber] == true
 end
 
 function Minigame:update(dt)
