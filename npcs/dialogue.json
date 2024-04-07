@@ -56,14 +56,6 @@
             {"speaker": "kyle/neutral", "dialogue": "Hurry up! we need to get rid of \nthis body somehow."}
 
         ]
-
-            
-
-
-
-
-            
-
     },
     "Broom": {
         "1": [
@@ -102,6 +94,19 @@
         ],
         "2": [
             {"speaker": "butler/neutral", "dialogue": "Well that's the body dealt with. Now we \njust need to clean up the rest of the mess."}
+        ],
+        "3": [
+            {"speaker": "butler/neutral", "dialogue": "PLACEHOLDER TEXT"}
         ]
+    },
+    "PC": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "Looks like the CCTV footage is gone. \n That's one less thing to worry about."}
+        ],
+        "2": [
+            {"speaker": "butler/neutral", "dialogue": "I should probably remind Master Kyle \n to change his password after this."}
+        ]
+
     }
+    
 }

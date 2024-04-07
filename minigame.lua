@@ -11,12 +11,14 @@ local Minigame4 = require 'minigame4'
 function Minigame.new()
     local self = setmetatable({}, Minigame)
     self.currentMinigame = nil
-    self.completedMinigames = {}
+    self.completedMinigames = {} -- Table to store which minigames have been completed
     return self
 end
 
-function Minigame:setMinigame(minigameNumber)
+function Minigame:setMinigame(minigameNumber, callback)
     self.minigameNumber = minigameNumber
+    self.callback = callback or function() end 
+
     if minigameNumber == 1 then
         self.currentMinigame = Minigame1.new(self)
     elseif minigameNumber == 2 then
@@ -52,9 +54,10 @@ function Minigame:mousepressed(x, y, button)
         self.currentMinigame:mousepressed(x, y, button)
     end
 end
--- Add this method
+
 function Minigame:completeMinigame(minigameNumber)
     self.completedMinigames[minigameNumber] = true
+    self.callback()  -- Execute the callback when the minigame is completed
 end
 
 function Minigame:mousereleased(x,y,button)

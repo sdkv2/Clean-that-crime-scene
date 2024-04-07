@@ -193,9 +193,6 @@ end
 
 function loadNewMap(mapPath,x,y)
     target = nil
-    if player.interactables then
-    player.interactables[1] = nil
-    end
     fade.fadeAmount = 1
     fade.startFade()
     gameMap = sti(mapPath)
@@ -223,6 +220,7 @@ function loadNewMap(mapPath,x,y)
             kyle.currentAnimation = kyle.animations.leftidle
             kyle.collider:setType("static")
             local kiran = interactable:new('kiran', 940, 762, 48, 32, "sprites/kirandead.png", 1.25, function() 
+                target = kiran
                 if broomGet == false then 
                     chat:chat('Kiran', '1') 
                 else 
@@ -261,8 +259,17 @@ function loadNewMap(mapPath,x,y)
     if mapPath == 'maps/cctv.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'PC' then
-                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() Minigame:setMinigame(4) end)
-                table.insert(interactables, obj)
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()  
+                    if not minigame:isComplete(4) then 
+                        fade.isActive = true
+                        minigame:setMinigame(4, 
+                        function() chat:chat('PC', '1') 
+                        end) 
+                    else 
+                        chat:chat('PC', '2') 
+                    end
+                end
+                )                table.insert(interactables, obj)
             end
         end
             
@@ -271,7 +278,16 @@ function loadNewMap(mapPath,x,y)
     if mapPath == 'maps/kitchen.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'Chute' then
-                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()if minigame:isComplete(2) then chat:chat("Chute", "2") elseif kiranDraw == false then fade.startFade() minigame:setMinigame(2) else chat:chat('Chute', "1")  end end)
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()
+                    if minigame:isComplete(2) then 
+                        chat:chat("Chute", "3") 
+                    elseif kiranDraw == false then 
+                        fade.startFade() 
+                        minigame:setMinigame(2, function() chat:chat("Chute", "2") end) 
+                    else 
+                        chat:chat('Chute', "1")  
+                    end 
+                end)                
                 table.insert(interactables, obj)
             end
         end
@@ -380,6 +396,7 @@ function love.update(dt)
             
 
             -- If not interacting with an object, check for player movement
+            print(target)
             if target == nil then
                 player:moveCheck()
                 movePlayer(player, dt)
@@ -459,8 +476,6 @@ function titleDraw()
     love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
 
         love.graphics.setColor(1, 1, 1, alpha)
-
-        -- Draw the text with the current alpha
         love.graphics.setColor(0, 0, 0, alpha) 
         for dx=-borderSize, borderSize do
             for dy=-borderSize, borderSize do

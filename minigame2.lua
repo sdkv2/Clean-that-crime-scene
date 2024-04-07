@@ -148,7 +148,7 @@ function Minigame2:broomMove(dt)
 end
 
 function Minigame2:update(dt)
-    if score == 4 then
+    if score == 0 then
         if chuteY < 0 then
             chuteY = chuteY + 400 * dt
         elseif chuteY >= 0 then
@@ -218,11 +218,11 @@ end
 
 
 function Minigame2:mousepressed(x, y, button)
-    if score == 4 and chuteY >= 0 then
+    if score == 0 and chuteY >= 0 then
         if button == 1 then
             if x > 95 and x < 95 + buttonSprite:getWidth() * 3 and y > 425 and y < 425 + buttonSprite:getHeight() * 3 then
                 print('button pressed')
-                ParentMinigame.completedMinigames[2] = true
+                ParentMinigame:completeMinigame(2)
                 ParentMinigame.currentMinigame = nil
                 fade.isActive = true
             end

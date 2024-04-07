@@ -39,7 +39,6 @@ function interactable:interact()
     if self.interactFunction then
         self.interactFunction()
     end
-    target = nil
 end
 
 return interactable
