@@ -82,6 +82,9 @@
             {"speaker": "butler/neutral", "dialogue": "Why don't you try asking him yourself?"},
             {"speaker": "kyle/neutral", "dialogue": "I'm not touching him!"},
             {"speaker": "butler/neutral", "dialogue": "I suppose we'll never know then."}
+        ],
+        "2": [
+            {"speaker": "butler/neutral", "dialogue": "Time to put your friend into the garbage\n disposal."}
         ]
     },
     "Door": {
@@ -90,6 +93,12 @@
             {"speaker": "kyle/neutral", "dialogue": "What are you doing! Get back here!"},
             {"speaker": "butler/neutral", "dialogue": "Gah... very well, Master Kyle."}
 
+        ]
+    },
+    "Chute": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "This chute should be useful for \ndisposing of the body."},
+            {"speaker": "butler/neutral", "dialogue": "We should try to find a way to open it."}
         ]
     }
 }

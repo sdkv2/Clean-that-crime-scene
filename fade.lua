@@ -2,7 +2,7 @@
 local fade = {}
 
 fade.fadeAmount = 1
-fade.fadeTimer = 0.4
+fade.fadeTimer = 0.05
 fade.fadeStarted = false
 fade.isActive = false 
 
@@ -17,7 +17,7 @@ function fade.handleFade(dt)
             fade.fadeAmount = math.max(fade.fadeAmount - dt, 0)
             if fade.fadeAmount == 0 then
                 fade.isActive = false
-                fade.fadeTimer = 0.4
+                fade.fadeTimer = 0.05
                 fade.fadeStarted = false
             end
         end

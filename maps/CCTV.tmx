@@ -290,6 +290,11 @@
   <object id="16" x="884.5" y="451.5" width="164" height="38"/>
  </objectgroup>
  <objectgroup id="11" name="Load">
-  <object id="6" name="MainHall" x="920" y="656" width="81" height="15"/>
+  <object id="6" name="MainHall" x="920" y="656" width="81" height="15">
+   <properties>
+    <property name="spawnX" value="878"/>
+    <property name="spawnY" value="310"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

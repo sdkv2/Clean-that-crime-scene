@@ -210,8 +210,6 @@ function Minigame2:draw()
     love.graphics.draw(currentImage2, 30, h - 150, 0, 2, 2)
     love.graphics.print(text, 150, h - 100, 0, 0.5, 0.5) 
     button:draw(buttonSprite, 95, 425, 0, 3, 3)
-    love.graphics.print(broomX, 10, 10)
-    love.graphics.print("Y=" .. handY, 20, 60)
 
 
     

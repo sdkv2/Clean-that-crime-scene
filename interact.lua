@@ -3,6 +3,7 @@ local class = require 'libraries/middleclass'
 local interactable = class('interactable')
 
 function interactable:initialize(name, x, y, width, height, image, scale, interactFunction)
+    self.name = name
     self.x = x
     self.y = y
     if image ~= nil then

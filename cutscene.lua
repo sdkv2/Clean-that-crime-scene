@@ -120,7 +120,7 @@ function cutscene:update(dt)
                 else
                     delayTime = 1  -- Delay for 1 second
                     self.cutsceneFinished = true
-                    chat:chat('kyle', '5', function () gameState = PLAYING loadNewMap("maps/mansionroom.lua", 300, 400) end)
+                    chat:chat('kyle', '5', function () gameState = PLAYING loadNewMap("maps/mansionroom.lua", 922, 759) end)
                     state = "chat6"
                 end
             else

@@ -471,9 +471,9 @@ return {
           type = "",
           shape = "rectangle",
           x = 929,
-          y = 495,
+          y = 497.5,
           width = 28,
-          height = 15,
+          height = 12.5,
           rotation = 0,
           visible = true,
           properties = {}
@@ -638,7 +638,10 @@ return {
           height = 15,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["spawnX"] = "878",
+            ["spawnY"] = "310"
+          }
         }
       }
     }
