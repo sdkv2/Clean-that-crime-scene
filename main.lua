@@ -19,9 +19,7 @@ local broomGet = false
 local CUTSCENE = 2
 local TITLE = 3
 -- Initialize game state
-gameState = TITLE
-zoom = 2
-chatting = false
+
 local Minigame = require 'minigame'
 local minigame = Minigame.new()
 local titleArt = love.graphics.newImage('sprites/guy.png')
@@ -32,7 +30,7 @@ local delay = 0
 local delayMax = 0.1
 local alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
 local alphaIndex = 1
-
+currentRoom = nil
 local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 local text = love.graphics.newText(font, "Press Enter to start")
 local interactables = {}
@@ -43,7 +41,10 @@ local interact
 local kiranDraw = true
 
 function love.load()
-    
+    gameState = TITLE
+    zoom = 2
+    chatting = false
+    cctvState = 0
     local Explosion = require 'npcs/explosion'
     target = nil
 
@@ -192,6 +193,7 @@ function kiranDestroy()
 end
 
 function loadNewMap(mapPath,x,y)
+    currentRoom = mapPath
     target = nil
     fade.fadeAmount = 1
     fade.startFade()
@@ -227,9 +229,14 @@ function loadNewMap(mapPath,x,y)
                     chat:chat('Kiran', '2', function () kiranDestroy() end) 
                 end 
             end)
+            local bowlingball = interactable:new('bowlingball', 897, 835, 32, 32, "sprites/bloodybowlingball.png", 1, function() chat:chat('Bowlingball', '1') end)
             if kiranDraw then
                 table.insert(interactables, kiran)
+            else
+                kiran:destroy()
             end
+            table.insert(interactables, bowlingball)
+
             for _, obj in pairs(gameMap.layers['Colliders'].objects) do
                 if obj.name == 'Door' then
                     local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() chat:chat('Door', '1') end)
@@ -257,6 +264,9 @@ function loadNewMap(mapPath,x,y)
         
     end
     if mapPath == 'maps/cctv.lua' then
+        kyle = Kyle:new(1124, 489, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+        kyle.collider:setType("static")
+        kyle.currentAnimation = kyle.animations.leftidle
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'PC' then
                 local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()  
@@ -392,11 +402,6 @@ function love.update(dt)
             if not myTimer:isExpired() then myTimer:update(dt) end
             player.isMoving = false
             player.currentAnimation:update(dt)
-
-            
-
-            -- If not interacting with an object, check for player movement
-            print(target)
             if target == nil then
                 player:moveCheck()
                 movePlayer(player, dt)

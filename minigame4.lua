@@ -74,6 +74,9 @@ function Minigame4:keypressed(key)
                 self.isDeleting = true
             elseif keyString == 'gavin' then
                 drawGavin = true
+            elseif keyString == 'computer5' and cctvState == 0 then
+                cctvState = 1
+                passwordFailActive = true
 
             else
                 passwordFailActive = true

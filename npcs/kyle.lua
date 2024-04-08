@@ -9,7 +9,29 @@ function Kyle:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animation
 end
 
 function Kyle:interact()
-    chat:chat(self.name, '6')
+    local dx = player.x - self.x
+        local dy = player.y - self.y
+        local spriteWidth, spriteHeight = self.currentAnimation:getDimensions()
+
+        if math.abs(dx) > spriteWidth then
+            if dx < 0 then
+                self.currentAnimation = self.animations.leftidle
+            else
+                self.currentAnimation = self.animations.rightidle
+            end
+        elseif math.abs(dy) > spriteHeight then
+            if dy < 0 then
+                self.currentAnimation = self.animations.upidle
+            else
+                self.currentAnimation = self.animations.downidle
+            end
+        end
+    if currentRoom == "maps/mansionroom.lua" then
+        chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
+    end
+    if currentRoom == "maps/cctv.lua" then
+        chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
+    end
 end
 
 function Kyle:setX(x)
