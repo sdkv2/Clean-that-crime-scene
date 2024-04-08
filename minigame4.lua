@@ -70,7 +70,7 @@ function Minigame4:keypressed(key)
         if key == 'return' then
             local keyString = table.concat(keyArray)
             print(keyString)
-            if keyString == 'password' then
+            if keyString == 'password1' then
                 self.isDeleting = true
             elseif keyString == 'gavin' then
                 drawGavin = true
