@@ -288,6 +288,11 @@
  </objectgroup>
  <objectgroup id="3" name="Swap"/>
  <objectgroup id="4" name="Load">
-  <object id="1" name="Kitchen" x="897" y="382" width="50" height="99"/>
+  <object id="1" name="Kitchen" x="897" y="382" width="50" height="99">
+   <properties>
+    <property name="spawnX" value="1294"/>
+    <property name="spawnY" value="538"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
