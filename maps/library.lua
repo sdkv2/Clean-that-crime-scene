@@ -749,13 +749,16 @@ return {
           name = "mansionroom",
           type = "",
           shape = "rectangle",
-          x = 1310.67,
+          x = 1304,
           y = 530.667,
           width = 28,
           height = 74.6667,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["spawnX"] = "480",
+            ["spawnY"] = "700"
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="38">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="40">
  <editorsettings>
   <export target="kitchen.lua" format="lua"/>
  </editorsettings>
@@ -294,11 +294,10 @@
   <object id="30" x="1280" y="564" width="31" height="172"/>
   <object id="31" x="605" y="563" width="35" height="173"/>
   <object id="32" x="581" y="704" width="736" height="33"/>
-  <object id="37" x="1091" y="258" width="189" height="60"/>
  </objectgroup>
  <objectgroup id="3" name="Swap">
-  <object id="33" x="753.333" y="323" width="194.667" height="58.6666"/>
   <object id="35" x="1082" y="487" width="178.667" height="78.6667"/>
+  <object id="39" x="757" y="356" width="186" height="37"/>
  </objectgroup>
  <objectgroup id="4" name="Load">
   <object id="1" name="Closet" x="1309.34" y="479.333" width="33.3333" height="96">
