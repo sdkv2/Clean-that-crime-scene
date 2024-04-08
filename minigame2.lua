@@ -222,7 +222,7 @@ function Minigame2:mousepressed(x, y, button)
         if button == 1 then
             if x > 95 and x < 95 + buttonSprite:getWidth() * 3 and y > 425 and y < 425 + buttonSprite:getHeight() * 3 then
                 print('button pressed')
-                ParentMinigame.completedMinigames[2] = true
+                ParentMinigame:completeMinigame(2)
                 ParentMinigame.currentMinigame = nil
                 fade.isActive = true
             end

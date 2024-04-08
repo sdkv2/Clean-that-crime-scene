@@ -32,6 +32,7 @@ function chat:loadJson(filePath)
 end
 
 function chat:chat(npc, subtable, callback, dialogueSpeed)  
+    print(target)
     self.dialogueSpeed = dialogueSpeed or 0.05
     colorTween = nil  
     chat.firstSpeaker = nil
