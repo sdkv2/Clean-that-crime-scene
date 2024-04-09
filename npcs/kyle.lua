@@ -30,7 +30,11 @@ function Kyle:interact()
         chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
     end
     if currentRoom == "maps/cctv.lua" then
-        chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
+        if cctvState == 1 then
+            chat:chat(self.name, 'CCTV2', function () self.currentAnimation = self.animations.upidle end)
+        else
+            chat:chat(self.name, 'CCTV', function () self.currentAnimation = self.animations.downidle end)
+        end
     end
 end
 
@@ -52,4 +56,10 @@ function Kyle:draw()
     return self.currentAnimation:draw(self.spriteSheet, self.x, self.y, self.r, self.scale, nil, self.width / 2, self.height / 2)
 end
 
+function Kyle:destroy()
+    if self.collider then
+        self.collider:destroy()
+        self.collider = nil
+    end
+end
 return Kyle

@@ -58,8 +58,17 @@
         ],
         "CCTV": [
             {"speaker": "butler/neutral", "dialogue": "Master Kyle, do you know the password \nto your CCTV system?"},
-            {"speaker": "kyle/neutral", "dialogue": "Uhh... Have you tried 'computer13'?"},
+            {"speaker": "kyle/neutral", "dialogue": "Uhh... Have you tried 'computer5'?"},
             {"speaker": "butler/neutral", "dialogue": "I'll try that now."}
+
+        ],
+        "CCTV2": [
+            {"speaker": "butler/neutral", "dialogue": "That doesn't seem to have worked. \nDo you have any other ideas?"},
+            {"speaker": "kyle/neutral", "dialogue": "I think I wrote my password down \nsomewhere..."},
+            {"speaker": "butler/neutral", "dialogue": "You do realise that the police will \nbe here soon, right?"},
+            {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"}
+
+
 
         ]
     },
@@ -113,6 +122,11 @@
             {"speaker": "butler/neutral", "dialogue": "I should probably remind Master Kyle \n to change his password after this."}
         ]
 
+    },
+    "BowlingBall": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "Hmm... It looks like I'll need something \n to clean this with."}
+        ]
     }
     
 }
