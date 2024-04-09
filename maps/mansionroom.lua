@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 12,
-  nextobjectid = 119,
+  nextobjectid = 117,
   properties = {},
   tilesets = {
     {
@@ -1102,35 +1102,35 @@ return {
       properties = {},
       objects = {
         {
-          id = 117,
+          id = 46,
           name = "Kitchen",
           type = "",
           shape = "rectangle",
-          x = 1462.67,
-          y = 745.333,
-          width = 54.6667,
-          height = 93.3333,
+          x = 1456,
+          y = 759,
+          width = 51,
+          height = 74,
           rotation = 0,
           visible = true,
           properties = {
-            ["spawnX"] = "640",
-            ["spawnY"] = "550"
+            ["spawnX"] = "635",
+            ["spawnY"] = "545"
           }
         },
         {
-          id = 118,
+          id = 47,
           name = "Library",
           type = "",
           shape = "rectangle",
-          x = 406.667,
-          y = 745.333,
-          width = 49.3333,
-          height = 84,
+          x = 406.333,
+          y = 756.333,
+          width = 52,
+          height = 64,
           rotation = 0,
           visible = true,
           properties = {
-            ["spawnX"] = "",
-            ["spawnY"] = ""
+            ["spawnX"] = "1277",
+            ["spawnY"] = "575"
           }
         }
       }
