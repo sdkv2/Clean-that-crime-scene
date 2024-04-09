@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 11,
-  nextobjectid = 18,
+  nextobjectid = 19,
   properties = {},
   tilesets = {
     {
@@ -625,8 +625,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["spawnX"] = "1294",
-            ["spawnY"] = "538"
+            ["spawnX"] = "1270",
+            ["spawnY"] = "545"
           }
         }
       }
