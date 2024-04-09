@@ -62,6 +62,7 @@ function player:moveCheck()
 end
 
 function player:update(dt)
+    
     self.x = self.collider:getX()
     self.y = self.collider:getY() - 30
     if self.collider:enter('LoadZone') then
@@ -73,7 +74,6 @@ function player:update(dt)
     self.animationMap[self.animations.left].queryLine = {self.x, self.y, self.x - 50, self.y + 30}
     self.animationMap[self.animations.up].queryLine = {self.x, self.y + 30, self.x, self.y - 30}
     self.animationMap[self.animations.down].queryLine = {self.x, self.y - 30, self.x, self.y + 90}
-
     local animation = self.animationMap[self.currentAnimation]
     if animation then
         local queryLine = animation.queryLine

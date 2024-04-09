@@ -193,7 +193,8 @@ function kiranDestroy()
 end
 
 function loadNewMap(mapPath,x,y)
-    currentRoom = mapPath
+    isInteractable = false
+    player.interactables = nil
     target = nil
     fade.fadeAmount = 1
     fade.startFade()
@@ -202,7 +203,7 @@ function loadNewMap(mapPath,x,y)
         player.collider:setPosition(x, y)
     end
     for _, npc in pairs(npcs) do
-        npc.collider:destroy()
+        npc:destroy()
     end
     for _, interactable in pairs(interactables) do
         interactable:destroy()
@@ -214,6 +215,8 @@ function loadNewMap(mapPath,x,y)
     end
     AvailableLoadZones = {}
     mapPath = string.lower(mapPath)
+    currentRoom = mapPath
+
     if mapPath == 'maps/mansionroom.lua' then
         print(cutsceneLogic.cutsceneFinished)
         if cutsceneLogic.cutsceneFinished then
@@ -221,6 +224,7 @@ function loadNewMap(mapPath,x,y)
             kyle = Kyle:new(1016, 763, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
             kyle.currentAnimation = kyle.animations.leftidle
             kyle.collider:setType("static")
+
             local kiran = interactable:new('kiran', 940, 762, 48, 32, "sprites/kirandead.png", 1.25, function() 
                 target = kiran
                 if broomGet == false then 
@@ -229,14 +233,15 @@ function loadNewMap(mapPath,x,y)
                     chat:chat('Kiran', '2', function () kiranDestroy() end) 
                 end 
             end)
-            local bowlingball = interactable:new('bowlingball', 897, 835, 32, 32, "sprites/bloodybowlingball.png", 1, function() chat:chat('Bowlingball', '1') end)
+            local bowlingball = interactable:new('bowlingball', 897, 835, 32, 32, "sprites/bloodybowlingball.png", 1, function() chat:chat('BowlingBall', '1') end)
             if kiranDraw then
                 table.insert(interactables, kiran)
             else
                 kiran:destroy()
             end
-            table.insert(interactables, bowlingball)
+            table.insert(npcs, kyle)
 
+            table.insert(interactables, bowlingball)
             for _, obj in pairs(gameMap.layers['Colliders'].objects) do
                 if obj.name == 'Door' then
                     local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() chat:chat('Door', '1') end)
@@ -250,8 +255,10 @@ function loadNewMap(mapPath,x,y)
 
         else 
             kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
-            kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')   
+            kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')
+               
         end
+
     end
     if mapPath == 'maps/closet.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
@@ -265,6 +272,8 @@ function loadNewMap(mapPath,x,y)
     end
     if mapPath == 'maps/cctv.lua' then
         kyle = Kyle:new(1124, 489, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
+        table.insert(npcs, kyle)
+
         kyle.collider:setType("static")
         kyle.currentAnimation = kyle.animations.leftidle
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
@@ -283,7 +292,7 @@ function loadNewMap(mapPath,x,y)
             end
         end
             
-        
+
     end
     if mapPath == 'maps/kitchen.lua' then
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
