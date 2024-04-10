@@ -7,7 +7,7 @@ local Minigame2 = require 'minigame2'
 local Minigame3 = require 'minigame3'
 local Minigame4 = require 'minigame4'
 local Minigame5 = require 'minigame5'
-
+local win = love.audio.newSource("sfx/win.wav", "static")
 function Minigame.new()
     local self = setmetatable({}, Minigame)
     self.currentMinigame = nil
@@ -57,6 +57,7 @@ function Minigame:mousepressed(x, y, button)
 end
 
 function Minigame:completeMinigame(minigameNumber)
+    love.audio.play(win)
     self.currentMinigame = nil
     self.completedMinigames[minigameNumber] = true
     self.callback()  -- Execute the callback when the minigame is completed
