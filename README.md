@@ -22,9 +22,10 @@ Watch out for bloodstains, dead bodies, murder weapons, and other clues that cou
 
 ## Credits
 
-- Game Design and Programming: Aiden Shihadeh
+- Game Design: Aiden Shihadeh and Ella Shihadeh
+- Programming: Aiden Shihadeh
 - Art Assets: Ella Shihadeh
-- Music and Sound Effects: Aiden Shihadeh
+- Music and Sound Effects: Aiden Shihadeh and various open source assets authors.
 
 ## License
 
