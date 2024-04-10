@@ -8,9 +8,10 @@ function Minigame5.new(Parent)
     local self = setmetatable({}, Minigame5)
     world:update(0) 
     player.collider:setLinearVelocity(0, 0)
+    love.graphics.setFont(love.graphics.newFont('MS_PAIN.ttf', 36))
 
     self.ParentMinigame = Parent
-    self.pages = {"Among us", "Among us 2", "Among us 3", "Among us 4"} -- Add your text here
+    self.pages = {"Among ussssssssssssssssssssssssssssssss", "Among us 2ssssssssssssssss", "Among wadawdwadus 3", "Amonawdawdwadg us 4"}
     self.currentPage = 1
     return self
 end
@@ -36,8 +37,10 @@ end
 function Minigame5:draw()
     love.graphics.draw(background, 0, 0, 0, 2.5, 2.5)
     love.graphics.draw(bookbackground, w/2 - 470, h/2 - 340, 0, 8, 8)
-    love.graphics.printf(self.pages[self.currentPage], w/2 - 470, h/2 - 340, 200, 'center') -- Adjust the position and width as needed
-    love.graphics.printf(self.pages[self.currentPage + 1], w/2, h/2 - 340, 200, 'center') -- Adjust the position and width as needed
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf(self.pages[self.currentPage], w/2 - 400, h/2 - 310, 360, 'center') 
+    love.graphics.printf(self.pages[self.currentPage + 1], w/2 + 70, h/2 - 300, 360, 'center') 
+    love.graphics.setColor(1, 1, 1)
 end
 
 function Minigame5:mousereleased(x,y,button)
