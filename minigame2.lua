@@ -45,7 +45,11 @@ local chuteY = -750
 local text = "= HIT BODY"
 local handHit = false
 local handActive = true
+local punch = love.audio.newSource("sfx/punch.wav", "static")
+local beeping = love.audio.newSource("sfx/blipSelect.wav", "static")
+local delay
 function Minigame2.new(Parent)
+    delay = 0.4
     love.graphics.setFont(customFont)
     ParentMinigame = Parent
     screenWidth, screenHeight = love.graphics.getDimensions()
@@ -79,6 +83,7 @@ end
 function Minigame2:raiseHand(dt)
     if handHit then
         handY = handY + 200 * dt
+
         if handY > screenHeight + handHeight then
             self:spawnHand()
 
@@ -153,12 +158,20 @@ function Minigame2:update(dt)
             chuteY = chuteY + 400 * dt
         elseif chuteY >= 0 then
             button:update(dt)
+            delay = delay - dt
+            if delay <= 0 then
+                if not beeping:isPlaying() then
+                beeping:play()
+                end
+            end
+
             text = "= PRESS BUTTON"
         end
     else
         -- Check if the hand is active before checking for a hit
         if handActive and broomX + broomSpriteWidth / 2 > handX and broomX + broomSpriteWidth / 2 < handX + handWidth and broomY < handY + handHeight and broomY + broomSpriteHeight > handY then
             if not broomHit then
+                love.audio.play(punch)
                 broomHit = true
                 score = score + 1
                 broomPos.y = broomY
@@ -222,6 +235,7 @@ function Minigame2:mousepressed(x, y, button)
         if button == 1 then
             if x > 95 and x < 95 + buttonSprite:getWidth() * 3 and y > 425 and y < 425 + buttonSprite:getHeight() * 3 then
                 print('button pressed')
+                beeping:stop()
                 ParentMinigame:completeMinigame(2)
                 ParentMinigame.currentMinigame = nil
                 fade.isActive = true
