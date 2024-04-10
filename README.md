@@ -29,5 +29,3 @@ Watch out for bloodstains, dead bodies, murder weapons, and other clues that cou
 ## License
 
 This game is released under the [MIT License](https://opensource.org/licenses/MIT).
-
-Feel free to modify this README as needed to fit your game's specific details, features, and credits. Don't forget to update the installation instructions if you have any additional dependencies or build steps.
