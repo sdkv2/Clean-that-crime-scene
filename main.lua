@@ -19,7 +19,7 @@ local broomGet = false
 local CUTSCENE = 2
 local TITLE = 3
 -- Initialize game state
-
+local chuteState = nil
 local Minigame = require 'minigame'
 local minigame = Minigame.new()
 local titleArt = love.graphics.newImage('sprites/guy.png')
@@ -39,7 +39,8 @@ local cutsceneLogic = require 'cutscene'
 Kyle = require 'npcs/kyle'
 local interact 
 local kiranDraw = true
-
+local spongeGet = false
+local bowlingballClean = false
 function love.load()
     gameState = TITLE
     zoom = 2
@@ -192,6 +193,20 @@ function kiranDestroy()
     end
 end
 
+function spongeDestroy()
+    spongeGet = true
+    for i, interactable in pairs(interactables) do
+        if interactable.name == 'sponge' then
+            interactable:destroy()
+            table.remove(interactables, i)
+        end
+        if player.interactables then
+            player.interactables[1] = nil
+        end    
+    end
+    
+end
+
 function loadNewMap(mapPath,x,y)
     isInteractable = false
     player.interactables = nil
@@ -227,20 +242,34 @@ function loadNewMap(mapPath,x,y)
 
             local kiran = interactable:new('kiran', 940, 762, 48, 32, "sprites/kirandead.png", 1.25, function() 
                 target = kiran
-                if broomGet == false then 
-                    chat:chat('Kiran', '1') 
-                else 
-                    chat:chat('Kiran', '2', function () kiranDestroy() end) 
-                end 
+                chat:chat('Kiran', '1', function () kiranDestroy() end) 
             end)
-            local bowlingball = interactable:new('bowlingball', 897, 835, 32, 32, "sprites/bloodybowlingball.png", 1, function() chat:chat('BowlingBall', '1') end)
+            
+            bowlingball = interactable:new('bowlingball', 930, 835, 32, 32, "sprites/bloodybowlingball.png", 1, 
+            function() 
+                if bowlingballClean then
+                    chat:chat('BowlingBall', '3')
+                elseif spongeGet == false then 
+                    chat:chat('BowlingBall', '1') 
+                else
+                    bowlingball:updateImages("sprites/singlebowling.png")
+                    minigame:setMinigame(1, 
+                    function() chat:chat('BowlingBall', '2') 
+                    end)                 
+                    bowlingballClean = true
+
+                end
+            end)
+            if bowlingballClean then
+                bowlingball:updateImages("sprites/singlebowling.png")
+            end
+            
             if kiranDraw then
                 table.insert(interactables, kiran)
             else
                 kiran:destroy()
             end
             table.insert(npcs, kyle)
-
             table.insert(interactables, bowlingball)
             for _, obj in pairs(gameMap.layers['Colliders'].objects) do
                 if obj.name == 'Door' then
@@ -279,13 +308,17 @@ function loadNewMap(mapPath,x,y)
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'PC' then
                 local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()  
-                    if not minigame:isComplete(4) then 
-                        fade.isActive = true
-                        minigame:setMinigame(4, 
-                        function() chat:chat('PC', '1') 
-                        end) 
-                    else 
-                        chat:chat('PC', '2') 
+                    if minigame:isComplete(2) and minigame:isComplete(1) then
+                        if not minigame:isComplete(4) then 
+                            fade.isActive = true
+                            minigame:setMinigame(4, 
+                            function() chat:chat('PC', '1') 
+                            end) 
+                        else 
+                            chat:chat('PC', '2') 
+                        end
+                    else
+                        chat:chat('PC', '3') 
                     end
                 end
                 )                table.insert(interactables, obj)
@@ -295,20 +328,42 @@ function loadNewMap(mapPath,x,y)
 
     end
     if mapPath == 'maps/kitchen.lua' then
+        local sponge = interactable:new('sponge', 982, 292, 32, 32, "sprites/sponge.png", 1, function() chat:chat('Sponge', '1', function () spongeDestroy() end) end)
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'Chute' then
                 local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()
                     if minigame:isComplete(2) then 
                         chat:chat("Chute", "3") 
                     elseif kiranDraw == false then 
-                        fade.startFade() 
-                        minigame:setMinigame(2, function() chat:chat("Chute", "2") end) 
+                        if broomGet and chuteState == 1 then
+                            chat:chat("Chute", "7", function ()
+                                fade.isActive = true
+                                minigame:setMinigame(2, function() chat:chat("Chute", "2") end) 
+                            end )  
+
+                        elseif broomGet then 
+                                chat:chat("Chute", "6", function ()
+                                    fade.isActive = true
+                                    minigame:setMinigame(2, function() chat:chat("Chute", "2") end) 
+                                end )  
+
+                        elseif chuteState == 1 then
+                            chat:chat("Chute", "5")  
+                        elseif broomGet ==false then 
+                            chat:chat("Chute", "4") 
+                            chuteState = 1
+                        end
                     else 
                         chat:chat('Chute', "1")  
                     end 
                 end)                
                 table.insert(interactables, obj)
             end
+        end
+        if spongeGet == false then
+            table.insert(interactables, sponge)
+        else
+            sponge:destroy()
         end
     end
     world:update(0) 
@@ -322,15 +377,12 @@ function loadNewMap(mapPath,x,y)
     cam.x = player.collider:getX()
     cam.y = player.collider:getY()
 
-    -- Delete old colliders
     for _, wall in ipairs(walls) do
         if wall:isDestroyed() == false then
             wall:destroy()
         end
     end
     walls = {}
-    -- Load new map
-    -- Add new colliders
 
     for _, obj in pairs(gameMap.layers['Colliders'].objects) do
         local wall = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
@@ -463,12 +515,7 @@ function love.keypressed(key)
 
         if key == "j" then
             fade.isActive = true
-            minigame:setMinigame(1)
-
-        end
-        if key == "l" then
-            fade.isActive = true
-            minigame:setMinigame(4)
+            minigame:setMinigame(5)
 
         end
         if key == "x" then
@@ -526,8 +573,8 @@ function love.draw()
                 cam:detach()
                 myTimer:draw()
                 chat:draw()
-                love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
-                love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
+                --love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
+                --love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
             end 
         end)
     fade.draw()
