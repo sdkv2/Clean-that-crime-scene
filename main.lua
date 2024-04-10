@@ -308,13 +308,17 @@ function loadNewMap(mapPath,x,y)
         for _, obj in pairs(gameMap.layers['Colliders'].objects) do
             if obj.name == 'PC' then
                 local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function()  
-                    if not minigame:isComplete(4) then 
-                        fade.isActive = true
-                        minigame:setMinigame(4, 
-                        function() chat:chat('PC', '1') 
-                        end) 
-                    else 
-                        chat:chat('PC', '2') 
+                    if minigame:isComplete(2) and minigame:isComplete(1) then
+                        if not minigame:isComplete(4) then 
+                            fade.isActive = true
+                            minigame:setMinigame(4, 
+                            function() chat:chat('PC', '1') 
+                            end) 
+                        else 
+                            chat:chat('PC', '2') 
+                        end
+                    else
+                        chat:chat('PC', '3') 
                     end
                 end
                 )                table.insert(interactables, obj)

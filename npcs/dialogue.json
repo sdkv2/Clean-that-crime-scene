@@ -125,6 +125,11 @@
         ],
         "2": [
             {"speaker": "butler/neutral", "dialogue": "I should probably remind Master Kyle \n to change his password after this."}
+        ],
+        "3": [
+            {"speaker": "butler/neutral", "dialogue": "This is where the security footage of the incident \nis stored."},
+            {"speaker": "butler/neutral", "dialogue": "I should probably clean up the body first \nbefore erasing the footage."}
+
         ]
 
     },
