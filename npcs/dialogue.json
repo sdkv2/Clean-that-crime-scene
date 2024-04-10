@@ -1,21 +1,4 @@
 {
-    "explosion": {
-        "1": [
-            {"speaker": "butler/neutral", "dialogue": "Ah... the house is burning down"},
-            {"speaker": "explosion/neutral", "dialogue": "Sucks to be you"},
-            {"speaker": "explosion/neutral", "dialogue": "You should have been more careful"},
-            {"speaker": "butler/neutral", "dialogue": "Aww shucks, I'm out of a job now."}
-        ],
-        "2": [
-            {"speaker": "butler/neutral", "dialogue": "value1"},
-            {"speaker": "property2", "dialogue": "value2"}
-        ],
-        "3": [
-            {"speaker": "property1", "dialogue": "value1"},
-            {"speaker": "property2", "dialogue": "value2"}
-
-        ]
-    },
     "kyle": {
         "1": [
             {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up! We're going to be late"},
@@ -35,6 +18,8 @@
             {"speaker": "kyle/neutral", "dialogue": "Few, that was a close one. I'm glad you're\n okay."}
         ],
         "5": [
+            {"speaker": "kyle/neutral", "dialogue": "Ah..."},
+            {"speaker": "butler/neutral", "dialogue": "Ah..."},
             {"speaker": "butler/neutral", "dialogue": "What a mess"},
             {"speaker": "kyle/neutral", "dialogue": "This is terrible..."},
             {"speaker": "kyle/neutral", "dialogue": "I can't believe this is happening..."},
@@ -53,7 +38,10 @@
             {"speaker": "kyle/neutral", "dialogue": "Okay, okay. Let's get to work."},
             {"speaker": "butler/neutral", "dialogue": "Very well, Master Kyle. Let us begin."}],
         "6": [
-            {"speaker": "kyle/neutral", "dialogue": "Hurry up! we need to get rid of \nthis body somehow."}
+            {"speaker": "kyle/neutral", "dialogue": "Do you think he is really dead?"},
+            {"speaker": "butler/neutral", "dialogue": "Why don't you try checking his pulse?"},
+            {"speaker": "kyle/neutral", "dialogue": "I'm not touching him!"},
+            {"speaker": "butler/neutral", "dialogue": "I suppose we'll never know then."}
 
         ],
         "CCTV": [
@@ -85,10 +73,9 @@
     },
     "Kiran": {
         "1": [
-            {"speaker": "kyle/neutral", "dialogue": "Do you think he is really dead?"},
-            {"speaker": "butler/neutral", "dialogue": "Why don't you try checking his pulse?"},
-            {"speaker": "kyle/neutral", "dialogue": "I'm not touching him!"},
-            {"speaker": "butler/neutral", "dialogue": "I suppose we'll never know then."}
+            {"speaker": "butler/neutral", "dialogue": "We should probably get this body out of \nthe main hall."},
+            {"speaker": "kyle/neutral", "dialogue": "Well get on it then!"},
+            {"speaker": "butler/neutral", "dialogue": "Hmph... very well, Master Kyle."}
         ],
         "2": [
             {"speaker": "butler/neutral", "dialogue": "Time to put your friend into the garbage\n disposal."}
@@ -108,10 +95,28 @@
             {"speaker": "butler/neutral", "dialogue": "I think I would need something to help force \nit down though."}
         ],
         "2": [
-            {"speaker": "butler/neutral", "dialogue": "Well that's the body dealt with. Now we \njust need to clean up the rest of the mess."}
+            {"speaker": "butler/neutral", "dialogue": "Well that's the body dealt with. Now we \njust need to clean up the rest of this mess."}
         ],
         "3": [
             {"speaker": "butler/neutral", "dialogue": "PLACEHOLDER TEXT"}
+        ],
+        "4": [
+            {"speaker": "butler/neutral", "dialogue": "Let's get you down this, shall we?"},
+            {"speaker": "butler/neutral", "dialogue": "Ah... he appears to be stuck."},
+            {"speaker": "butler/neutral", "dialogue": "I'll need something to help force him down."}
+        ],
+        "5": [
+            {"speaker": "butler/neutral", "dialogue": "Kyle's friend appears to be stuck in the \nchute."},
+            {"speaker": "butler/neutral", "dialogue": "I'll need something to help force him down."}
+
+        ],
+        "6": [
+            {"speaker": "butler/neutral", "dialogue": "Let's get you down this, shall we?"},
+            {"speaker": "butler/neutral", "dialogue": "Ah... he appears to be stuck."},
+            {"speaker": "butler/neutral", "dialogue": "I can use my broom to help push him down."}
+        ],
+        "7": [
+            {"speaker": "butler/neutral", "dialogue": "Let's see if this broom can do the job"}
         ]
     },
     "PC": {
@@ -126,6 +131,20 @@
     "BowlingBall": {
         "1": [
             {"speaker": "butler/neutral", "dialogue": "Hmm... It looks like I'll need something \n to clean this with."}
+        ],
+        "2": [
+            {"speaker": "butler/neutral", "dialogue": "Squeaky clean!"}
+        ],
+        "3": [
+            {"speaker": "butler/neutral", "dialogue": "My precious sponges..."},
+            {"speaker": "butler/neutral", "dialogue": "I'll have to remember to bill Master for \n emotional damages."}
+  
+        ]
+    },
+    "Sponge": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "Ah, the sponge. A classic tool for cleaning."},
+            {"speaker": "ooc", "dialogue": "*You got the sponge!*"}
         ]
     }
     

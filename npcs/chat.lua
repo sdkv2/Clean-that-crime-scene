@@ -256,18 +256,18 @@ function chat:draw()
             if chat.speaker == chat.firstSpeaker then
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
             else
-                love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
+                love.graphics.setColor(0.3, 0.3, 0.3) 
                 chat.firstSpeaker.portraitAnimation:draw(chat.firstSpeaker.portraitSheet, rect.x, h - rect.height, 0, 2, 2)
-                love.graphics.setColor(1,1,1) -- Reset the color
+                love.graphics.setColor(1,1,1) 
             end
         end
         if chat.secondSpeaker then
             if chat.speaker == chat.secondSpeaker then
                 chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2)
             else
-                love.graphics.setColor(0.3, 0.3, 0.3) -- Grey out the non-speaking character
+                love.graphics.setColor(0.3, 0.3, 0.3)
                 chat.secondSpeaker.portraitAnimation:draw(chat.secondSpeaker.portraitSheet, rect.x + rect.width - 128 * 2, h - rect.height, 0, 2 ,2)
-                love.graphics.setColor(1,1,1) -- Reset the color
+                love.graphics.setColor(1,1,1) 
             end
         end
         if self.CurrentLine then

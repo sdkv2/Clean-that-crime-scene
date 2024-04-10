@@ -14,7 +14,7 @@ local allParticleData = require 'libraries.bubbles'
 local anim8 = require 'libraries/anim8'
 local bloodSplatters = love.graphics.newImage('sprites/blood.png')
 local g = anim8.newGrid(128, 128, bloodSplatters:getWidth(), bloodSplatters:getHeight())
-
+local background = love.graphics.newImage('sprites/blurredbackground.png')
 function Minigame1:initializeOrResetParticles()
 	for _, particleData in ipairs(allParticleData) do
 		-- Note that particle systems are already started when created, so we
@@ -161,7 +161,7 @@ function Minigame1:updateAnimation(dt)
         fade.startFade()
     end
     if self.FrameSpin >= 3.8 then
-        self.ParentMinigame:setMinigame(nil)
+        self.ParentMinigame:completeMinigame(1)
     end
 end
 
@@ -227,7 +227,7 @@ function Minigame1:update(dt)
 end
 
 function Minigame1:draw()
-
+    love.graphics.draw(background, 0, 0, 0, 2.5, 2.5)
     love.graphics.print("Controls:", 50, h - 300, 0, 0.5, 0.5)
     love.graphics.draw(currentImage, 80, h - 250, 0, 2, 2)
     love.graphics.print("= Rotate ball", 200, h - 200, 0, 0.5, 0.5)

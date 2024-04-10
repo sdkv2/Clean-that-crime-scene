@@ -30,9 +30,13 @@ function interactable:destroy()
     end
 end
 function interactable:draw()
-    if self.image then
+    if self.image and self.collider then
         love.graphics.draw(self.image, self.x, self.y, 0, self.scale, self.scale)
     end
+end
+
+function interactable:updateImages(image)
+    self.image = love.graphics.newImage(image)
 end
 
 function interactable:interact()

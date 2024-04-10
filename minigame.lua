@@ -6,7 +6,7 @@ local Minigame1 = require 'minigame1'
 local Minigame2 = require 'minigame2'
 local Minigame3 = require 'minigame3'
 local Minigame4 = require 'minigame4'
-
+local Minigame5 = require 'minigame5'
 
 function Minigame.new()
     local self = setmetatable({}, Minigame)
@@ -27,8 +27,9 @@ function Minigame:setMinigame(minigameNumber, callback)
         self.currentMinigame = Minigame3.new(self)
     elseif minigameNumber == 4 then
         self.currentMinigame = Minigame4.new(self)
+    elseif minigameNumber == 5 then
+        self.currentMinigame = Minigame5.new(self)
     else
-
         self.currentMinigame = nil
     end
 end
@@ -56,6 +57,7 @@ function Minigame:mousepressed(x, y, button)
 end
 
 function Minigame:completeMinigame(minigameNumber)
+    self.currentMinigame = nil
     self.completedMinigames[minigameNumber] = true
     self.callback()  -- Execute the callback when the minigame is completed
 end
