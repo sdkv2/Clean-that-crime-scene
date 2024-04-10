@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="18">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="19">
  <editorsettings>
   <export target="closet.lua" format="lua"/>
  </editorsettings>
@@ -290,8 +290,8 @@
  <objectgroup id="4" name="Load">
   <object id="1" name="Kitchen" x="897" y="382" width="50" height="99">
    <properties>
-    <property name="spawnX" value="1294"/>
-    <property name="spawnY" value="538"/>
+    <property name="spawnX" value="1270"/>
+    <property name="spawnY" value="545"/>
    </properties>
   </object>
  </objectgroup>
