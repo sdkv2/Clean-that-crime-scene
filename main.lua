@@ -515,7 +515,7 @@ function love.keypressed(key)
 
         if key == "j" then
             fade.isActive = true
-            minigame:setMinigame(4)
+            minigame:setMinigame(3)
 
         end
         if key == "x" then
