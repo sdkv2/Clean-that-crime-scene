@@ -9,6 +9,7 @@ local function loadingStatus()
     loadingComplete = true
 
 end
+local startup = love.audio.newSource("sfx/startup.wav", "static")
 local passwordFail = love.graphics.newImage('sprites/passwordfail.png')
 local loading = anim8.newAnimation(g('1-11', 1), 0.2, loadingStatus)
 local drawGavin = false
@@ -25,6 +26,7 @@ local function deleteStatus()
 end
 local deleting = anim8.newAnimation(gDelete('1-23', 1), 0.2, deleteStatus)
 function Minigame4.new(Parent)
+    love.audio.play(startup)
     timer = 0
     passwordFailActive = false
     keyArray = {}
