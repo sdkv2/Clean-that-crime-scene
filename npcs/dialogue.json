@@ -79,6 +79,9 @@
         ],
         "2": [
             {"speaker": "butler/neutral", "dialogue": "Time to put your friend into the garbage\n disposal."}
+        ],
+        "3": [
+            {"speaker": "butler/neutral", "dialogue": "I should probably remind Master Kyle \n to change his password after this."}
         ]
     },
     "Door": {
