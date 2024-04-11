@@ -8,6 +8,7 @@ chat.complete = true
 chat.rectangles = {}
 chat.line = 1
 chat.invert = false
+local blip = love.audio.newSource('sfx/blipSelect.wav', 'static')
 chat.keys = {} -- Make keys a member of the chat table
 chat.speaker = nil
 chat.chatting = false
@@ -99,6 +100,7 @@ function chat:nextLine()
             self.line = self.line + 1
 
             if self.CurrentDialogue[self.line] then
+                
                 updateAnim(self.CurrentDialogue[self.line].speaker)
                 self.CurrentLine = self.CurrentDialogue[self.line].dialogue
                 self.CurrentChar = 1
