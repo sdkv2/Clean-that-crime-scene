@@ -162,6 +162,7 @@ function Minigame2:update(dt)
             if delay <= 0 then
                 if not beeping:isPlaying() then
                 beeping:play()
+                delay = 0.4
                 end
             end
 

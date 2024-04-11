@@ -18,9 +18,9 @@ function Minigame3.new(Parent)
     local self = setmetatable({}, Minigame3)
     self.stages = {
         {directions = {'up', 'down', 'left', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 1
-        {directions = {'left', 'right'}, durations = {3, 4}}, -- Stage 2
-        {directions = {'up', 'right'}, durations = {4, 5}}, -- Stage 3
-        {directions = {'down', 'left'}, durations = {5, 6}}, -- Stage 4
+        {directions = {'left', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 2
+        {directions = {'up', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 3
+        {directions = {'down', 'left'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 4
     }
     self.currentStage = 1
     self.currentDirection = 1
@@ -114,8 +114,21 @@ function Minigame3:keypressed(key)
     if playerDirection == self.stages[self.currentStage].directions[self.currentDirection] then
         self.currentDirection = self.currentDirection + 1
         print('correct')
-        win = love.audio.newSource("sfx/win.wav", "static")
-        win:play()
+        if playerDirection == self.stages[self.currentStage].directions[#self.stages[self.currentStage].directions] then
+            if self.currentStage == #self.stages then
+                ParentMinigame:setMinigame(nil)
+                fade.isActive = true
+            end
+            self.currentStage = self.currentStage + 1
+            self.currentDirection = 1
+            self.allowInput = false
+            self.timer = 0
+        end
+    else
+        print('wrong')
+        self.currentDirection = 1
+        self.allowInput = false
+        self.timer = 0
     end
 
     

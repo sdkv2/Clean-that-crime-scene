@@ -57,8 +57,6 @@ function Minigame:mousepressed(x, y, button)
 end
 
 function Minigame:completeMinigame(minigameNumber)
-    win:setVolume(0.5)
-    love.audio.play(win)
     self.currentMinigame = nil
     self.completedMinigames[minigameNumber] = true
     self.callback()  -- Execute the callback when the minigame is completed

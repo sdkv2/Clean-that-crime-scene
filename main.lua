@@ -502,7 +502,7 @@ function love.keypressed(key)
     if minigame.currentMinigame ~= nil then
         minigame:keypressed(key)
     else
-        if key == "z" then
+        if key == "z" or key == "e" then
             if chat.chatting == true then
                 chat:nextLine()
             elseif isInteractable == true then
@@ -515,7 +515,7 @@ function love.keypressed(key)
 
         if key == "j" then
             fade.isActive = true
-            minigame:setMinigame(2)
+            minigame:setMinigame(3)
 
         end
         if key == "x" then
