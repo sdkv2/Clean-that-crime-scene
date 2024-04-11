@@ -12,7 +12,11 @@ local downSound = love.audio.newSource('sfx/down.wav', 'static')
 local leftSound = love.audio.newSource('sfx/left.wav', 'static')
 local rightSound = love.audio.newSource('sfx/right.wav', 'static')
 local sound = nil
-local win = love.audio.newSource("sfx/win.wav", "static")
+local book = love.graphics.newImage('sprites/book.png')
+local arrow = love.graphics.newImage('sprites/arrows.png')
+local g2 = anim8.newGrid(32, 32, arrow:getWidth(), arrow:getHeight())
+local arrowAnim = anim8.newAnimation(g2('1-4', 1), 0.4)
+local fail = love.audio.newSource('sfx/fail.wav', 'static')
 function Minigame3.new(Parent)
     ParentMinigame = Parent
     local self = setmetatable({}, Minigame3)
@@ -28,6 +32,7 @@ function Minigame3.new(Parent)
     self.timer = 0
     self.sound = nil
     self.started = false
+    self.delay = 0.5
 
     return self
 end
@@ -51,32 +56,54 @@ function Minigame3:update(dt)
 end
 
 function Minigame3:processStages(dt)
-    if not self.allowInput then
-        self.timer = self.timer + dt
-        if self.currentDirection > #self.stages[self.currentStage].directions then
-            if self.timer >= self.stages[self.currentStage].durations[#self.stages[self.currentStage].durations] then
-                self.allowInput = true
-                self.sound:stop()
-                self.currentDirection = 1
-            end
-           
-            return
-        end
-        local stage = self.stages[self.currentStage]
-        if self.timer >= stage.durations[self.currentDirection] then
-            
-            print(stage.directions[self.currentDirection])
-            if self.sound then
-                self.sound:stop()
-            end
-            self.sound = self:generateSound(stage.directions[self.currentDirection])
-            self.sound:play()
-            self.timer = 0
-            self.currentDirection = self.currentDirection + 1
-        end
+    if self.delay > 0 then
+        self.delay = self.delay - dt
+        return
     end
+    if not self.allowInput then
+            self.timer = self.timer + dt
+            if self.currentDirection > #self.stages[self.currentStage].directions then
+                if self.timer >= self.stages[self.currentStage].durations[#self.stages[self.currentStage].durations] then
+                    self.allowInput = true
+                    self.drawArrow = false
+                    self.sound:stop()
+                    self.currentDirection = 1
+                end
+            
+                return
+            end
+            local stage = self.stages[self.currentStage]
+            if self.timer >= stage.durations[self.currentDirection] then
+                self.drawArrow = true
+                
+                print(stage.directions[self.currentDirection])
+                if self.sound then
+                    self.sound:stop()
+                end
+                self.sound = self:generateSound(stage.directions[self.currentDirection])
+                self.sound:play()
+                Minigame3:drawArrow(stage.directions[self.currentDirection])
+
+                self.timer = 0
+                self.currentDirection = self.currentDirection + 1
+            end
+        end
+
 end
 
+function Minigame3:drawArrow(direction)
+    if direction == 'up' then
+        arrowAnim:gotoFrame(1)
+    elseif direction == 'down' then
+        arrowAnim:gotoFrame(2)
+    elseif direction == 'left' then
+        arrowAnim:gotoFrame(4)
+    elseif direction == 'right' then
+        arrowAnim:gotoFrame(3)
+    elseif direction == 'none' then
+        self.drawArrow = false
+    end
+end
 
 function Minigame3:mousepressed(x, y, button)
 
@@ -116,19 +143,26 @@ function Minigame3:keypressed(key)
         print('correct')
         if playerDirection == self.stages[self.currentStage].directions[#self.stages[self.currentStage].directions] then
             if self.currentStage == #self.stages then
+                sound:stop()
                 ParentMinigame:setMinigame(nil)
                 fade.isActive = true
             end
+            self.delay = 0.5
             self.currentStage = self.currentStage + 1
             self.currentDirection = 1
             self.allowInput = false
             self.timer = 0
         end
     else
-        print('wrong')
+        if sound then
+            sound:stop()
+        end
+        fail:play()
+        playerDirection = 'none'
+        self.delay = 0.5
         self.currentDirection = 1
         self.allowInput = false
-        self.timer = 0
+        self.timer = 0.5
     end
 
     
@@ -137,6 +171,11 @@ end
 function Minigame3:draw()
     love.graphics.draw(background, 0, 0, 0, 2.5, 2.5)
     butler:draw(butlerSheet, w/2 - 600, h/2 - 260, 0 ,5 ,5)
+    love.graphics.draw(book, w/2 + 250, h/2 - 150, 0, 4, 4)
+    if self.drawArrow then
+        arrowAnim:draw(arrow, w/2 + 530, h/2 - 50, 0, 5, 5)
+    end
+
 
 end
 
