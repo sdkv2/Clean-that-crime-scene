@@ -23,6 +23,7 @@ local kiranFallen = love.graphics.newImage('sprites/kiranfallen.png')
 local currentX = nil
 local splat = love.audio.newSource("sfx/splat.mp3", "static")
 local delayTime = 0
+local scream = love.audio.newSource("sfx/scream.wav", "static")
 
 -- Constructor
 function cutscene:init()
@@ -111,6 +112,7 @@ function cutscene:update(dt)
         if self.moveOn then
             if bowlingball2Y > 780 then
                 if not splat:isPlaying() then
+                    love.audio.play(scream)
                     kiranFallen = love.graphics.newImage('sprites/kirandead.png')
                     splat:play()
                 end
