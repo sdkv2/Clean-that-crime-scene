@@ -88,7 +88,8 @@
             {"speaker": "butler/neutral", "dialogue": "Time to dispose of your friend."}
         ],
         "3": [
-            {"speaker": "gkiran/neutral", "dialogue": "im ghost kiran"}
+            {"speaker": "butler/neutral", "dialogue": "Sorry Kiran, but I'm going to have to \nescort you out of here."},
+            {"speaker": "gkiran/neutral", "dialogue": "NO! WAIT-"}
         ]
     },
     "Door": {
@@ -161,6 +162,20 @@
             {"speaker": "butler/neutral", "dialogue": "Ah, a sponge! This might work nicely for\n cleaning the bowling ball."},
             {"speaker": "ooc", "dialogue": "*You got the sponge!*"}
         ]
-    }
+    },
     
+    "Cop": {
+        "1": [
+            {"speaker": "cop/neutral", "dialogue": "Open up! This is the police!"},
+            {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. Come on in!"}
+        ],
+        "2": [
+            {"speaker": "cop/neutral", "dialogue": "Hello sir, we've recieved a call \nfrom your neighbour about a scream originating \nfrom this address."},
+            {"speaker": "butler/neutral", "dialogue": "Ah! Of course, officer. I'm afraid \nthat was just Master Kyle here."},
+            {"speaker": "butler/neutral", "dialogue": "He simply tripped down the stairs."},
+            {"speaker": "cop/neutral", "dialogue": "I see..."},
+            {"speaker": "cop/neutral", "dialogue": "Well, you wouldn't mind if I took a \nlook around, would you?"},
+            {"speaker": "butler/neutral", "dialogue": "Not at all, officer. Please, \nfeel free to look around."}
+        ]
+    }
 }
