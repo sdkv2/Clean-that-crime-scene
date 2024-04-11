@@ -46,8 +46,8 @@
 
         ],
         "CCTV": [
-            {"speaker": "butler/neutral", "dialogue": "Master Kyle, do you know the password \nto your CCTV system?"},
-            {"speaker": "kyle/neutral", "dialogue": "Uhh... Have you tried 'computer5'?"},
+            {"speaker": "butler/neutral", "dialogue": "Sir, do you happen to know the password \nto your CCTV system?"},
+            {"speaker": "kyle/neutral", "dialogue": "Uhh... Have you tried 'computer'?"},
             {"speaker": "butler/neutral", "dialogue": "I'll try that now."}
 
         ],
