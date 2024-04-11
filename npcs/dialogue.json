@@ -1,24 +1,24 @@
 {
     "kyle": {
         "1": [
-            {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up! We're going to be late"},
+            {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up! We're going to be late\n to the bowling tournament!"},
             {"speaker": "kyle/neutral", "dialogue": "Chill out Kiran! These bowling balls \naren't light."},
             {"speaker": "kiran/neutral", "dialogue": "Do you really need to bring your own \nbowling balls?"},
             {"speaker": "kyle/neutral", "dialogue": "Of course I do!"}
         ],
         "2": [
-            {"speaker": "kyle/neutral", "dialogue": "Whoops!"}
+            {"speaker": "kyle/neutral", "dialogue": "Whoopsie!"}
         ],
         "3": [
-            {"speaker": "kyle/neutral", "dialogue": "Oh no! Kiran are you okay?"}
+            {"speaker": "kyle/neutral", "dialogue": "Jesus! Kiran are you okay?"}
 
         ],
         "4": [
-            {"speaker": "kiran/neutral", "dialogue": "I-I'm fine, just feeling a little dizzy."},
-            {"speaker": "kyle/neutral", "dialogue": "Few, that was a close one. I'm glad you're\n okay."}
+            {"speaker": "kiran/neutral", "dialogue": "I-I'm fine, just a little bowling ball to\n the head. ."},
+            {"speaker": "kyle/neutral", "dialogue": "Phew, that was scary. I'm glad I\n didn't kill you!"}
         ],
         "5": [
-            {"speaker": "kyle/neutral", "dialogue": "Ah..."},
+            {"speaker": "kyle/neutral", "dialogue": "Oh..."},
             {"speaker": "butler/neutral", "dialogue": "Ah..."},
             {"speaker": "butler/neutral", "dialogue": "What a mess"},
             {"speaker": "kyle/neutral", "dialogue": "This is terrible..."},
@@ -31,11 +31,11 @@
             {"speaker": "kyle/neutral", "dialogue": "J-JAIL!?!?! T-They can't do that to me! \nI'm rich!"},
             {"speaker": "butler/neutral", "dialogue": "You may have forgotten, Sir, your \nparents said they would no longer \nfund your mischief."},
             {"speaker": "kyle/neutral", "dialogue": "You gotta help me man! My parents will \n seriously kill me if they find out!"},
-            {"speaker": "butler/neutral", "dialogue": "I will do my best, Master Kyle. However \n we must act quickly."},
+            {"speaker": "butler/neutral", "dialogue": "I will do my best, Sir. However \n we must act quickly."},
             {"speaker": "butler/neutral", "dialogue": "After that loud scream, I suspect that \nBrenda from next door has already \nfiled a noise complaint"},
             {"speaker": "butler/neutral", "dialogue": "I believe the police will arrive \nwithin approximately 5 minutes."},
             {"speaker": "kyle/neutral", "dialogue": "5 minutes!?!? That's not enough time!"},
-            {"speaker": "butler/neutral", "dialogue": "We must try, Master Kyle. We have no \nother choice."},
+            {"speaker": "butler/neutral", "dialogue": "We must try, Sir. We have no \nother choice."},
             {"speaker": "kyle/neutral", "dialogue": "Okay, okay. Let's get to work."},
             {"speaker": "butler/neutral", "dialogue": "Very well, Master Kyle. Let us begin."}],
         "6": [
