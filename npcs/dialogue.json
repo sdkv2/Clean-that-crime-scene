@@ -56,7 +56,7 @@
             {"speaker": "butler/neutral", "dialogue": "You do realise that the police will \nbe here soon, right?"},
             {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"}
         ],
-        "KiranGhost" : [
+        "KiranGhost" :  [
             {"speaker": "kyle/neutral", "dialogue": "Kiran! Is that you?"},
             {"speaker": "gkiran/neutral", "dialogue": "I'm ghost"}
         ]
