@@ -55,9 +55,10 @@
             {"speaker": "kyle/neutral", "dialogue": "I think I wrote my password down \nsomewhere..."},
             {"speaker": "butler/neutral", "dialogue": "You do realise that the police will \nbe here soon, right?"},
             {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"}
-
-
-
+        ],
+        "KiranGhost" : [
+            {"speaker": "kyle/neutral", "dialogue": "Kiran! Is that you?"},
+            {"speaker": "gkiran/neutral", "dialogue": "I'm ghost"}
         ]
     },
     "Broom": {
@@ -81,7 +82,7 @@
             {"speaker": "butler/neutral", "dialogue": "Time to put your friend into the garbage\n disposal."}
         ],
         "3": [
-            {"speaker": "butler/neutral", "dialogue": "I should probably remind Master Kyle \n to change his password after this."}
+            {"speaker": "gkiran/neutral", "dialogue": "im ghost kiran"}
         ]
     },
     "Door": {
