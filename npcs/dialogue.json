@@ -71,7 +71,6 @@
     "Broom": {
         "1": [
             {"speaker": "butler/neutral", "dialogue": "Ah, my broom! I'd imagine this would help \n with the clean-up."},
-            {"speaker": "butler/neutral", "dialogue": "It's should prove useful in cleaning up \nthis mess."},
             {"speaker": "ooc", "dialogue": "*You got the broom!*"}
 
         ],
