@@ -32,7 +32,8 @@ function Minigame3.new(Parent)
         {directions = {'up', 'down', 'left', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 1
         {directions = {'down', 'down', 'down', 'left', 'right', 'up', 'right', 'right'}, durations = {0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25}}, -- Stage 2
         {directions = {'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5, 0.5}}, -- Stage 3
-        {directions = {'down', 'left', 'left', 'right', 'up', 'right', 'right', 'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5,0.25,0.25,0.25,0.25,0.25,0.25,0.25, 0.5, 0.5}}, -- Stage 4
+        {directions = {'down', 'left', 'right', 'up', 'right', 'right', 'up', 'right'}, durations = {0.5, 0.5, 0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5, 0.5, 0.5}}, -- Stage 4
+        {directions = {'down', 'right', 'up', 'down', 'right', 'down'}, durations = {0.25, 0.25, 0.25, 0.25,0.25, 0.25}}, -- Stage 5
     }
     self.currentStage = 1
     self.currentDirection = 1
