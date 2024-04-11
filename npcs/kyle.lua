@@ -9,7 +9,7 @@ function Kyle:initialize(x, y, spriteSheet, spriteWidth, spriteHeight, animation
 end
 
 function Kyle:interact()
-    local dx = player.x - self.x
+        local dx = player.x - self.x
         local dy = player.y - self.y
         local spriteWidth, spriteHeight = self.currentAnimation:getDimensions()
 
@@ -26,10 +26,11 @@ function Kyle:interact()
                 self.currentAnimation = self.animations.downidle
             end
         end
-    if currentRoom == "maps/mansionroom.lua" then
+    if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
+            chat:chat(self.name, '7', function () self.currentAnimation = self.animations.downidle end)
+    elseif currentRoom == "maps/mansionroom.lua" then
         chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
-    end
-    if currentRoom == "maps/cctv.lua" then
+    elseif currentRoom == "maps/cctv.lua" then
         if cctvState == 1 then
             chat:chat(self.name, 'CCTV2', function () self.currentAnimation = self.animations.upidle end)
         else

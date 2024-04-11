@@ -46,6 +46,11 @@
             {"speaker": "butler/neutral", "dialogue": "You probably shouldn't touch anything..."}
 
         ],
+        "7": [
+            {"speaker": "kyle/neutral", "dialogue": "Aww heck a ghost!"},
+            {"speaker": "gkiran/neutral", "dialogue": "I'm ghost"}
+
+        ],
         "CCTV": [
             {"speaker": "butler/neutral", "dialogue": "Sir, do you happen to know the password \nto your CCTV system?"},
             {"speaker": "kyle/neutral", "dialogue": "Uhh... Have you tried 'computer'?"},
@@ -161,6 +166,18 @@
         "1": [
             {"speaker": "butler/neutral", "dialogue": "Ah, a sponge! This might work nicely for\n cleaning the bowling ball."},
             {"speaker": "ooc", "dialogue": "*You got the sponge!*"}
+        ]
+    },
+    "Bookshelf": {
+        "1": [
+            {"speaker": "butler/neutral", "dialogue": "Hmm? What's this?"},
+            {"speaker": "butler/neutral", "dialogue": "It appears to be a diary."},
+            {"speaker": "butler/neutral", "dialogue": "I wonder if this could be of any use."},
+            {"speaker": "ooc", "dialogue": "*You got the diary! Press J to read it.*"}
+
+        ],
+        "2": [
+            {"speaker": "butler/neutral", "dialogue": "I've already got the diary."}
         ]
     },
     

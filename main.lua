@@ -21,7 +21,7 @@ local TITLE = 3
 -- Initialize game state
 local chuteState = nil
 local Minigame = require 'minigame'
-local minigame = Minigame.new()
+minigame = Minigame.new()
 local titleArt = love.graphics.newImage('sprites/guy.png')
 local borderSize = 6
 local alpha = 0
@@ -41,13 +41,16 @@ local interact
 local kiranDraw = true
 local spongeGet = false
 local bowlingballClean = false
+local journal = false
 function love.load()
+    journal = false
     gameState = TITLE
     zoom = 2
     chatting = false
     cctvState = 0
     local Explosion = require 'npcs/explosion'
     target = nil
+    
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     interact = love.graphics.newImage('sprites/interact.png')
@@ -67,7 +70,8 @@ function love.load()
     class = require 'libraries/middleclass'
     wf = require 'libraries/windfield'
     local moonshine = require 'libraries/moonshine'
-
+    
+    
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
     effect.crt.distortionFactor = {1.02, 1.04}
     effect.scanlines.opacity = 0.1
@@ -232,6 +236,21 @@ function loadNewMap(mapPath,x,y)
     mapPath = string.lower(mapPath)
     currentRoom = mapPath
 
+    if mapPath == 'maps/library.lua' then
+        for _, obj in pairs(gameMap.layers['Colliders'].objects) do
+            if obj.name == 'Bookshelf' then
+                local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() 
+                    if journal then
+                        chat:chat('Bookshelf', '2')
+                    else
+                    chat:chat('Bookshelf', '1') journal = true end 
+                end)
+                table.insert(interactables, obj)
+            end
+        end
+
+    end
+
     if mapPath == 'maps/mansionroom.lua' then
         print(cutsceneLogic.cutsceneFinished)
         if cutsceneLogic.cutsceneFinished then
@@ -280,6 +299,12 @@ function loadNewMap(mapPath,x,y)
                     local obj = interactable:new(obj.name, obj.x, obj.y, obj.width, obj.height, nil, nil, function() loadNewMap("maps/cctv.lua", 953, 620)  end)
                     table.insert(interactables, obj)
                 end
+            end
+            if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
+                local gkiran = interactable:new('gkiran', 940, 737, 32, 48, "sprites/gsprite.png", 1.25, function() 
+                    chat:chat('Kiran', '3') 
+                end)
+                table.insert(interactables, gkiran)
             end
 
         else 
@@ -514,13 +539,19 @@ function love.keypressed(key)
         end
 
         if key == "j" then
-            fade.isActive = true
-            minigame:setMinigame(5)
+            if journal then
+                fade.isActive = true
+                minigame:setMinigame(5)
+            end
+            
 
         end
         if key == "l" then
+            kiranDraw = false
             fade.isActive = true
-            minigame:setMinigame(3)
+            minigame:completeMinigame(1)
+            minigame:completeMinigame(2)
+            minigame:completeMinigame(4)
 
         end
         if key == "x" then
