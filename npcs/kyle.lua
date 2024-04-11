@@ -27,7 +27,7 @@ function Kyle:interact()
             end
         end
     if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
-            chat:chat(self.name, '7', function () self.currentAnimation = self.animations.downidle end)
+            chat:chat(self.name, 'KiranGhost', function () self.currentAnimation = self.animations.downidle end)
     elseif currentRoom == "maps/mansionroom.lua" then
         chat:chat(self.name, '6', function () self.currentAnimation = self.animations.downidle end)
     elseif currentRoom == "maps/cctv.lua" then

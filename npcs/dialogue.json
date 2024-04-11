@@ -69,7 +69,7 @@
             {"speaker": "gkiran/neutral", "dialogue": "Correct, Kyle. I am a ghost."},
             {"speaker": "kyle/neutral", "dialogue": "I can't believe this... You gotta go.\n I can't have a ghost hanging around\n when the cops get here."},
             {"speaker": "gkiran/neutral", "dialogue": "Seriously? You're going to kick me out? \n You killed me!"},
-            {"speaker": "kyle/neutral", "dialogue": "'Killed' is a strong word, and \n you know I can miss this tournament!\n I can't go to jail!"},
+            {"speaker": "kyle/neutral", "dialogue": "'Killed' is a strong word, and \n you know I can't miss this tournament!\n I can't go to jail!"},
             {"speaker": "gkiran/neutral", "dialogue": "Well that's too bad! I'm not going\n anywhere! "}
         ]
     },
@@ -197,9 +197,9 @@
 
         "3": [
                 {"speaker": "cop/neutral", "dialogue": "Do you mind opening the trash chute for me?\n I'd like to take a look inside."},
-                {"speaker": "butler/neutral", "dialogue": "Of course, officer. I'll open it at once."}
+                {"speaker": "butler/neutral", "dialogue": "Of course, officer. I'll open it at once."},
                 {"speaker": "cop/neutral", "dialogue": "Hmm... everything here seems fine."},
-                {"speaker": "cop/neutral", "dialogue": "Would you point me in the direction \nof the cctv room?."}
+                {"speaker": "cop/neutral", "dialogue": "Would you point me in the direction \nof the cctv room?."},
                 {"speaker": "butler/neutral", "dialogue": "Right this way."}
         
         ]
