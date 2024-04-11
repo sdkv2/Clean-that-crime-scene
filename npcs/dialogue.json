@@ -25,14 +25,15 @@
             {"speaker": "kyle/neutral", "dialogue": "I can't believe this is happening..."},
             {"speaker": "kyle/neutral", "dialogue": "And now I'll miss my bowling tournament!"},
             {"speaker": "butler/neutral", "dialogue": "..."},
-            {"speaker": "butler/neutral", "dialogue": "There are more pressing concerns at hand, \nMaster Kyle."},
-            {"speaker": "butler/neutral", "dialogue": "We need to clean up this mess we have \nfound ourselves in."},
-            {"speaker": "butler/neutral", "dialogue": "Lest we wish to be sent to jail."},
+            {"speaker": "butler/neutral", "dialogue": "There are more pressing concerns at hand, \nSir."},
+            {"speaker": "butler/neutral", "dialogue": "We ought to clean up this mess as soon \nas possible."},
+            {"speaker": "butler/neutral", "dialogue": "Unless you wish to be sent to jail."},
             {"speaker": "kyle/neutral", "dialogue": "J-JAIL!?!?! T-They can't do that to me! \nI'm rich!"},
-            {"speaker": "butler/neutral", "dialogue": "Wealth may not shield you from suspicion,\nMaster Kyle."},
-            {"speaker": "kyle/neutral", "dialogue": "You gotta help me man! My parents will \n ground me if they find out!"},
+            {"speaker": "butler/neutral", "dialogue": "You may have forgotten, Sir, your \nparents said they would no longer \nfund your mischief."},
+            {"speaker": "kyle/neutral", "dialogue": "You gotta help me man! My parents will \n seriously kill me if they find out!"},
             {"speaker": "butler/neutral", "dialogue": "I will do my best, Master Kyle. However \n we must act quickly."},
-            {"speaker": "butler/neutral", "dialogue": "I suspect the police will arrive in\n around 5:00 minutes."},
+            {"speaker": "butler/neutral", "dialogue": "After that loud scream, I suspect the \nHome Owners Association has already \nfiled a noise complaint"},
+            {"speaker": "butler/neutral", "dialogue": "I'd suspect the police will arrive \nwithin 5 minutes."},
             {"speaker": "kyle/neutral", "dialogue": "5 minutes!?!? That's not enough time!"},
             {"speaker": "butler/neutral", "dialogue": "We must try, Master Kyle. We have no \nother choice."},
             {"speaker": "kyle/neutral", "dialogue": "Okay, okay. Let's get to work."},
@@ -54,7 +55,8 @@
             {"speaker": "butler/neutral", "dialogue": "That doesn't seem to have worked. \nDo you have any other ideas?"},
             {"speaker": "kyle/neutral", "dialogue": "I think I wrote my password down \nsomewhere..."},
             {"speaker": "butler/neutral", "dialogue": "You do realise that the police will \nbe here soon, right?"},
-            {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"}
+            {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"},
+            {"speaker": "kyle/neutral", "dialogue": "... Wait! I think I wrote it in my diary,\n it's probably in library somewhere."}
         ],
         "KiranGhost" :  [
             {"speaker": "kyle/neutral", "dialogue": "Kiran! Is that you?"},
@@ -63,7 +65,7 @@
     },
     "Broom": {
         "1": [
-            {"speaker": "butler/neutral", "dialogue": "Ah, the broom. A classic tool for cleaning."},
+            {"speaker": "butler/neutral", "dialogue": "Ah, my broom! I'd imagine this would help \n with the clean-up."},
             {"speaker": "butler/neutral", "dialogue": "It's should prove useful in cleaning up \nthis mess."},
             {"speaker": "ooc", "dialogue": "*You got the broom!*"}
 
