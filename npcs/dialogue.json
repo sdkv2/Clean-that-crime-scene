@@ -2,12 +2,14 @@
     "kyle": {
         "1": [
             {"speaker": "kiran/neutral", "dialogue": "Kyle, hurry up! We're going to be late\n to the bowling tournament!"},
-            {"speaker": "kyle/neutral", "dialogue": "Chill out Kiran! These bowling balls \naren't light."},
+            {"speaker": "kyle/neutral", "dialogue": "Chill out bro, These bowling balls \naren't light."},
             {"speaker": "kiran/neutral", "dialogue": "Do you really need to bring your own \nbowling balls?"},
-            {"speaker": "kyle/neutral", "dialogue": "Of course I do!"}
+            {"speaker": "kyle/neutral", "dialogue": "Duh, I can't be seen using the same \nballs as every other loser there."},
+            {"speaker": "kiran/neutral", "dialogue": "I don't think anyone would care."},
+            {"speaker": "kyle/neutral", "dialogue": "I care, man... I care."}
         ],
         "2": [
-            {"speaker": "kyle/neutral", "dialogue": "Whoopsie!"}
+            {"speaker": "kyle/neutral", "dialogue": "Whoopsie!"} 
         ],
         "3": [
             {"speaker": "kyle/neutral", "dialogue": "Jesus! Kiran are you okay?"}
@@ -19,9 +21,8 @@
         ],
         "5": [
             {"speaker": "kyle/neutral", "dialogue": "Oh..."},
-            {"speaker": "butler/neutral", "dialogue": "Ah..."},
-            {"speaker": "butler/neutral", "dialogue": "What a mess"},
-            {"speaker": "kyle/neutral", "dialogue": "This is terrible..."},
+            {"speaker": "butler/neutral", "dialogue": "Goodness me..."},
+            {"speaker": "kyle/neutral", "dialogue": "This is bad..."},
             {"speaker": "kyle/neutral", "dialogue": "I can't believe this is happening..."},
             {"speaker": "kyle/neutral", "dialogue": "And now I'll miss my bowling tournament!"},
             {"speaker": "butler/neutral", "dialogue": "..."},
@@ -42,7 +43,7 @@
             {"speaker": "kyle/neutral", "dialogue": "Do you think he is really dead?"},
             {"speaker": "butler/neutral", "dialogue": "Why don't you try checking his pulse?"},
             {"speaker": "kyle/neutral", "dialogue": "I'm not touching him!"},
-            {"speaker": "butler/neutral", "dialogue": "I suppose we'll never know then."}
+            {"speaker": "butler/neutral", "dialogue": "You probably shouldn't touch anything..."}
 
         ],
         "7": [
@@ -59,19 +60,22 @@
         "CCTV2": [
             {"speaker": "butler/neutral", "dialogue": "That doesn't seem to have worked. \nDo you have any other ideas?"},
             {"speaker": "kyle/neutral", "dialogue": "I think I wrote my password down \nsomewhere..."},
-            {"speaker": "butler/neutral", "dialogue": "You do realise that the police will \nbe here soon, right?"},
+            {"speaker": "butler/neutral", "dialogue": "Sir, You realise that the police will \nbe here soon, do you not?"},
             {"speaker": "kyle/neutral", "dialogue": "I know, I know. I'm trying to remember!"},
             {"speaker": "kyle/neutral", "dialogue": "... Wait! I think I wrote it in my diary,\n it's probably in library somewhere."}
         ],
         "KiranGhost" :  [
-            {"speaker": "kyle/neutral", "dialogue": "Kiran! Is that you?"},
-            {"speaker": "gkiran/neutral", "dialogue": "I'm ghost"}
+            {"speaker": "kyle/neutral", "dialogue": "Kiran! Is that you? You're a ghost, man."},
+            {"speaker": "gkiran/neutral", "dialogue": "Correct, Kyle. I am a ghost."},
+            {"speaker": "kyle/neutral", "dialogue": "I can't believe this... You gotta go.\n I can't have a ghost hanging around\n when the cops get here."},
+            {"speaker": "gkiran/neutral", "dialogue": "Seriously? You're going to kick me out? \n You killed me!"},
+            {"speaker": "kyle/neutral", "dialogue": "'Killed' is a strong word, and \n you know I can miss this tournament!\n I can't go to jail!"},
+            {"speaker": "gkiran/neutral", "dialogue": "Well that's too bad! I'm not going\n anywhere! "}
         ]
     },
     "Broom": {
         "1": [
             {"speaker": "butler/neutral", "dialogue": "Ah, my broom! I'd imagine this would help \n with the clean-up."},
-            {"speaker": "butler/neutral", "dialogue": "It's should prove useful in cleaning up \nthis mess."},
             {"speaker": "ooc", "dialogue": "*You got the broom!*"}
 
         ],
@@ -83,20 +87,21 @@
         "1": [
             {"speaker": "butler/neutral", "dialogue": "We should probably get this body out of \nthe main hall."},
             {"speaker": "kyle/neutral", "dialogue": "Well get on it then!"},
-            {"speaker": "butler/neutral", "dialogue": "Hmph... very well, Master Kyle."}
+            {"speaker": "butler/neutral", "dialogue": "Of course, Master Kyle."}
         ],
         "2": [
-            {"speaker": "butler/neutral", "dialogue": "Time to put your friend into the garbage\n disposal."}
+            {"speaker": "butler/neutral", "dialogue": "Time to dispose of your friend."}
         ],
         "3": [
-            {"speaker": "gkiran/neutral", "dialogue": "im ghost kiran"}
+            {"speaker": "butler/neutral", "dialogue": "Sorry Kiran, but I'm going to have to \nescort you out of here."},
+            {"speaker": "gkiran/neutral", "dialogue": "NO! WAIT-"}
         ]
     },
     "Door": {
         "1": [
-            {"speaker": "butler/neutral", "dialogue": "Perhaps I should leave Master Kyle to \n his own devices..."},
+            {"speaker": "butler/neutral", "dialogue": "Perhaps I should leave Master Kyle to \n deal with this..."},
             {"speaker": "kyle/neutral", "dialogue": "What are you doing! Get back here!"},
-            {"speaker": "butler/neutral", "dialogue": "Gah... very well, Master Kyle."}
+            {"speaker": "butler/neutral", "dialogue": "Of course, sir. I'm on my way."}
 
         ]
     },
@@ -109,15 +114,15 @@
             {"speaker": "butler/neutral", "dialogue": "Well that's the body dealt with. Now we \njust need to clean up the rest of this mess."}
         ],
         "3": [
-            {"speaker": "butler/neutral", "dialogue": "PLACEHOLDER TEXT"}
+            {"speaker": "butler/neutral", "dialogue": "The body is disposed of, time to continue. \n"}
         ],
         "4": [
             {"speaker": "butler/neutral", "dialogue": "Let's get you down this, shall we?"},
             {"speaker": "butler/neutral", "dialogue": "Ah... he appears to be stuck."},
-            {"speaker": "butler/neutral", "dialogue": "I'll need something to help force him down."}
+            {"speaker": "butler/neutral", "dialogue": "I'll need something to help force him down.\n I should check the closet"}
         ],
         "5": [
-            {"speaker": "butler/neutral", "dialogue": "Kyle's friend appears to be stuck in the \nchute."},
+            {"speaker": "butler/neutral", "dialogue": "Kiran appears to be stuck in the chute."},
             {"speaker": "butler/neutral", "dialogue": "I'll need something to help force him down."}
 
         ],
@@ -139,7 +144,7 @@
         ],
         "3": [
             {"speaker": "butler/neutral", "dialogue": "This is where the security footage of the incident \nis stored."},
-            {"speaker": "butler/neutral", "dialogue": "I should probably clean up the body first \nbefore erasing the footage."}
+            {"speaker": "butler/neutral", "dialogue": "I should probably clean up the body before\n erasing the footage."}
 
         ]
 
@@ -153,13 +158,13 @@
         ],
         "3": [
             {"speaker": "butler/neutral", "dialogue": "My precious sponges..."},
-            {"speaker": "butler/neutral", "dialogue": "I'll have to remember to bill Master for \n emotional damages."}
+            {"speaker": "butler/neutral", "dialogue": "I'll have to remember to bill Master Kyle for \n emotional damages."}
   
         ]
     },
     "Sponge": {
         "1": [
-            {"speaker": "butler/neutral", "dialogue": "Ah, the sponge. A classic tool for cleaning."},
+            {"speaker": "butler/neutral", "dialogue": "Ah, a sponge! This might work nicely for\n cleaning the bowling ball."},
             {"speaker": "ooc", "dialogue": "*You got the sponge!*"}
         ]
     },
@@ -174,6 +179,20 @@
         "2": [
             {"speaker": "butler/neutral", "dialogue": "I've already got the diary."}
         ]
-    }
+    },
     
+    "Cop": {
+        "1": [
+            {"speaker": "cop/neutral", "dialogue": "Open up! This is the police!"},
+            {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. Come on in!"}
+        ],
+        "2": [
+            {"speaker": "cop/neutral", "dialogue": "Hello sir, we've recieved a call \nfrom your neighbour about a scream originating \nfrom this address."},
+            {"speaker": "butler/neutral", "dialogue": "Ah! Of course, officer. I'm afraid \nthat was just Master Kyle here."},
+            {"speaker": "butler/neutral", "dialogue": "He simply tripped down the stairs."},
+            {"speaker": "cop/neutral", "dialogue": "I see..."},
+            {"speaker": "cop/neutral", "dialogue": "Well, you wouldn't mind if I took a \nlook around, would you?"},
+            {"speaker": "butler/neutral", "dialogue": "Not at all, officer. Please, \nfeel free to look around."}
+        ]
+    }
 }
