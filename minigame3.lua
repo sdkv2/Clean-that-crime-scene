@@ -20,6 +20,11 @@ local fail = love.audio.newSource('sfx/fail.wav', 'static')
 local failimage = love.graphics.newImage('sprites/fail.png')
 local win = love.audio.newSource('sfx/win.wav', 'static')
 local winimage = love.graphics.newImage('sprites/winimg.png')
+local gkiransprite = love.graphics.newImage('sprites/gkiranportrait.png')
+local g3 = anim8.newGrid(128, 128, gkiransprite:getWidth(), gkiransprite:getHeight())
+local gkiranportrait = anim8.newAnimation(g3('1-2', 1), 0.3)
+local tv = love.graphics.newImage('sprites/tv.png')
+local blur = love.graphics.newImage('sprites/blur.png')
 function Minigame3.new(Parent)
     ParentMinigame = Parent
     local self = setmetatable({}, Minigame3)
@@ -61,6 +66,11 @@ end
 
 function Minigame3:processStages(dt)
     if self.delay > 0 then
+        if self.delay < 0.25 then
+            if sound then
+            sound:stop()
+            end
+        end
         self.delay = self.delay - dt
         return
     end
@@ -191,6 +201,16 @@ function Minigame3:draw()
     if self.fail then
         love.graphics.draw(failimage, w/2 + 460, h/2 - 50, 0, 6, 6)
     end
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', w/2 - 130, h/2 - 400, 128 * 2.5, 128 * 2.5)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("<-- Live Kiran reaction", w/2 + 300, h/2 - 400)
+
+    gkiranportrait:draw(gkiransprite, w/2 - 130, h/2 - 400, 0, 2.5, 2.5)
+    love.graphics.setColor(0, 0, 0, 0.3)
+    love.graphics.draw(blur, w/2 - 150, h/2 - 500, 0, 3, 3)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(tv, w/2 - 150, h/2 - 500, 0, 3, 3)
 
 
 end
