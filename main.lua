@@ -518,6 +518,11 @@ function love.keypressed(key)
             minigame:setMinigame(5)
 
         end
+        if key == "l" then
+            fade.isActive = true
+            minigame:setMinigame(3)
+
+        end
         if key == "x" then
             chat:endChat()
             cutsceneLogic.cutsceneFinished = true
