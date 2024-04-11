@@ -176,6 +176,15 @@
             {"speaker": "cop/neutral", "dialogue": "I see..."},
             {"speaker": "cop/neutral", "dialogue": "Well, you wouldn't mind if I took a \nlook around, would you?"},
             {"speaker": "butler/neutral", "dialogue": "Not at all, officer. Please, \nfeel free to look around."}
+        ],
+
+        "3": [
+                {"speaker": "cop/neutral", "dialogue": "Do you mind opening the trash chute for me?\n I'd like to take a look inside."},
+                {"speaker": "butler/neutral", "dialogue": "Of course, officer. I'll open it at once."}
+                {"speaker": "cop/neutral", "dialogue": "Hmm... everything here seems fine."},
+                {"speaker": "cop/neutral", "dialogue": "Would you point me in the direction \nof the cctv room?."}
+                {"speaker": "butler/neutral", "dialogue": "Right this way."}
+        
         ]
     }
 }
