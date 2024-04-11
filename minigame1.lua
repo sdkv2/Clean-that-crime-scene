@@ -15,6 +15,7 @@ local anim8 = require 'libraries/anim8'
 local bloodSplatters = love.graphics.newImage('sprites/blood.png')
 local g = anim8.newGrid(128, 128, bloodSplatters:getWidth(), bloodSplatters:getHeight())
 local background = love.graphics.newImage('sprites/blurredbackground.png')
+local bubbles = love.audio.newSource("sfx/bubbles.wav", "static")
 function Minigame1:initializeOrResetParticles()
 	for _, particleData in ipairs(allParticleData) do
 		-- Note that particle systems are already started when created, so we
@@ -260,6 +261,7 @@ function Minigame1:mousepressed(x, y, button)
         for _, particleData in ipairs(allParticleData) do
             particleData.system:start() -- Start emitting particles
             particleData.system:emit(particleData.emitAtStart)
+            love.audio.play(bubbles)
         end
         for i = #self.textures, 1, -1 do
             local texture = self.textures[i]
