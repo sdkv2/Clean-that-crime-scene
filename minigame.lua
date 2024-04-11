@@ -59,7 +59,9 @@ end
 function Minigame:completeMinigame(minigameNumber)
     self.currentMinigame = nil
     self.completedMinigames[minigameNumber] = true
-    self.callback()  -- Execute the callback when the minigame is completed
+    if self.callback then
+        self.callback()  -- Execute the callback when the minigame is completed
+    end
 end
 
 function Minigame:mousereleased(x,y,button)

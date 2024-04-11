@@ -12,7 +12,7 @@ local downSound = love.audio.newSource('sfx/down.wav', 'static')
 local leftSound = love.audio.newSource('sfx/left.wav', 'static')
 local rightSound = love.audio.newSource('sfx/right.wav', 'static')
 local sound = nil
-local book = love.graphics.newImage('sprites/book.png')
+local book = love.graphics.newImage('sprites/booknoback.png')
 local arrow = love.graphics.newImage('sprites/arrows.png')
 local g2 = anim8.newGrid(32, 32, arrow:getWidth(), arrow:getHeight())
 local arrowAnim = anim8.newAnimation(g2('1-4', 1), 0.4)
@@ -25,6 +25,8 @@ local g3 = anim8.newGrid(128, 128, gkiransprite:getWidth(), gkiransprite:getHeig
 local gkiranportrait = anim8.newAnimation(g3('1-2', 1), 0.3)
 local tv = love.graphics.newImage('sprites/tv.png')
 local blur = love.graphics.newImage('sprites/blur.png')
+local hit = love.audio.newSource('sfx/punch.wav', 'static')
+local dead = love.audio.newSource('sfx/death.wav', 'static')
 function Minigame3.new(Parent)
     ParentMinigame = Parent
     local self = setmetatable({}, Minigame3)
@@ -32,8 +34,9 @@ function Minigame3.new(Parent)
         {directions = {'up', 'down', 'left', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 1
         {directions = {'down', 'down', 'down', 'left', 'right', 'up', 'right', 'right'}, durations = {0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25}}, -- Stage 2
         {directions = {'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5, 0.5}}, -- Stage 3
-        {directions = {'down', 'left', 'left', 'right', 'up', 'right', 'right', 'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5,0.25,0.25,0.25,0.25,0.25,0.25,0.25, 0.5, 0.5}}, -- Stage 4
+        {directions = {'down', 'left', 'right', 'up', 'right',  'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5,0.25,0.25,0.25,0.25,0.25,0.25,0.25, 0.5, 0.5}}, -- Stage 4
     }
+    self.endGame = false
     self.currentStage = 1
     self.currentDirection = 1
     self.allowInput = false
@@ -42,6 +45,8 @@ function Minigame3.new(Parent)
     self.started = false
     self.delay = 0.5
     self.fail = false
+    self.kiranAlpha = 1.0
+
 
     return self
 end
@@ -61,7 +66,15 @@ function Minigame3:generateSound(direction)
 end
 
 function Minigame3:update(dt)
+    if not self.endGame then
     self:processStages(dt)
+    else
+        if not dead:isPlaying() then
+            ParentMinigame:completeMinigame(3)
+            ParentMinigame:setMinigame(nil)
+            fade.isActive = true
+        end
+    end
 end
 
 function Minigame3:processStages(dt)
@@ -69,6 +82,7 @@ function Minigame3:processStages(dt)
         if self.delay < 0.25 then
             if sound then
             sound:stop()
+            gkiranportrait:gotoFrame(1)
             end
         end
         self.delay = self.delay - dt
@@ -160,11 +174,16 @@ function Minigame3:keypressed(key)
         if self.currentDirection > #self.stages[self.currentStage].directions then
             if self.currentStage == #self.stages then
                 sound:stop()
-                ParentMinigame:setMinigame(nil)
-                fade.isActive = true
+                self.endGame = true
             end
-            win:setVolume(0.5)
-            win:play()
+
+            self.kiranAlpha = self.kiranAlpha - 0.25
+            gkiranportrait:gotoFrame(2)
+            hit:play()
+            if self.kiranAlpha <= 0 then
+                dead:play()
+                self.endGame = true
+            end
             self.win = true
             self.delay = 1
             self.currentStage = self.currentStage + 1
@@ -193,6 +212,8 @@ function Minigame3:drawKiran()
     love.graphics.rectangle('fill', w/2 - 130, h/2 - 400, 128 * 2.5, 128 * 2.5)
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("<-- Live Kiran reaction", w/2 + 250, h/2 - 350)
+    print(self.kiranAlpha)
+    love.graphics.setColor(1, 1, 1, self.kiranAlpha)
     gkiranportrait:draw(gkiransprite, w/2 - 130, h/2 - 400, 0, 2.5, 2.5)
     love.graphics.setColor(0, 0, 0, 0.3)
     love.graphics.draw(blur, w/2 - 150, h/2 - 500, 0, 3, 3)
@@ -203,7 +224,7 @@ end
 
 function Minigame3:draw()
     love.graphics.draw(background, 0, 0, 0, 2.5, 2.5)
-    butler:draw(butlerSheet, w/2 - 600, h/2 - 260, 0 ,5 ,5)
+    butler:draw(butlerSheet, w/2 - 800, h/2 - 260, 0 ,5 ,5)
     love.graphics.draw(book, w/2 + 250, h/2 - 150, 0, 5, 5)
     if self.drawArrow then
         arrowAnim:draw(arrow, w/2 + 460, h/2 - 50, 0, 6, 6)
@@ -214,9 +235,8 @@ function Minigame3:draw()
     if self.fail then
         love.graphics.draw(failimage, w/2 + 460, h/2 - 50, 0, 6, 6)
     end
-    Minigame3:drawKiran()
+    self:drawKiran()
 end
-
 function Minigame3:mousereleased(x,y,button)
 end
 

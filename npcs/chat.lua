@@ -14,16 +14,24 @@ chat.speaker = nil
 chat.chatting = false
 chat.firstSpeaker = player
 chat.secondSpeaker = nil
+local gkiranprotrait = love.graphics.newImage('sprites/gkiranportrait.png')
 local time = 0
 local tween = require 'libraries.tween'
 local colors = {
     kyle = {1, 0.396, 0.129, 0.6},
     Butler = {0.2, 0.2, 0.2, 0.6},
-    kiran = {0, 0, 0.5, 0.6}
+    kiran = {0, 0, 0.5, 0.6},
+    gkiran = {0, 0.2, 0.8, 0.5}
 }
 local colorTween = nil
 local complete = true
 local currentColor = nil
+local anim8 = require 'libraries/anim8'
+gkiranprotrait = love.graphics.newImage('sprites/gkiranportrait.png')
+gkiranprotrait:setFilter("nearest", "nearest")
+g = anim8.newGrid(128, 128, gkiranprotrait:getWidth(), gkiranprotrait:getHeight())
+gkiran = {portraitAnimation = anim8.newAnimation(g('1-2', 1), 0.3), name= 'gkiran', portraitSheet = gkiranprotrait}
+
 
 function chat:loadJson(filePath)
     local f = io.open(filePath, "r")
@@ -87,6 +95,9 @@ function updateAnim(s)
         kiran.portraitAnimation = kiran.portraitExpressions[emotion]
         chat.speaker = kiran
         chat.firstSpeaker = kiran
+    elseif portrait == 'gkiran' then
+        chat.speaker = gkiran
+        chat.firstSpeaker = gkiran
     elseif portrait == "ooc" then
         chat.speaker = nil
     
@@ -139,7 +150,7 @@ function chat:playSound()
         unisonCount = 4 
         detuneAmount = 0.1
 
-    elseif chat.speaker == kyle or chat.speaker == kiran then
+    elseif chat.speaker == kyle or chat.speaker == kiran or chat.speaker == gkiran then
         rate = 44100 
         frequency = math.random(100, 125)
         unisonCount = 8
@@ -232,7 +243,7 @@ function chat:update(dt)
                 colorTween = tween.new(0.3, currentColor, colors['Butler'], tween.easing.inOutQuad)
                 complete = false
             end
-        elseif chat.speaker.name == 'kiran' and complete == true then
+        elseif chat.speaker.name == 'kiran' or 'gkiran' and complete == true then
             if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
                 colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
                 complete = false
