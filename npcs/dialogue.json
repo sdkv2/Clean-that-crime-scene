@@ -184,7 +184,7 @@
     "Cop": {
         "1": [
             {"speaker": "cop/neutral", "dialogue": "Open up! This is the police!"},
-            {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. Come on in!"}
+            {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. Come on in."}
         ],
         "2": [
             {"speaker": "cop/neutral", "dialogue": "Hello sir, we've recieved a call \nfrom your neighbour about a scream originating \nfrom this address."},
@@ -195,13 +195,52 @@
             {"speaker": "butler/neutral", "dialogue": "Not at all, officer. Please, \nfeel free to look around."}
         ],
 
-        "3": [
+        "TrashWin": [
                 {"speaker": "cop/neutral", "dialogue": "Do you mind opening the trash chute for me?\n I'd like to take a look inside."},
                 {"speaker": "butler/neutral", "dialogue": "Of course, officer. I'll open it at once."},
                 {"speaker": "cop/neutral", "dialogue": "Hmm... everything here seems fine."},
-                {"speaker": "cop/neutral", "dialogue": "Would you point me in the direction \nof the cctv room?."},
+                {"speaker": "cop/neutral", "dialogue": "Would you point me in the direction \nof the CCTV room?."},
                 {"speaker": "butler/neutral", "dialogue": "Right this way."}
-        
+        ],
+        "TrashFail": [
+                {"speaker": "cop/neutral", "dialogue": "Do you mind opening the trash chute for me?\n I'd like to take a look inside."},
+                {"speaker": "butler/neutral", "dialogue": "Of course, officer. I'll open it at once."},
+                {"speaker": "cop/neutral", "dialogue": "Hmm... Oh my god!"},
+                {"speaker": "cop/neutral", "dialogue": "There's a body in here!"},
+                {"speaker": "butler/neutral", "dialogue": "Oh, that's just Master Kiran."},
+                {"speaker": "butler/neutral", "dialogue": "He's taking a nap."},
+                {"speaker": "cop/neutral", "dialogue": "I'm going to have to take you in for questioning."},
+                {"speaker": "butler/neutral", "dialogue": "Oh dear..."}
+        ],
+
+        "CCTVWin": [
+                {"speaker": "cop/neutral", "dialogue": "You don't mind telling me the password,\n do you?"},
+                {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. The code is 'password1'."},
+                {"speaker": "cop/neutral", "dialogue": "I'm glad security is so important to you."},
+                {"speaker": "cop/neutral", "dialogue": "Hmm... It seems there is no footage from today."},
+                {"speaker": "butler/neutral", "dialogue": "Ah, I'll have to call a technician \nto ensure the cameras are working correctly."},
+                {"speaker": "cop/neutral", "dialogue": "...Alright, make sure to do that."}
+         ],
+        "CCTVFail": [
+                {"speaker": "cop/neutral", "dialogue": "You don't mind telling me the password,\n do you?"},
+                {"speaker": "butler/neutral", "dialogue": "Of course, ma'am. The code is 'password1'."},
+                {"speaker": "cop/neutral", "dialogue": "I'm glad security is so important to you."},
+                {"speaker": "cop/neutral", "dialogue": "Hmm... Oh my goodness, there is a video \nof you dragging a corpse from the main room."},
+                {"speaker": "cop/neutral", "dialogue": "I'm going to have to take you in for questioning."},
+                {"speaker": "butler/neutral", "dialogue": "Oh dear..."}
+        ],
+        "BodyFail": [
+            {"speaker": "cop/neutral", "dialogue": "..."},
+            {"speaker": "cop/neutral", "dialogue": "I'm going to have to take you in for questioning."},
+            {"speaker": "butler/neutral", "dialogue": "Oh dear..."}
+        ],
+        "BallFail": [
+            {"speaker": "cop/neutral", "dialogue": "There appears to be blood covering this ball."},
+            {"speaker": "cop/neutral", "dialogue": "Do you have a reason for that?"},
+            {"speaker": "kyle/neutral", "dialogue": "Yeah! I dropped it on my friend's head!"},
+            {"speaker": "cop/neutral", "dialogue": "..."},
+            {"speaker": "cop/neutral", "dialogue": "I'm going to have to take you in for questioning."},
+            {"speaker": "butler/neutral", "dialogue": "Oh dear..."}
         ]
     }
 }
