@@ -22,7 +22,6 @@ local ENDING = 4
 -- Initialize game state
 local chuteState = nil
 local Minigame = require 'minigame'
-local titleArt = love.graphics.newImage('sprites/title.png')
 local broomGet, chuteState,titleArt, borderSize, alpha, increasing, delay, delayMax, alphaValues, alphaIndex, currentRoom, font, text, interactables, AvailableLoadZones, cutsceneLogic, Kyle, interact, kiranDraw, spongeGet, bowlingballClean, journal, endingState
 
 currentRoom = nil
@@ -31,15 +30,15 @@ local text = love.graphics.newText(font, "Press Enter to start")
 local interactables = {}
 local AvailableLoadZones = {}
 local cutsceneLogic = require 'cutscene'
-Kyle = require 'npcs/kyle'
 local interact 
 
 function love.load()
+    titleArt = love.graphics.newImage('sprites/title.png')
+
     minigame = Minigame.new()
 
     broomGet = false
     chuteState = nil
-    titleArt = love.graphics.newImage('sprites/guy.png')
     borderSize = 6
     alpha = 0
     increasing = true
@@ -79,13 +78,13 @@ function love.load()
     SkipText = love.graphics.newText(font, "Press X to skip intro")
 
     love.graphics.setBackgroundColor(0,0,0)
-    anim8 = require 'libraries/anim8'
-    sti = require 'libraries/sti'
-    camera = require 'libraries/camera'
+    anim8 = require 'libraries.anim8'
+    sti = require 'libraries.sti'
+    camera = require 'libraries.camera'
     movePlayer = require 'movePlayer'
-    class = require 'libraries/middleclass'
-    wf = require 'libraries/windfield'
-    local moonshine = require 'libraries/moonshine'
+    class = require 'libraries.middleclass'
+    wf = require 'libraries.windfield'
+    local moonshine = require 'libraries.moonshine'
     
     
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt)
@@ -271,6 +270,7 @@ function spongeDestroy()
 end
 
 function loadNewMap(mapPath,x,y)
+    
     isInteractable = false
     player.interactables = nil
     target = nil
@@ -528,6 +528,10 @@ end
 
 
 function love.update(dt)
+    if timerExpired then
+        timerExpired = false
+        ending()
+    end
     if gameState == ENDING then
         chat:update(dt)
         ending()
@@ -646,7 +650,6 @@ function titleDraw()
     love.graphics.setColor(1, 1, 1, alpha) 
     love.graphics.draw(TitleText, TitleWidth, TitleHeight)
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("Press X to skip intro", 50, h - 500, 0, 4, 4)
 end
 
 

@@ -1103,7 +1103,7 @@ return {
       objects = {
         {
           id = 46,
-          name = "Kitchen",
+          name = "kitchen",
           type = "",
           shape = "rectangle",
           x = 1456,
@@ -1119,7 +1119,7 @@ return {
         },
         {
           id = 47,
-          name = "Library",
+          name = "library",
           type = "",
           shape = "rectangle",
           x = 406.333,

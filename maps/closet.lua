@@ -615,7 +615,7 @@ return {
       objects = {
         {
           id = 1,
-          name = "Kitchen",
+          name = "kitchen",
           type = "",
           shape = "rectangle",
           x = 897,
