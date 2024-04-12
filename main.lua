@@ -645,8 +645,8 @@ function love.keypressed(key)
 end
 
 function titleDraw()
-    
-    love.graphics.draw(titleArt, w/2, h/2, 0, 2, 1)
+    local imageWidth, imageHeight = titleArt:getDimensions()
+    love.graphics.draw(titleArt, w/2 - imageWidth, h/2 - imageHeight, 0, 2, 1)
     love.graphics.print("Press X to skip intro", 50, h - 500, 0, 2, 2)
 end
 
