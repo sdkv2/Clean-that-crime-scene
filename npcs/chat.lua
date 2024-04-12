@@ -63,7 +63,6 @@ function chat:chat(npc, subtable, callback, dialogueSpeed)
         updateAnim(self.CurrentDialogue[self.line].speaker)
         self.CurrentLine = self.CurrentDialogue[self.line].dialogue
     end
-
     print("Speaker: ", chat.speaker.name)
     currentColor = {unpack(colors[self.speaker.name])}
     local customFont = love.graphics.newFont('MS_PAIN.ttf', 45) -- Change the path and size to match your font
@@ -247,7 +246,7 @@ function chat:update(dt)
                 colorTween = tween.new(0.3, currentColor, colors['Butler'], tween.easing.inOutQuad)
                 complete = false
             end
-        elseif chat.speaker.name == 'kiran' or 'gkiran' and complete == true then
+        elseif chat.speaker.name == 'kiran' or 'gkiran' or 'cop' and complete == true then
             if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
                 colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
                 complete = false

@@ -45,6 +45,8 @@ local bowlingballClean = false
 local journal = false
 local endingState = 0
 function love.load()
+    canvas = love.graphics.newCanvas(1920, 1080)
+    canvas:setFilter('nearest', 'nearest')
     endingState = 0
     journal = false
     gameState = TITLE
@@ -65,6 +67,8 @@ function love.load()
     TitleWidth = (w - text:getWidth()) / 2
     TitleHeight = (h - text:getHeight()) / 2 + 200
     TitleText = love.graphics.newText(font, "Press Enter to start")
+    SkipText = love.graphics.newText(font, "Press X to skip intro")
+
     love.graphics.setBackgroundColor(0,0,0)
     anim8 = require 'libraries/anim8'
     sti = require 'libraries/sti'
@@ -187,7 +191,7 @@ function map()
     
 end
 
-local function ending()
+local function ending(dt)
     if endingState == 0 then
         fade.isActive = true
         gameState = ENDING
@@ -198,7 +202,12 @@ local function ending()
         player.collider:setPosition(1016, 720)
     end
     if endingState == 1 then
-        chat:chat('Cop', '2', endingState == 2)
+        chat:chat('Cop', '2', function() endingState = 2 end)
+    end
+    if endingState == 2 and kiranDraw == true then
+        chat:chat('Cop', 'BodyFail', function() love.load() end)
+    elseif endingState == 2 and minigame:isComplete(1) == false then
+        chat:chat('Cop', 'BallFail', function() fade.isActive = true love.load() end)
     end
 end
 
@@ -514,7 +523,7 @@ end
 
 function love.update(dt)
     if gameState == ENDING then
-        ending()
+        ending(dt)
         chat:update(dt)
     end
 
@@ -628,61 +637,64 @@ end
 
 function titleDraw()
     love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
-
-        love.graphics.setColor(1, 1, 1, alpha)
-        love.graphics.setColor(0, 0, 0, alpha) 
-        for dx=-borderSize, borderSize do
-            for dy=-borderSize, borderSize do
+    love.graphics.setColor(1, 1, 1, alpha)
+    love.graphics.setColor(0, 0, 0, alpha) 
+    for dx=-borderSize, borderSize do
+        for dy=-borderSize, borderSize do
                 love.graphics.draw(TitleText, TitleWidth + dx, TitleHeight + dy)
-            end
         end
-
-        love.graphics.setColor(1, 1, 1, alpha) 
-        love.graphics.draw(TitleText, TitleWidth, TitleHeight)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.print("Press X to skip intro", 50, h - 500, 0, 4, 4)
     end
+    love.graphics.setColor(1, 1, 1, alpha) 
+    love.graphics.draw(TitleText, TitleWidth, TitleHeight)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("Press X to skip intro", 50, h - 500, 0, 4, 4)
+end
 
 
 function love.draw()
-    if gameState == TITLE then
-        titleDraw()
-        
-    else
-        effect(function() 
-            if minigame.currentMinigame ~= nil then
-                minigame:draw()
-                myTimer:draw()
-            else 
-                cam:attach()
-                if gameState == ENDING then
-                    endingDraw()
-                else
-                    cam:zoomTo(zoom)
-                    map()
-                    world:draw()
-                    if isInteractable == true then
-                        love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
+        -- Start rendering to the canvas
+        love.graphics.setCanvas(canvas)
+    
+        if gameState == TITLE then
+            titleDraw()
+        else
+            effect(function() 
+                if minigame.currentMinigame ~= nil then
+                    minigame:draw()
+                    myTimer:draw()
+                else 
+                    cam:attach()
+                    if gameState == ENDING then
+                        endingDraw()
+                    else
+                        cam:zoomTo(zoom)
+                        map()
+                        world:draw()
+                        if isInteractable == true then
+                            love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
+                        end
                     end
-                end
-                if gameState == CUTSCENE then
-                    cutsceneLogic:draw()
-                end
-                cam:detach()
-                myTimer:draw()
-                chat:draw()
-                --love.graphics.print("Y=" ..player.y, 50, 400, 0, 4 ,4)
-                --love.graphics.print("X=" ..player.x, 50, 300, 0, 4, 4)
-            end 
-        end)
-    fade.draw()
-    if gameState == CUTSCENE then
-    cutsceneLogic:drawText()
+                    if gameState == CUTSCENE then
+                        cutsceneLogic:draw()
+                    end
+                    cam:detach()
+                    myTimer:draw()
+                    chat:draw()
+                end 
+            end)
+        end
+    
+        -- Stop rendering to the canvas
+        love.graphics.setCanvas()
+    
+        -- Draw the canvas to the screen
+        love.graphics.draw(canvas, 0, 0)
+    
+        fade.draw()
+        if gameState == CUTSCENE then
+            cutsceneLogic:drawText()
+        end
     end
-    end
-
-end
-
 
 function love.mousereleased(x,y, button)
     if minigame.currentMinigame ~= nil then
