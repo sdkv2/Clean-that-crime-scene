@@ -22,7 +22,6 @@ local ENDING = 4
 -- Initialize game state
 local chuteState = nil
 local Minigame = require 'minigame'
-minigame = Minigame.new()
 local titleArt = love.graphics.newImage('sprites/title.png')
 local broomGet, chuteState,titleArt, borderSize, alpha, increasing, delay, delayMax, alphaValues, alphaIndex, currentRoom, font, text, interactables, AvailableLoadZones, cutsceneLogic, Kyle, interact, kiranDraw, spongeGet, bowlingballClean, journal, endingState
 
@@ -36,6 +35,8 @@ Kyle = require 'npcs/kyle'
 local interact 
 
 function love.load()
+    minigame = Minigame.new()
+
     broomGet = false
     chuteState = nil
     titleArt = love.graphics.newImage('sprites/guy.png')
@@ -214,11 +215,15 @@ local function ending(dt)
     if endingState == 1 then
         chat:chat('Cop', '2', function() endingState = 2 end)
     end
+    if minigame.isComplete(1) and minigame.isComplete(2) and minigame.isComplete(3) and minigame.isComplete(4) then
+        chat:chat('Cop', 'Win', function() love.load() end)
+    end
     if endingState == 2 and kiranDraw == true then
         chat:chat('Cop', 'BodyFail', function() love.load() end)
     elseif endingState == 2 and minigame:isComplete(1) == false then
         chat:chat('Cop', 'BallFail', function() fade.isActive = true love.load() end)
     end
+    
 end
 
 local function endingDraw()
@@ -361,6 +366,7 @@ function loadNewMap(mapPath,x,y)
             if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
                 local gkiran = interactable:new('gkiran', 940, 737, 32, 48, "sprites/gsprite.png", 1.25, function() 
                     chat:chat('Kiran', '3', function () 
+                        minigame:setMinigame(3)
                         for i = #interactables, 1, -1 do
                             if interactables[i] == gkiran then
                                 table.remove(interactables, i)

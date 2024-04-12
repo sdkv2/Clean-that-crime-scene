@@ -242,6 +242,12 @@
             {"speaker": "cop/neutral", "dialogue": "..."},
             {"speaker": "cop/neutral", "dialogue": "I'm going to have to take you in for questioning."},
             {"speaker": "butler/neutral", "dialogue": "Oh dear..."}
+        ],
+        "Win": [
+            {"speaker": "cop/neutral", "dialogue": "There doesn't seem to be any crime here"},
+            {"speaker": "cop/neutral", "dialogue": "I guess I have to let you two go"},
+            {"speaker": "ooc", "dialogue": "You win!"}
+
         ]
     }
 }
