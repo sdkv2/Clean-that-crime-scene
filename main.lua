@@ -610,10 +610,12 @@ function love.keypressed(key)
 
         end
         if key == "x" then
-            chat:endChat()
-            cutsceneLogic.cutsceneFinished = true
-            gameState = PLAYING
-            loadNewMap("maps/mansionroom.lua", 923, 760)
+            if gameState == TITLE then
+                chat:endChat()
+                cutsceneLogic.cutsceneFinished = true
+                gameState = PLAYING
+                loadNewMap("maps/mansionroom.lua", 923, 760)
+            end
 
         end
     end
@@ -638,6 +640,7 @@ function titleDraw()
         love.graphics.setColor(1, 1, 1, alpha) 
         love.graphics.draw(TitleText, TitleWidth, TitleHeight)
         love.graphics.setColor(1, 1, 1)
+        love.graphics.print("Press X to skip intro", 50, h - 500, 0, 4, 4)
     end
 
 
