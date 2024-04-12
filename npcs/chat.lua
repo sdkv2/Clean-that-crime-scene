@@ -21,7 +21,8 @@ local colors = {
     kyle = {1, 0.396, 0.129, 0.6},
     Butler = {0.2, 0.2, 0.2, 0.6},
     kiran = {0, 0, 0.5, 0.6},
-    gkiran = {0, 0.2, 0.8, 0.5}
+    gkiran = {0, 0.2, 0.8, 0.5},
+    cop = {0.2, 0.2, 0.2, 0.6}
 }
 local colorTween = nil
 local complete = true
@@ -98,6 +99,9 @@ function updateAnim(s)
     elseif portrait == 'gkiran' then
         chat.speaker = gkiran
         chat.firstSpeaker = gkiran
+    elseif portrait == 'cop' then
+        chat.speaker = cop
+        chat.secondSpeaker = cop
     elseif portrait == "ooc" then
         chat.speaker = nil
     
