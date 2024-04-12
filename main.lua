@@ -23,14 +23,9 @@ local ENDING = 4
 local chuteState = nil
 local Minigame = require 'minigame'
 minigame = Minigame.new()
-local titleArt = love.graphics.newImage('sprites/guy.png')
-local borderSize = 6
-local alpha = 0
-local increasing = true
-local delay = 0
-local delayMax = 0.1
-local alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
-local alphaIndex = 1
+local titleArt = love.graphics.newImage('sprites/title.png')
+local broomGet, chuteState,titleArt, borderSize, alpha, increasing, delay, delayMax, alphaValues, alphaIndex, currentRoom, font, text, interactables, AvailableLoadZones, cutsceneLogic, Kyle, interact, kiranDraw, spongeGet, bowlingballClean, journal, endingState
+
 currentRoom = nil
 local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 local text = love.graphics.newText(font, "Press Enter to start")
@@ -39,12 +34,31 @@ local AvailableLoadZones = {}
 local cutsceneLogic = require 'cutscene'
 Kyle = require 'npcs/kyle'
 local interact 
-local kiranDraw = true
-local spongeGet = false
-local bowlingballClean = false
-local journal = false
-local endingState = 0
+
 function love.load()
+    broomGet = false
+    chuteState = nil
+    titleArt = love.graphics.newImage('sprites/guy.png')
+    borderSize = 6
+    alpha = 0
+    increasing = true
+    delay = 0
+    delayMax = 0.1
+    alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
+    alphaIndex = 1
+    currentRoom = nil
+    font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
+    text = love.graphics.newText(font, "Press Enter to start")
+    interactables = {}
+    AvailableLoadZones = {}
+    cutsceneLogic = require 'cutscene'
+    Kyle = require 'npcs/kyle'
+    interact = nil
+    kiranDraw = true
+    spongeGet = false
+    bowlingballClean = false
+    journal = false
+    endingState = 0
     canvas = love.graphics.newCanvas(1920, 1080)
     canvas:setFilter('nearest', 'nearest')
     endingState = 0
@@ -53,7 +67,6 @@ function love.load()
     zoom = 2
     chatting = false
     cctvState = 0
-    local Explosion = require 'npcs/explosion'
     target = nil
     
 
@@ -636,7 +649,7 @@ function love.keypressed(key)
 end
 
 function titleDraw()
-    love.graphics.draw(titleArt, 0, 0, 0, 2, 1)
+    love.graphics.draw(titleArt, w/2, h/2, 0, 2, 1)
     love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.setColor(0, 0, 0, alpha) 
     for dx=-borderSize, borderSize do
@@ -654,7 +667,9 @@ end
 function love.draw()
         -- Start rendering to the canvas
         love.graphics.setCanvas(canvas)
-        love.graphics.clear()
+        love.graphics.push()
+        
+
 
         if gameState == TITLE then
             titleDraw()
@@ -691,8 +706,19 @@ function love.draw()
         -- Stop rendering to the canvas
         love.graphics.setCanvas()
     
-        local screenWidth, screenHeight = love.graphics.getDimensions()
-        love.graphics.draw(canvas, 0, 0, 0, screenWidth / 1920, screenHeight / 1080)
+        -- Calculate scale factors
+        local scaleX = screenWidth / 1920
+        local scaleY = screenHeight / 1080
+
+        -- Use the smaller scale factor to ensure the game fits on the screen
+        local scale = math.min(scaleX, scaleY)
+
+        -- Calculate the offset needed to center the game on the screen
+        local offsetX = (screenWidth - (1920 * scale)) / 2
+        local offsetY = (screenHeight - (1080 * scale)) / 2
+
+        -- Draw the canvas to the screen, scaled and centered
+        love.graphics.draw(canvas, offsetX, offsetY, 0, scale, scale)
     end
 
 function love.mousereleased(x,y, button)
