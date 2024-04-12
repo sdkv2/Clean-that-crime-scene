@@ -18,6 +18,7 @@ local broomGet = false
  PLAYING = 1
 local CUTSCENE = 2
 local TITLE = 3
+local ENDING = 4
 -- Initialize game state
 local chuteState = nil
 local Minigame = require 'minigame'
@@ -42,7 +43,9 @@ local kiranDraw = true
 local spongeGet = false
 local bowlingballClean = false
 local journal = false
+local endingState = 0
 function love.load()
+    endingState = 0
     journal = false
     gameState = TITLE
     zoom = 2
@@ -115,6 +118,22 @@ function love.load()
             portrait = {
                 neutral = {'1-2',1}
             }
+        },
+
+        cop = {
+            overworld = {
+                downidle = {1, 1},
+                down = {1, 1, 2, 1, 1, 1, 3, 1},
+                up = {4, 1, 5, 1, 4, 1, 6, 1},
+                upidle = {4, 1},
+                left = {12, 1, 10, 1, 12, 1, 11, 1},
+                leftidle ={12, 1},
+                right = {7, 1, 8, 1, 7, 1, 9, 1},
+                rightidle = {7, 1}
+            },
+            portrait = {
+                neutral = {'1-2',1}
+            }
         }
     }
     
@@ -165,6 +184,26 @@ function map()
         end
     end
 
+    
+end
+
+local function ending()
+    if endingState == 0 then
+        fade.isActive = true
+        gameState = ENDING
+        loadNewMap("maps/mansionRoom.lua")
+        cop = Kyle:new(1016, 763, 'copsprite.png', 32, 48, animation['cop'], 'cop', 'copportrait.png')
+        table.insert(npcs, cop)
+        chat:chat('Cop', '1', endingState == 1)
+        player.collider:setPosition(1016, 720)
+    end
+    if endingState == 1 then
+        chat:chat('Cop', '2', endingState == 2)
+    end
+end
+
+local function endingDraw()
+    map()
     
 end
 
@@ -302,11 +341,19 @@ function loadNewMap(mapPath,x,y)
             end
             if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
                 local gkiran = interactable:new('gkiran', 940, 737, 32, 48, "sprites/gsprite.png", 1.25, function() 
-                    chat:chat('Kiran', '3') 
+                    chat:chat('Kiran', '3', function () 
+                        for i = #interactables, 1, -1 do
+                            if interactables[i] == gkiran then
+                                table.remove(interactables, i)
+                                break
+                            end
+                        end
+                        ending()
+
+                    end)
                 end)
                 table.insert(interactables, gkiran)
             end
-
         else 
             kyle = Kyle:new(700, 800, 'kylesprite.png', 32, 48, animation['kyle'], 'kyle', 'kyleportrait.png')
             kiran = Kyle:new(3000, 3000, 'kylesprite.png', 32, 48, animation['kyle'], 'kiran', 'kiranportrait.png')
@@ -466,6 +513,13 @@ end
 
 
 function love.update(dt)
+    if gameState == ENDING then
+        ending()
+        chat:update(dt)
+    end
+
+
+
     if gameState == TITLE then
         if love.keyboard.isDown("return") then
             gameState = CUTSCENE
@@ -597,12 +651,16 @@ function love.draw()
                 myTimer:draw()
             else 
                 cam:attach()
+                if gameState == ENDING then
+                    endingDraw()
+                else
                     cam:zoomTo(zoom)
                     map()
                     world:draw()
                     if isInteractable == true then
                         love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
                     end
+                end
                 if gameState == CUTSCENE then
                     cutsceneLogic:draw()
                 end
