@@ -59,8 +59,6 @@ function love.load()
     bowlingballClean = false
     journal = false
     endingState = 0
-    canvas = love.graphics.newCanvas(1920, 1080)
-    canvas:setFilter('nearest', 'nearest')
     endingState = 0
     journal = false
     gameState = TITLE
@@ -665,11 +663,6 @@ end
 
 
 function love.draw()
-        -- Start rendering to the canvas
-        love.graphics.setCanvas(canvas)
-        love.graphics.push()
-        
-
 
         if gameState == TITLE then
             titleDraw()
@@ -703,22 +696,6 @@ function love.draw()
         if gameState == CUTSCENE then
             cutsceneLogic:drawText()
         end
-        -- Stop rendering to the canvas
-        love.graphics.setCanvas()
-    
-        -- Calculate scale factors
-        local scaleX = screenWidth / 1920
-        local scaleY = screenHeight / 1080
-
-        -- Use the smaller scale factor to ensure the game fits on the screen
-        local scale = math.min(scaleX, scaleY)
-
-        -- Calculate the offset needed to center the game on the screen
-        local offsetX = (screenWidth - (1920 * scale)) / 2
-        local offsetY = (screenHeight - (1080 * scale)) / 2
-
-        -- Draw the canvas to the screen, scaled and centered
-        love.graphics.draw(canvas, offsetX, offsetY, 0, scale, scale)
     end
 
 function love.mousereleased(x,y, button)
