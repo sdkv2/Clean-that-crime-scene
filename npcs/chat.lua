@@ -147,7 +147,7 @@ function chat:playSound()
     local unisonCount -- The number of unison voices to use
     local detuneAmount -- The amount of detuning for the unison voices
     local phase = {}
-    if chat.speaker == player then
+    if chat.speaker == player or chat.speaker == cop then
         rate = 44100 
         frequency = math.random(75, 100)
         unisonCount = 4 

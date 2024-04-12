@@ -654,7 +654,8 @@ end
 function love.draw()
         -- Start rendering to the canvas
         love.graphics.setCanvas(canvas)
-    
+        love.graphics.clear()
+
         if gameState == TITLE then
             titleDraw()
         else
@@ -683,17 +684,15 @@ function love.draw()
                 end 
             end)
         end
-    
-        -- Stop rendering to the canvas
-        love.graphics.setCanvas()
-    
-        -- Draw the canvas to the screen
-        love.graphics.draw(canvas, 0, 0)
-    
         fade.draw()
         if gameState == CUTSCENE then
             cutsceneLogic:drawText()
         end
+        -- Stop rendering to the canvas
+        love.graphics.setCanvas()
+    
+        local screenWidth, screenHeight = love.graphics.getDimensions()
+        love.graphics.draw(canvas, 0, 0, 0, screenWidth / 1920, screenHeight / 1080)
     end
 
 function love.mousereleased(x,y, button)
