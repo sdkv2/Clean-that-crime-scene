@@ -30,7 +30,7 @@ end
 
 function fade.draw()
     love.graphics.setColor(0, 0, 0, fade.fadeAmount)
-    love.graphics.rectangle('fill', 0, 0, screenWidth, screenHeight)
+    love.graphics.rectangle('fill', 0, 0, screenWidth * 3, screenHeight *3)
     love.graphics.setColor(1,1,1)
 end
 

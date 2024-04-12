@@ -38,7 +38,7 @@ local interact
 function love.load()
     broomGet = false
     chuteState = nil
-    titleArt = love.graphics.newImage('sprites/guy.png')
+    titleArt = love.graphics.newImage('sprites/title.png')
     borderSize = 6
     alpha = 0
     increasing = true
@@ -71,8 +71,6 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     interact = love.graphics.newImage('sprites/interact.png')
     screenWidth, screenHeight = love.window.getDesktopDimensions()
-    local fullscreenMode = {fullscreen = false, fullscreentype = "desktop"}
-    love.window.setMode(screenWidth, screenHeight, fullscreenMode)
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
     TitleWidth = (w - text:getWidth()) / 2
@@ -647,18 +645,9 @@ function love.keypressed(key)
 end
 
 function titleDraw()
+    
     love.graphics.draw(titleArt, w/2, h/2, 0, 2, 1)
-    love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.setColor(0, 0, 0, alpha) 
-    for dx=-borderSize, borderSize do
-        for dy=-borderSize, borderSize do
-                love.graphics.draw(TitleText, TitleWidth + dx, TitleHeight + dy)
-        end
-    end
-    love.graphics.setColor(1, 1, 1, alpha) 
-    love.graphics.draw(TitleText, TitleWidth, TitleHeight)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print("Press X to skip intro", 50, h - 500, 0, 4, 4)
+    love.graphics.print("Press X to skip intro", 50, h - 500, 0, 2, 2)
 end
 
 
