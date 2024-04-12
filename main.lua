@@ -1,12 +1,3 @@
-if os.getenv "LOCAL_LUA_DEBUGGER_VSCODE" == "1" then
-    local lldebugger = require "lldebugger"
-    lldebugger.start()
-    local run = love.run
-    function love.run(...)
-        local f = lldebugger.call(run, false, ...)
-        return function(...) return lldebugger.call(f, false, ...) end
-    end
-end
 chat = require("npcs.chat")
 local loadzone = require("loadzone")
 interactable = require 'interact'
@@ -22,21 +13,33 @@ local ENDING = 4
 -- Initialize game state
 local chuteState = nil
 local Minigame = require 'minigame'
-local broomGet, chuteState,titleArt, borderSize, alpha, increasing, delay, delayMax, alphaValues, alphaIndex, currentRoom, font, text, interactables, AvailableLoadZones, cutsceneLogic, Kyle, interact, kiranDraw, spongeGet, bowlingballClean, journal, endingState
-
+minigame = Minigame.new()
+local titleArt = love.graphics.newImage('sprites/guy.png')
+local borderSize = 6
+local alpha = 0
+local increasing = true
+local delay = 0
+local delayMax = 0.1
+local alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
+local alphaIndex = 1
 currentRoom = nil
 local font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
 local text = love.graphics.newText(font, "Press Enter to start")
 local interactables = {}
 local AvailableLoadZones = {}
 local cutsceneLogic = require 'cutscene'
+Kyle = require 'npcs/kyle'
 local interact 
-
+local kiranDraw = true
+local spongeGet = false
+local bowlingballClean = false
+local journal = false
+local endingState = 0
 function love.load()
     titleArt = love.graphics.newImage('sprites/title.png')
 
     minigame = Minigame.new()
-
+    currentRoom = nil
     broomGet = false
     chuteState = nil
     borderSize = 6
@@ -46,13 +49,11 @@ function love.load()
     delayMax = 0.1
     alphaValues = {0.1, 0.2, 0.4, 0.6, 0.8, 1}
     alphaIndex = 1
-    currentRoom = nil
     font = love.graphics.newFont("MS_PAIN.ttf", 128) -- Change the size as needed
     text = love.graphics.newText(font, "Press Enter to start")
     interactables = {}
     AvailableLoadZones = {}
     cutsceneLogic = require 'cutscene'
-    Kyle = require 'npcs/kyle'
     interact = nil
     kiranDraw = true
     spongeGet = false

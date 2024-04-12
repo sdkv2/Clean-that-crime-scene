@@ -246,7 +246,7 @@ function chat:update(dt)
                 colorTween = tween.new(0.3, currentColor, colors['Butler'], tween.easing.inOutQuad)
                 complete = false
             end
-        elseif chat.speaker.name == 'kiran' or 'gkiran' or 'cop' and complete == true then
+        elseif (chat.speaker.name == 'kiran' or  chat.speaker.name == 'gkiran' or chat.speaker.name == 'cop') and complete == true then
             if currentColor[1] ~= colors['kiran'][1] or currentColor[2] ~= colors['kiran'][2] or currentColor[3] ~= colors['kiran'][3] or currentColor[4] ~= colors['kiran'][4] then
                 colorTween = tween.new(0.3, currentColor, colors['kiran'], tween.easing.inOutQuad)
                 complete = false

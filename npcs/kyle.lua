@@ -1,5 +1,5 @@
 -- kyle.lua
-local class = require 'libraries/middleclass'
+local class = require 'libraries.middleclass'
 local NPC = require 'npc'
 
 Kyle = class('Kyle', NPC)
