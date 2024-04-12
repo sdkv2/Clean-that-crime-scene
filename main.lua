@@ -203,7 +203,7 @@ local function ending(dt)
     if endingState == 0 then
         fade.isActive = true
         gameState = ENDING
-        loadNewMap("maps/mansionRoom.lua")
+        loadNewMap("maps/mansionroom.lua")
         cop = Kyle:new(1016, 763, 'copsprite.png', 32, 48, animation['cop'], 'cop', 'copportrait.png')
         table.insert(npcs, cop)
     endingState = nil
