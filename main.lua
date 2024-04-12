@@ -42,7 +42,6 @@ function love.load()
     currentRoom = nil
     broomGet = false
     chuteState = nil
-    borderSize = 6
     alpha = 0
     increasing = true
     delay = 0
@@ -640,18 +639,22 @@ function love.keypressed(key)
 end
 
 function titleDraw()
-    love.graphics.draw(titleArt, w/2, h, 0, 4, 4)
-    love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.setColor(0, 0, 0, alpha) 
-    for dx=-borderSize, borderSize do
-        for dy=-borderSize, borderSize do
+    love.graphics.draw(titleArt, 0, 0, 0, 4, 4)
+
+        love.graphics.setColor(1, 1, 1, alpha)
+        love.graphics.setColor(0, 0, 0, alpha) 
+        for dx=-borderSize, borderSize do
+            for dy=-borderSize, borderSize do
                 love.graphics.draw(TitleText, TitleWidth + dx, TitleHeight + dy)
+            end
         end
+
+        love.graphics.setColor(1, 1, 1, alpha) 
+        love.graphics.draw(TitleText, TitleWidth, TitleHeight)
+        love.graphics.print("Press X to skip intro", 10, 10, 0, 5,5)
+        love.graphics.setColor(1, 1, 1)
     end
-    love.graphics.setColor(1, 1, 1, alpha) 
-    love.graphics.draw(TitleText, TitleWidth, TitleHeight)
-    love.graphics.setColor(1, 1, 1)
-end
+
 
 
 function love.draw()
@@ -678,10 +681,11 @@ function love.draw()
                     cam:detach()
                     myTimer:draw()
                     chat:draw()
+                    fade.draw()
+
                 end 
             end)
         end
-        fade.draw()
         if gameState == CUTSCENE then
             cutsceneLogic:drawText()
         end

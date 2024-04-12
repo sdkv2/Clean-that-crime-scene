@@ -35,10 +35,13 @@ gkiran = {portraitAnimation = anim8.newAnimation(g('1-2', 1), 0.3), name= 'gkira
 
 
 function chat:loadJson(filePath)
-    local f = io.open(filePath, "r")
-    local content = f:read("*all")
-    f:close()
-    return json:decode(content)
+    if love.filesystem.getInfo(filePath) then
+        local content = love.filesystem.read(filePath)
+        return json:decode(content)
+    else
+        print("Could not open file: " .. filePath)
+        return nil
+    end
 end
 
 function chat:chat(npc, subtable, callback, dialogueSpeed)  

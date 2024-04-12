@@ -629,7 +629,7 @@ return {
       objects = {
         {
           id = 6,
-          name = "MansionRoom",
+          name = "mansionroom",
           type = "",
           shape = "rectangle",
           x = 920,
