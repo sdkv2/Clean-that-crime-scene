@@ -606,6 +606,7 @@ function love.keypressed(key)
             minigame:completeMinigame(1)
             minigame:completeMinigame(2)
             minigame:completeMinigame(4)
+            ending()
 
         end
         if key == "x" then
