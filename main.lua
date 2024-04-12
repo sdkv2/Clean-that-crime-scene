@@ -70,9 +70,8 @@ function love.load()
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     interact = love.graphics.newImage('sprites/interact.png')
-    screenWidth, screenHeight = love.window.getDesktopDimensions()
-    local fullscreenMode = {fullscreen = false, fullscreentype = "desktop"}
-    love.window.setMode(screenWidth, screenHeight, fullscreenMode)
+    screenWidth = 1080
+    screenHeight = 1920
     w = love.graphics.getWidth()
     h = love.graphics.getHeight()
     TitleWidth = (w - text:getWidth()) / 2
@@ -647,7 +646,7 @@ function love.keypressed(key)
 end
 
 function titleDraw()
-    love.graphics.draw(titleArt, w/2, h/2, 0, 4, 4)
+    love.graphics.draw(titleArt, w/2, h, 0, 4, 4)
     love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.setColor(0, 0, 0, alpha) 
     for dx=-borderSize, borderSize do
@@ -697,6 +696,7 @@ function love.draw()
             cutsceneLogic:drawText()
         end
     end
+    
 
 function love.mousereleased(x,y, button)
     if minigame.currentMinigame ~= nil then
