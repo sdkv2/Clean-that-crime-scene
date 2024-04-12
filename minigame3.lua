@@ -28,7 +28,6 @@ local blur = love.graphics.newImage('sprites/blur.png')
 local hit = love.audio.newSource('sfx/punch.wav', 'static')
 local dead = love.audio.newSource('sfx/death.wav', 'static')
 function Minigame3.new(Parent)
-    ParentMinigame = Parent
     local self = setmetatable({}, Minigame3)
     self.stages = {
         {directions = {'up', 'down', 'left', 'right'}, durations = {0.5, 0.5, 0.5,0.5}}, -- Stage 1
@@ -36,6 +35,7 @@ function Minigame3.new(Parent)
         {directions = {'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5, 0.5}}, -- Stage 3
         {directions = {'down', 'left', 'right', 'up', 'right',  'up', 'right', 'down', 'left', 'down'}, durations = {0.5, 0.5, 0.5,0.5,0.25,0.25,0.25,0.25,0.25,0.25,0.25, 0.5, 0.5}}, -- Stage 4
     }
+    self.ParentMinigame = Parent
     self.endGame = false
     self.currentStage = 1
     self.currentDirection = 1
@@ -70,8 +70,7 @@ function Minigame3:update(dt)
     self:processStages(dt)
     else
         if not dead:isPlaying() then
-            ParentMinigame:completeMinigame(3)
-            ParentMinigame:setMinigame(nil)
+            self.ParentMinigame:completeMinigame(3)
             fade.isActive = true
         end
     end

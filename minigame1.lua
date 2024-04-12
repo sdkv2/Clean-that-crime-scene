@@ -247,7 +247,6 @@ function Minigame1:draw()
             love.graphics.setColor(1, 1, 1, 1)
         end
     end
-    love.graphics.print(currentFrame, 10, 10, 0, 3, 3)
     for _, particleData in ipairs(allParticleData) do
 		love.graphics.draw(particleData.system)
 	end

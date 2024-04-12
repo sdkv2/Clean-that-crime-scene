@@ -60,14 +60,12 @@ function love.load()
     bowlingballClean = false
     journal = false
     endingState = 0
-    endingState = 0
     journal = false
     gameState = TITLE
     zoom = 2
     chatting = false
     cctvState = 0
     target = nil
-    
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     interact = love.graphics.newImage('sprites/interact.png')
@@ -209,23 +207,21 @@ local function ending(dt)
         loadNewMap("maps/mansionRoom.lua")
         cop = Kyle:new(1016, 763, 'copsprite.png', 32, 48, animation['cop'], 'cop', 'copportrait.png')
         table.insert(npcs, cop)
-        chat:chat('Cop', '1', endingState == 1)
-        player.collider:setPosition(1016, 720)
+    endingState = nil
+        chat:chat('Cop', '1', function() endingState = 1 end)
     end
     if endingState == 1 then
-        chat:chat('Cop', '2', function() endingState = 2 end)
+        endingState = nil
+        chat:chat('Cop', '2', function() endingState = 5 end)
     end
-    if minigame.isComplete(1) and minigame.isComplete(2) and minigame.isComplete(3) and minigame.isComplete(4) then
-        chat:chat('Cop', 'Win', function() love.load() end)
+    if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(3) and minigame:isComplete(4) and endingState == 5 then
+        endingState = nil
+        chat:chat('Cop', 'Win', function()             love.event.quit()        end)
+    elseif endingState == 5 then
+        endingState = nil
+        chat:chat('Cop', 'BodyFail', function()             love.event.quit()        end)
     end
-    if endingState == 2 and kiranDraw == true then
-        chat:chat('Cop', 'BodyFail', function() love.load() end)
-    elseif endingState == 2 and minigame:isComplete(1) == false then
-        chat:chat('Cop', 'BallFail', function() fade.isActive = true love.load() end)
-    end
-    
 end
-
 local function endingDraw()
     map()
     
@@ -366,14 +362,8 @@ function loadNewMap(mapPath,x,y)
             if minigame:isComplete(1) and minigame:isComplete(2) and minigame:isComplete(4) then
                 local gkiran = interactable:new('gkiran', 940, 737, 32, 48, "sprites/gsprite.png", 1.25, function() 
                     chat:chat('Kiran', '3', function () 
-                        minigame:setMinigame(3)
-                        for i = #interactables, 1, -1 do
-                            if interactables[i] == gkiran then
-                                table.remove(interactables, i)
-                                break
-                            end
-                        end
-                        ending()
+                        minigame:setMinigame(3, function()  ending() end)
+                       
 
                     end)
                 end)
@@ -539,8 +529,8 @@ end
 
 function love.update(dt)
     if gameState == ENDING then
-        ending(dt)
         chat:update(dt)
+        ending()
     end
 
 
@@ -625,15 +615,8 @@ function love.keypressed(key)
             
 
         end
-        if key == "l" then
-            kiranDraw = false
-            fade.isActive = true
-            minigame:completeMinigame(1)
-            minigame:completeMinigame(2)
-            minigame:completeMinigame(4)
-            ending()
+        
 
-        end
         if key == "x" then
             if gameState == TITLE then
                 chat:endChat()
@@ -669,6 +652,7 @@ end
 
 function love.draw()
 
+
         if gameState == TITLE then
             titleDraw()
         else
@@ -678,16 +662,12 @@ function love.draw()
                     myTimer:draw()
                 else 
                     cam:attach()
-                    if gameState == ENDING then
-                        endingDraw()
-                    else
+
                         cam:zoomTo(zoom)
                         map()
-                        world:draw()
                         if isInteractable == true then
                             love.graphics.draw(interact, player.x -20, player.y - 90, 0, 2, 2, 8, 8)
                         end
-                    end
                     if gameState == CUTSCENE then
                         cutsceneLogic:draw()
                     end
